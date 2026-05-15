@@ -57,6 +57,14 @@ void WindowManager::setURL(const QUrl &url)
 
     if (mime.name().startsWith(QStringLiteral("image/"))) {
         setFileType(QStringLiteral("image"));
+        if (m_imageProvider) {
+            QPixmap image = QPixmap(url.toLocalFile());
+            m_imageProvider->setPixmap(image);
+            m_url = QUrl(QStringLiteral("image://Maki/image?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+            m_windowSize = image.size();
+            Q_EMIT windowSizeChanged();
+        }
+        
     } else if (mime.name().startsWith(QStringLiteral("text/"))) {
         QFile file(url.toLocalFile());
 
@@ -156,7 +164,7 @@ void WindowManager::setURL(const QUrl &url)
 
         if (m_imageProvider) {
             // TODO: Should this be in a config?
-            m_imageProvider->setPixmap(icon.pixmap(512, 512));
+            m_imageProvider->setFallbackImage(icon.pixmap(512, 512));
 
             m_fallbackURL = QUrl(QStringLiteral("image://Maki/fallback"));
             Q_EMIT fallbackURLChanged();

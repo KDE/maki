@@ -19,8 +19,12 @@ public:
         Q_UNUSED(size)
         Q_UNUSED(requestedSize)
 
-        if (id == QStringLiteral("fallback")) {
+        if (id.contains(QStringLiteral("image"))) {
             return m_pixmap;
+        }
+
+        if (id == QStringLiteral("fallback")) {
+            return m_fallbackImage;
         }
 
         if (id.contains(QStringLiteral("audioCover"))) {
@@ -41,6 +45,11 @@ public:
         m_pixmap = pixmap;
     }
 
+    void setFallbackImage(const QPixmap &pixmap)
+    {
+        m_fallbackImage = pixmap;
+    }
+
     void setAudioCover(const QPixmap &pixmap)
     {
         m_audioCover = pixmap;
@@ -57,6 +66,8 @@ public:
 
 private:
     QPixmap m_pixmap;
+
+    QPixmap m_fallbackImage;
 
     QPixmap m_audioCover;
 

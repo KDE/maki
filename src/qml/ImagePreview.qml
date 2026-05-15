@@ -19,26 +19,7 @@ Item {
             //TODO: Into a config
             const maxScale = Qt.size(1280, 720);
 
-            const imageSize = sourceSize;
-
-            const rw = maxScale.height * (imageSize.width / imageSize.height);
-
-            const useHeight = rw <= maxScale.width;
-
-            if (useHeight) {
-                root.width = rw;
-                root.height = maxScale.height;
-            } else {
-                root.width = maxScale.width;
-                root.height = maxScale.width * (imageSize.height / imageSize.width);
-            }
-        }
-
-        Component.onCompleted: {
-            //TODO: Into a config
-            const maxScale = Qt.size(1280, 720);
-
-            const imageSize = sourceSize;
+            const imageSize = WindowManager.windowSize;
 
             const rw = maxScale.height * (imageSize.width / imageSize.height);
 
