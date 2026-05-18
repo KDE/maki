@@ -49,4 +49,7 @@ install(PROGRAMS io.github.FluxMusic.Maki.desktop DESTINATION ${KDE_INSTALL_APPD
 
 install(FILES io.github.FluxMusic.Maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
+configure_file(io.github.FluxMusic.Maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.Maki.service)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.Maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
+
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)

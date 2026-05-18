@@ -14,6 +14,13 @@ Kirigami.ApplicationWindow {
 
     title: i18nc("@title:window", "Maki Preview")
 
+    visible: WindowManager.visible
+
+    onClosing: (close) => {
+        close.accepted = false
+        WindowManager.visible = false
+    }
+
     Loader {
         anchors.fill: parent     
 

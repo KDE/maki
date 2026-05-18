@@ -38,6 +38,17 @@ void WindowManager::setImageProvider(MakiImageProvider *provider)
     m_imageProvider = provider;
 }
 
+bool WindowManager::getVisible() const
+{
+    return m_visible;
+}
+
+void WindowManager::setVisible(bool visible)
+{
+    m_visible = visible;
+    Q_EMIT visibleChanged();
+}
+
 QSize WindowManager::getWindowSize() const
 {
     return m_windowSize;
@@ -172,6 +183,8 @@ void WindowManager::setURL(const QUrl &url)
 
         setFileType(QStringLiteral("None"));
     }
+
+    setVisible(true);
 
     Q_EMIT urlChanged();
     Q_EMIT fileNameChanged();

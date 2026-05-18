@@ -12,6 +12,7 @@
 #include <KIconTheme>
 
 #include "backend/WindowManager.h"
+#include "backend/DBusInterface.h"
 
 int main(int argc, char* argv[])
 {
@@ -26,6 +27,12 @@ int main(int argc, char* argv[])
 
     QApplication::setStyle(QStringLiteral("breeze"));
 
+    app.setQuitOnLastWindowClosed(false);
+    app.setQuitLockEnabled(false);
+
+    //Only one instance should exist at a time
+    KDBusService service(KDBusService::Unique);
+
     QQmlApplicationEngine engine;
 
     MakiImageProvider* imageProvider = new MakiImageProvider();
@@ -36,37 +43,33 @@ int main(int argc, char* argv[])
     
     WindowManager* manager = engine.singletonInstance<WindowManager*>("io.github.FluxMusic.Maki", "WindowManager");
 
-    //Only one instance should exist at a time
-    KDBusService service(KDBusService::Unique);
+    DBusInterface interface(manager);
 
-    QObject::connect(&service, &KDBusService::activateRequested, 
-        [manager, &app, imageProvider](const QStringList& args, const QString&) {
-            if (manager) {
-                manager->initApp(&app);
-                manager->setImageProvider(imageProvider);
+    auto setup = [manager, &app, imageProvider](const QStringList& args) {
+        if (manager) {
+            manager->initApp(&app);
+            manager->setImageProvider(imageProvider);
 
-                if (args.size() > 1) {
-                    manager->setURL(QUrl::fromUserInput(args[1]));
+            if (args.size() > 1) {
+                if (args[1] == QStringLiteral("daemon")) {
+                    manager->setVisible(false);
                 } else {
-                    qWarning() << "no arguments provided";
+                    manager->setURL(QUrl::fromUserInput(args[1]));
                 }
             } else {
-                qWarning() << "nullptr";
+                qWarning() << "no arguments provided";
             }
-        });
-
-    if (manager) {
-        manager->initApp(&app);
-        manager->setImageProvider(imageProvider);
-
-        if (app.arguments().size() > 1) {
-            manager->setURL(QUrl::fromUserInput(app.arguments()[1]));
         } else {
-            qWarning() << "no arguments provided";
+            qWarning() << "nullptr";
         }
-    } else {
-        qWarning() << "nullptr";
-    }
+    };
+
+    setup(app.arguments());
+
+    QObject::connect(&service, &KDBusService::activateRequested, 
+        [&](const QStringList& args, const QString&) {
+            setup(args);
+        });
 
     return app.exec();
 }

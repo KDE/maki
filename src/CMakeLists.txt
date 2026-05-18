@@ -12,16 +12,26 @@ target_include_directories(Maki
     PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/backend"
     "${CMAKE_CURRENT_SOURCE_DIR}/mpv"
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-target_sources(Maki
-    PRIVATE
+set(Maki_SRCS
     main.cpp
     backend/WindowManager.cpp
     backend/WindowManager.h
     backend/ImageProvider.h
+    backend/DBusInterface.cpp
     mpv/MpvItem.h
     mpv/MpvItem.cpp
+)
+
+set(Maki_dbusXML ${CMAKE_SOURCE_DIR}/dbus/io.github.FluxMusic.Maki.xml)
+
+qt_add_dbus_adaptor(Maki_SRCS ${Maki_dbusXML} backend/DBusInterface.h DBusInterface)
+
+target_sources(Maki
+    PRIVATE
+    ${Maki_SRCS}
 )
 
 ecm_target_qml_sources(Maki
@@ -54,3 +64,4 @@ target_link_libraries(Maki
 )
 
 install(TARGETS Maki ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES ${Maki_dbusXML} DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})

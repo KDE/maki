@@ -18,6 +18,7 @@ class WindowManager : public QObject
     QML_ELEMENT
     QML_SINGLETON
 
+    Q_PROPERTY(bool visible READ getVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(QString fileType READ getFileType WRITE setFileType NOTIFY fileTypeChanged)
     Q_PROPERTY(QUrl url READ getURL WRITE setURL NOTIFY urlChanged)
     Q_PROPERTY(QUrl fallbackURL READ getFallbackURL NOTIFY fallbackURLChanged)
@@ -35,6 +36,10 @@ public:
     void setImageProvider(MakiImageProvider *provider);
 
 public:
+    bool getVisible() const;
+    void setVisible(bool visible);
+    Q_SIGNAL void visibleChanged();
+
     QSize getWindowSize() const;
     Q_SIGNAL void windowSizeChanged();
 
@@ -65,6 +70,8 @@ public:
 
 private:
     QApplication *m_app{nullptr};
+
+    bool m_visible{ false };
 
     QSize m_windowSize;
 
