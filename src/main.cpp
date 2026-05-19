@@ -20,10 +20,12 @@ int main(int argc, char* argv[])
     
     KIconTheme::initTheme();
 
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QApplication::setOrganizationName  (QStringLiteral("FluxMusic"));
     QApplication::setOrganizationDomain(QStringLiteral("FluxMusic.github.io"));
     QApplication::setApplicationName   (QStringLiteral("Maki"));
+
+    QApplication::setStyle(QStringLiteral("breeze"));
 
     app.setQuitOnLastWindowClosed(false);
     app.setQuitLockEnabled(false);

@@ -28,7 +28,7 @@ WindowManager::WindowManager(QObject *parent)
 {
 }
 
-void WindowManager::initApp(QGuiApplication *app)
+void WindowManager::initApp(QApplication *app)
 {
     m_app = app;
 }
