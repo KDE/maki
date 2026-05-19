@@ -6,7 +6,7 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
-Kirigami.ApplicationWindow {
+Window {
     id: root
 
     width: 640
