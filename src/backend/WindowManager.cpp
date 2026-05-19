@@ -28,7 +28,7 @@ WindowManager::WindowManager(QObject *parent)
 {
 }
 
-void WindowManager::initApp(QApplication *app)
+void WindowManager::initApp(QGuiApplication *app)
 {
     m_app = app;
 }
@@ -61,6 +61,8 @@ QUrl WindowManager::getURL() const
 
 void WindowManager::setURL(const QUrl &url)
 {
+    releaseResources();
+
     m_url = url;
 
     QMimeDatabase db;
@@ -239,4 +241,19 @@ void WindowManager::openInDefaultApp()
     });
 
     job->start();
+}
+
+void WindowManager::releaseResources()
+{
+    m_fallbackURL = QUrl();
+    m_audioCoverURL = QUrl();
+    m_fileType = QString();
+    m_fileText = QString();
+    if (m_imageProvider) {
+        m_imageProvider->releaseResources();
+    }
+    Q_EMIT fallbackURLChanged();
+    Q_EMIT audioCoverURLChanged();
+    Q_EMIT fileTypeChanged();
+    Q_EMIT fileTextChanged();
 }

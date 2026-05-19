@@ -64,6 +64,15 @@ public:
         }
     }
 
+    void releaseResources()
+    {
+        m_pixmap = QPixmap();
+        m_fallbackImage = QPixmap();
+        m_audioCover = QPixmap();
+        m_documentImages.clear();
+        m_documentImages.shrink_to_fit();
+    }
+
 private:
     QPixmap m_pixmap;
 

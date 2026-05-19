@@ -19,10 +19,13 @@ Kirigami.ApplicationWindow {
     onClosing: (close) => {
         close.accepted = false
         WindowManager.visible = false
+        WindowManager.releaseResources()
     }
 
     Loader {
-        anchors.fill: parent     
+        anchors.fill: parent
+
+        active: WindowManager.fileType !== "" 
 
         source: {
             switch(WindowManager.fileType) {

@@ -31,7 +31,7 @@ class WindowManager : public QObject
 public:
     explicit WindowManager(QObject *parent = nullptr);
 
-    void initApp(QApplication *app);
+    void initApp(QGuiApplication *app);
 
     void setImageProvider(MakiImageProvider *provider);
 
@@ -68,8 +68,10 @@ public:
 
     Q_INVOKABLE void openInDefaultApp();
 
+    Q_INVOKABLE void releaseResources();
+
 private:
-    QApplication *m_app{nullptr};
+    QGuiApplication *m_app{nullptr};
 
     bool m_visible{ false };
 
