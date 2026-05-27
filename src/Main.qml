@@ -29,12 +29,13 @@ Kirigami.ApplicationWindow {
 
         source: {
             switch(WindowManager.fileType) {
-            case "image": return "ImagePreview.qml"
-            case "text" : return "TextPreview.qml"
-            case "audio": return "AudioPreview.qml"
-            case "video": return "VideoPreview.qml"
-            case "pdf"  : return "DocumentPreview.qml"
-            default     : return "FallbackPreview.qml"
+            case "image"   : return "ImagePreview.qml"
+            case "text"    : return "TextPreview.qml"
+            case "audio"   : return "AudioPreview.qml"
+            case "video"   : return "VideoPreview.qml"
+            case "pdf"     : return "DocumentPreview.qml"
+            case "archive" : return "ArchivePreview.qml"
+            default        : return "FallbackPreview.qml"
             }
         }
     }

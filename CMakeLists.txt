@@ -29,6 +29,7 @@ find_package(KF6 REQUIRED COMPONENTS
     CoreAddons
     IconThemes
     KIO
+    Archive
     DBusAddons
 )
 

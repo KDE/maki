@@ -43,6 +43,7 @@ ecm_target_qml_sources(Maki
     qml/AudioPreview.qml
     qml/VideoPreview.qml
     qml/DocumentPreview.qml
+    qml/ArchivePreview.qml
 )
 
 target_link_libraries(Maki
@@ -56,6 +57,7 @@ target_link_libraries(Maki
     KF6::CoreAddons
     KF6::DBusAddons
     KF6::IconThemes
+    KF6::Archive
     KF6::KIOCore
     KF6::KIOGui
     Poppler::Qt6

@@ -31,6 +31,10 @@ public:
             return m_audioCover;
         }
 
+        if (id.contains(QStringLiteral("infoPanel"))) {
+            return m_infoPanelImage;
+        }
+
         int page = id.toInt();
 
         if (page == 0 || page >= static_cast<int>(m_documentImages.size() + 1)) {
@@ -53,6 +57,11 @@ public:
     void setAudioCover(const QPixmap &pixmap)
     {
         m_audioCover = pixmap;
+    }
+    
+    void setInfoPanelImage(const QPixmap &pixmap)
+    {
+        m_infoPanelImage = pixmap;
     }
 
     void setDocumentImages(const std::vector<QImage> documentImages)
@@ -79,6 +88,8 @@ private:
     QPixmap m_fallbackImage;
 
     QPixmap m_audioCover;
+
+    QPixmap m_infoPanelImage;
 
     std::vector<QPixmap> m_documentImages;
 };

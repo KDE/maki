@@ -5,6 +5,9 @@
 
 #include <KIO/OpenUrlJob>
 #include <KIO/JobUiDelegateFactory>
+#include <KZip>
+#include <K7Zip>
+#include <KTar>
 
 #include <poppler-qt6.h>
 
@@ -14,7 +17,6 @@
 
 #include <QImageReader>
 
-#include <QMimeDatabase>
 #include <QMimeType>
 
 #include <QTimer>
@@ -25,6 +27,7 @@
 
 WindowManager::WindowManager(QObject *parent)
     : QObject(parent)
+    , m_archiveModel(new QStandardItemModel(this))
 {
 }
 
@@ -65,7 +68,6 @@ void WindowManager::setURL(const QUrl &url)
 
     m_url = url;
 
-    QMimeDatabase db;
     QMimeType mime = db.mimeTypeForUrl(url);
 
     if (mime.name().startsWith(QStringLiteral("image/"))) {
@@ -170,9 +172,31 @@ void WindowManager::setURL(const QUrl &url)
         Q_EMIT pageNumChanged();
 
         setFileType(QStringLiteral("pdf"));
-    }
-    else
-    {
+    } else if (KArchive *archive = createArchive(url.toLocalFile())) {
+        if (!m_archiveModel) {
+            m_archiveModel = new QStandardItemModel(this);
+        }
+
+        if (archive->open(QIODevice::ReadOnly)) {
+            m_archiveModel->clear();
+            populateArchiveModel(m_archiveModel->invisibleRootItem(), archive->directory());
+
+            if (m_imageProvider) {
+                m_imageProvider->setInfoPanelImage(QIcon::fromTheme(mime.iconName()).pixmap(128, 128));
+                m_infoPanelURL = QUrl(QStringLiteral("image://Maki/infoPanel?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+                Q_EMIT infoPanelURLChanged();
+            }
+
+            archive->close();
+        }
+
+        delete archive;
+        archive = nullptr;
+
+        setFileType(QStringLiteral("archive"));
+        Q_EMIT fileTypeChanged();
+        Q_EMIT archiveModelChanged();
+    } else {
         QIcon icon = QIcon::fromTheme(mime.iconName());
 
         if (m_imageProvider) {
@@ -202,6 +226,11 @@ QUrl WindowManager::getAudioCoverURL() const
     return m_audioCoverURL;
 }
 
+QUrl WindowManager::getInfoPanelURL() const
+{
+    return m_infoPanelURL;
+}
+
 QString WindowManager::getFileName() const
 {
     return m_url.fileName();
@@ -221,6 +250,11 @@ void WindowManager::setFileType(const QString &fileType)
 QString WindowManager::getFileText() const
 {
     return m_fileText;
+}
+
+QStandardItemModel* WindowManager::getArchiveModel() const
+{
+    return m_archiveModel;
 }
 
 int WindowManager::getPageNum() const
@@ -252,8 +286,59 @@ void WindowManager::releaseResources()
     if (m_imageProvider) {
         m_imageProvider->releaseResources();
     }
+    if (m_archiveModel) {
+        m_archiveModel->clear();
+    }
+    
     Q_EMIT fallbackURLChanged();
     Q_EMIT audioCoverURLChanged();
     Q_EMIT fileTypeChanged();
     Q_EMIT fileTextChanged();
+}
+
+KArchive* WindowManager::createArchive(const QString &filePath)
+{
+    QMimeType mime = db.mimeTypeForFile(filePath);
+    
+    if (mime.name() == QStringLiteral("application/zip")
+    ||  mime.name() == QStringLiteral("application/zip-compressed")
+    ||  mime.name() == QStringLiteral("application/x-zip-compressed")) {
+        return new KZip(filePath);
+    }
+    
+    if (mime.name() == QStringLiteral("application/x-7z-compressed")) {
+        return new K7Zip(filePath);
+    }
+    
+    if (mime.name() == QStringLiteral("application/x-gtar" )
+    ||  mime.name() == QStringLiteral("application/x-gzip" )
+    ||  mime.name() == QStringLiteral("application/x-tar"  )
+    ||  mime.name() == QStringLiteral("application/x-bzip" )
+    ||  mime.name() == QStringLiteral("application/x-bzip2")
+    ||  mime.name() == QStringLiteral("application/x-xz"   )) {
+        return new KTar(filePath);
+    }
+
+    return nullptr;
+}
+
+void WindowManager::populateArchiveModel(QStandardItem *parent, const KArchiveDirectory *dir)
+{
+    for (const QString &name : dir->entries()) {
+        const KArchiveEntry *entry = dir->entry(name);
+        auto *item = new QStandardItem(name);
+
+        const QString iconName = entry->isDirectory()
+            ? QStringLiteral("inode-directory")
+            : QString(db.mimeTypeForFile(name, QMimeDatabase::MatchExtension).iconName());
+
+        item->setData(iconName, Qt::ToolTipRole);
+        item->setText(name);
+
+        if (entry->isDirectory()) {
+            populateArchiveModel(item, static_cast<const KArchiveDirectory*>(entry));
+        }
+        
+        parent->appendRow(item);
+    }
 }
