@@ -1,3 +1,10 @@
+<!--
+    SPDX-FileCopyrightText: 2026 Alex Huber <alex.huber743@gmail.com>
+
+    SPDX-License-Identifier: CC0-1.0
+-->
+
+
 # Maki
 
 Standing for "Maki is A KDE Inspector", Maki enables quick previewing of files akin to GNOME's Sushi or MacOS' Quick Look.
