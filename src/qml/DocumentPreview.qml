@@ -16,7 +16,7 @@ Item {
             spacing: 8
 
             delegate: Image {
-                width: parent.width
+                width: root.width
                 fillMode: Image.PreserveAspectFit
                 source: "image://Maki/" + (index + 1)
                 mipmap: true
