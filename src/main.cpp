@@ -44,9 +44,11 @@ int main(int argc, char* argv[])
 
     QCommandLineOption daemonOption ({QStringLiteral("d"), QStringLiteral("daemon")},  i18n("Starts Maki in the background. Doesn't show a window"));
     QCommandLineOption previewOption({QStringLiteral("p"), QStringLiteral("preview")}, i18n("Shows a preview window for the specified file"), QStringLiteral("url"));
+    QCommandLineOption replaceOption({QStringLiteral("r"), QStringLiteral("replace")}, i18n("Replaces the Maki process with a new one"));
 
     parser.addOption(daemonOption);
     parser.addOption(previewOption);
+    parser.addOption(replaceOption);
 
     aboutData.setupCommandLine(&parser);
 
@@ -54,7 +56,7 @@ int main(int argc, char* argv[])
     aboutData.processCommandLine(&parser);
 
     //Only one instance should exist at a time
-    KDBusService service(KDBusService::Unique);
+    KDBusService service(KDBusService::Unique | KDBusService::StartupOption(parser.isSet(replaceOption) ? KDBusService::Replace : 0));
 
     QQmlApplicationEngine engine;
 
@@ -77,6 +79,8 @@ int main(int argc, char* argv[])
                 manager->setVisible(false);
             } else if (parser.isSet(previewOption)) {
                 manager->setURL(QUrl::fromUserInput(parser.value(previewOption)));
+            } else if (parser.isSet(replaceOption)) {
+                qDebug() << "Replacing process";
             } else {
                 parser.showHelp(1);
             }
