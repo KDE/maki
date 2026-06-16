@@ -6,6 +6,7 @@
 #include <QtQml>
 #include <QUrl>
 #include <QQuickWindow>
+#include <KAboutData>
 #include <KDBusService>
 #include <KLocalizedContext>
 #include <KLocalizedString>
@@ -27,8 +28,30 @@ int main(int argc, char* argv[])
 
     QApplication::setStyle(QStringLiteral("breeze"));
 
+    KAboutData aboutData(QStringLiteral("Maki"), 
+                         i18n("Maki"), 
+                         QStringLiteral("0.2"), 
+                         i18n("Quick File Previewer"), 
+                         KAboutLicense::GPL_V3);
+    aboutData.setOrganizationDomain("FluxMusic.github.io");
+
+    KAboutData::setApplicationData(aboutData);
+    
     app.setQuitOnLastWindowClosed(false);
     app.setQuitLockEnabled(false);
+
+    QCommandLineParser parser;
+
+    QCommandLineOption daemonOption ({QStringLiteral("d"), QStringLiteral("daemon")},  i18n("Starts Maki in the background. Doesn't show a window"));
+    QCommandLineOption previewOption({QStringLiteral("p"), QStringLiteral("preview")}, i18n("Shows a preview window for the specified file"), QStringLiteral("url"));
+
+    parser.addOption(daemonOption);
+    parser.addOption(previewOption);
+
+    aboutData.setupCommandLine(&parser);
+
+    parser.process(app);
+    aboutData.processCommandLine(&parser);
 
     //Only one instance should exist at a time
     KDBusService service(KDBusService::Unique);
@@ -45,30 +68,29 @@ int main(int argc, char* argv[])
 
     DBusInterface interface(manager);
 
-    auto setup = [manager, &app, imageProvider](const QStringList& args) {
+    auto setup = [&]() {
         if (manager) {
             manager->initApp(&app);
             manager->setImageProvider(imageProvider);
 
-            if (args.size() > 1) {
-                if (args[1] == QStringLiteral("daemon")) {
-                    manager->setVisible(false);
-                } else {
-                    manager->setURL(QUrl::fromUserInput(args[1]));
-                }
+            if (parser.isSet(daemonOption)) {
+                manager->setVisible(false);
+            } else if (parser.isSet(previewOption)) {
+                manager->setURL(QUrl::fromUserInput(parser.value(previewOption)));
             } else {
-                qWarning() << "no arguments provided";
+                parser.showHelp(1);
             }
         } else {
             qWarning() << "nullptr";
         }
     };
 
-    setup(app.arguments());
+    setup();
 
     QObject::connect(&service, &KDBusService::activateRequested, 
         [&](const QStringList& args, const QString&) {
-            setup(args);
+            parser.parse(args);
+            setup();
         });
 
     return app.exec();
