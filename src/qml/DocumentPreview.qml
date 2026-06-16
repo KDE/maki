@@ -58,10 +58,11 @@ Item {
 
             delegate: Image {
                 width: mainList.width
-                height: width * (WindowManager.windowSize.height / WindowManager.windowSize.width)
+                height: width * (sourceSize.height / sourceSize.width)
                 fillMode: Image.PreserveAspectFit
                 source: "image://Maki/" + (index + 1)
                 mipmap: true
+                cache: false
             }
         }
     }
@@ -128,6 +129,7 @@ Item {
                                 fillMode: Image.PreserveAspectFit
                                 source: "image://Maki/" + (index + 1)
                                 mipmap: true
+                                cache: false
                             }
 
                             Label {
