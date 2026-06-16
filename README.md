@@ -1,5 +1,5 @@
 <!--
-    SPDX-FileCopyrightText: 2026 Alex Huber <alex.huber743@gmail.com>
+    SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
 
     SPDX-License-Identifier: CC0-1.0
 -->
