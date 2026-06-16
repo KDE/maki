@@ -11,7 +11,7 @@ Item {
 
     property int mainViewWidth: 0
     property int separatorWidth: 1
-    property int sidebarWidth: 150
+    property int sidebarWidth: 100
 
     Component.onCompleted: {
         //TODO: Put this into a config
