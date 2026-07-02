@@ -80,6 +80,55 @@ void WindowManager::setURL(const QUrl &url)
             Q_EMIT windowSizeChanged();
         }
         
+    } else if (mime.inherits(QStringLiteral("application/x-krita"))) {
+        KZip kritaArchive = KZip(url.toLocalFile());
+
+        bool imageExtracted = false;
+
+        if (kritaArchive.open(QIODevice::ReadOnly)) {
+            if (const KArchiveDirectory *rootDir = kritaArchive.directory()) {
+                if (const KArchiveEntry *mergedImageEntry = rootDir->entry(QStringLiteral("mergedimage.png"))) {
+                    //File is a .kra file, we can extract the mergedimage.png for higher resolution
+                    if (const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(mergedImageEntry)) {
+                        QByteArray imageData = imageFile->data();
+                        QImage mergedImage;
+                        if (mergedImage.loadFromData(imageData, "PNG")) {
+                            if (m_imageProvider) {
+                                m_imageProvider->setPixmap(QPixmap::fromImage(mergedImage));
+                                imageExtracted = true;
+                                setFileType(QStringLiteral("image"));
+                                m_windowSize = mergedImage.size();
+                                m_url = QUrl(QStringLiteral("image://Maki/image?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+                                Q_EMIT windowSizeChanged();
+                            }
+                        }
+                    }
+                } else if (const KArchiveEntry *previewImageEntry = rootDir->entry(QStringLiteral("preview.png"))) {
+                    //File is a .krz file, fall back to the lower resolution preview.png file
+                    //Or if for whatever reason the mergedimage.png is missing
+                    if (const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(previewImageEntry)) {
+                        QByteArray imageData = imageFile->data();
+                        QImage previewImage;
+                        if (previewImage.loadFromData(imageData, "PNG")) {
+                            if (m_imageProvider) {
+                                m_imageProvider->setPixmap(QPixmap::fromImage(previewImage));
+                                imageExtracted = true;
+                                setFileType(QStringLiteral("image"));
+                                m_windowSize = previewImage.size();
+                                m_url = QUrl(QStringLiteral("image://Maki/image?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+                                Q_EMIT windowSizeChanged();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!imageExtracted) {
+            createFallbackImage(mime);
+        }
+        
+
     } else if (mime.name().startsWith(QStringLiteral("text/"))) {
         QFile file(url.toLocalFile());
 
@@ -341,4 +390,19 @@ void WindowManager::populateArchiveModel(QStandardItem *parent, const KArchiveDi
         
         parent->appendRow(item);
     }
+}
+
+void WindowManager::createFallbackImage(QMimeType mime)
+{
+    QIcon icon = QIcon::fromTheme(mime.iconName());
+
+        if (m_imageProvider) {
+            // TODO: Should this be in a config?
+            m_imageProvider->setFallbackImage(icon.pixmap(512, 512));
+
+            m_fallbackURL = QUrl(QStringLiteral("image://Maki/fallback"));
+            Q_EMIT fallbackURLChanged();
+        }
+
+        setFileType(QStringLiteral("None"));
 }

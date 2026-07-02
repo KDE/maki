@@ -86,6 +86,8 @@ private:
     KArchive* createArchive(const QString &filePath);
     void populateArchiveModel(QStandardItem *parent, const KArchiveDirectory *dir);
 
+    void createFallbackImage(QMimeType mime);
+
 private:
     QApplication *m_app{nullptr};
 
