@@ -3,15 +3,12 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 Item {
     id: documentPreview
     anchors.fill: parent
-
-    property int mainViewWidth: 0
-    property int separatorWidth: 1
-    property int sidebarWidth: 100
 
     Component.onCompleted: {
         //TODO: Put this into a config
@@ -23,131 +20,107 @@ Item {
         const useHeight = rw <= maxPageScale.width;
 
         let windowHeight = 0;
+        let windowWidth = 0;
 
         if (useHeight) {
             windowHeight = maxPageScale.height;
-            documentPreview.mainViewWidth = rw;
+            windowWidth = rw;
         } else {
             windowHeight = maxPageScale.width * (pageSize.height / pageSize.width);
-            documentPreview.mainViewWidth = maxPageScale.width;
+            windowWidth = maxPageScale.width;
         }
 
-        root.width = documentPreview.mainViewWidth 
-                   + documentPreview.sidebarWidth 
-                   + documentPreview.separatorWidth;
+        root.width = windowWidth + 100;
         root.height = windowHeight;
     }
 
-    Kirigami.ScrollablePage {
-        id: mainList
-        anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+    RowLayout {
+        spacing: Kirigami.Units.smallSpacing
+
+        anchors.fill: parent
+
         anchors.margins: Kirigami.Units.smallSpacing
 
-        width: root.width - documentPreview.sidebarWidth;
-        
         ListView {
-            id: view
-            anchors.fill: parent
+            id: mainList
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
             model: WindowManager.pageNum
-            width: parent.width
-            spacing: 8
+            spacing: Kirigami.Units.smallSpacing
 
             delegate: Image {
-                width: view.width
+                width: mainList.width
                 height: width * (sourceSize.height / sourceSize.width)
                 fillMode: Image.PreserveAspectFit
                 source: "image://Maki/" + (index + 1)
-                mipmap: true
-                cache: false
+            }
+
+            Kirigami.WheelHandler {
+                id: mainListWheelHandler
+                target: mainList
+                keyNavigationEnabled: true
+            }
+        }
+
+        Kirigami.Separator {
+            id: separator
+
+            Layout.fillHeight: true
+        }
+
+        ListView {
+            id: thumbnailList
+
+            Layout.preferredWidth: 100
+            Layout.fillHeight: true
+
+            model: WindowManager.pageNum
+
+            delegate: ItemDelegate {
+                id: delegate
+
+                width: ListView.view.width
+
+                contentItem: ColumnLayout {
+                    id: thumbnailBackground
+
+                    width: delegate.width
+
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Image {
+                        fillMode: Image.PreserveAspectFit
+                        source: "image://Maki/" + (index + 1)
+                        
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: width * (sourceSize.height / sourceSize.width)
+                    }
+
+                    Label {
+                        horizontalAlignment: Text.AlignHCenter
+                        text: index + 1
+                        color: Kirigami.Theme.textColor
+
+                        Layout.fillWidth: true
+                    }
+                }
+
+                onClicked: {
+                    mainList.currentIndex = index;
+                    mainList.positionViewAtIndex(index, ListView.Beginning);
+                }
+            }
+
+            Kirigami.WheelHandler {
+                id: thumbnailListWheelHandler
+                target: mainList
+                keyNavigationEnabled: true
             }
         }
     }
 
-
-    Kirigami.Separator {
-        id: separator
-        anchors.left: mainList.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-
-        anchors.leftMargin: Kirigami.Units.smallSpacing
-
-        width: documentPreview.separatorWidth
-    }
-    
-    Rectangle {
-        id: thumbnailSidebar
-        anchors.left: separator.right
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        width: documentPreview.sidebarWidth;
-        color: Kirigami.Theme.backgroundColor
-        
-        ListView {
-            id: thumbnailList
-            width: parent.width
-            anchors.fill: parent
-            anchors.leftMargin: Kirigami.Units.smallSpacing
-            anchors.rightMargin: Kirigami.Units.smallSpacing
-            model: WindowManager.pageNum
-            spacing: Kirigami.Units.smallSpacing
-
-            delegate: Item {
-                width: thumbnailList.width
-                height: thumbnailBackground.height
-                
-                Rectangle {
-                    id: thumbnailBackground
-                    width: parent.width
-                    implicitHeight: thumbnailStack.height + Kirigami.Units.smallSpacing * 2
-                    color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.activeBackgroundColor : "transparent"
-                    border.width: 1
-                    border.color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.highlightColor : "transparent"
-                    radius: Kirigami.Units.cornerRadius
-                    
-                    Column {
-                        id: thumbnailStack
-                        anchors.top: parent.top
-                        anchors.left: parent.left
-                        anchors.right: parent.right
-                        anchors.margins: Kirigami.Units.smallSpacing
-                        spacing: Kirigami.Units.smallSpacing
-                            
-                        Image {
-                            width: parent.width
-                            height: width * (WindowManager.windowSize.height / WindowManager.windowSize.width)
-                            fillMode: Image.PreserveAspectFit
-                            source: "image://Maki/" + (index + 1)
-                            mipmap: true
-                            cache: false
-                        }
-
-                        Label {
-                            width: parent.width
-                            horizontalAlignment: Text.AlignHCenter
-                            text: index + 1
-                            color: Kirigami.Theme.textColor
-                        }
-                    }
-                }
-
-                MouseArea {
-                    id: thumbnailMouseManager
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    cursorShape: Qt.PointingHandCursor
-
-                    onClicked: {
-                        mainList.currentIndex = index;
-                        mainList.positionViewAtIndex(index, ListView.Beginning);
-                    }
-                }
-            } 
-        }
-    }
 
     Button {
         anchors.top: parent.top
