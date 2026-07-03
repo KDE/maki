@@ -38,26 +38,24 @@ Item {
         root.height = windowHeight;
     }
 
-    ScrollView {
-        id: mainView
+    Kirigami.ScrollablePage {
+        id: mainList
         anchors.left: parent.left
         anchors.top: parent.top
         anchors.bottom: parent.bottom
+        anchors.margins: Kirigami.Units.smallSpacing
+
         width: root.width - documentPreview.sidebarWidth;
         
         ListView {
-            id: mainList
+            id: view
             anchors.fill: parent
-            anchors.rightMargin: mainView.ScrollBar.vertical.width + Kirigami.Units.smallSpacing
-            anchors.leftMargin: Kirigami.Units.smallSpacing
-            anchors.topMargin: Kirigami.Units.smallSpacing
-            anchors.bottomMargin: Kirigami.Units.smallSpacing
-            width: parent.width
             model: WindowManager.pageNum
+            width: parent.width
             spacing: 8
 
             delegate: Image {
-                width: mainList.width
+                width: view.width
                 height: width * (sourceSize.height / sourceSize.width)
                 fillMode: Image.PreserveAspectFit
                 source: "image://Maki/" + (index + 1)
@@ -67,13 +65,14 @@ Item {
         }
     }
 
+
     Kirigami.Separator {
         id: separator
-        anchors.left: mainView.right
+        anchors.left: mainList.right
         anchors.top: parent.top
         anchors.bottom: parent.bottom
-        
-        anchors.rightMargin: Kirigami.Units.smallSpacing
+
+        anchors.leftMargin: Kirigami.Units.smallSpacing
 
         width: documentPreview.separatorWidth
     }
@@ -87,73 +86,66 @@ Item {
         width: documentPreview.sidebarWidth;
         color: Kirigami.Theme.backgroundColor
         
-        ScrollView {
-            id: thumbnailView
+        ListView {
+            id: thumbnailList
+            width: parent.width
             anchors.fill: parent
-        
-            ListView {
-                id: thumbnailList
-                width: parent.width
-                anchors.fill: parent
-                anchors.rightMargin: thumbnailView.ScrollBar.vertical.width + Kirigami.Units.smallSpacing 
-                anchors.leftMargin: Kirigami.Units.smallSpacing
-                anchors.topMargin: Kirigami.Units.smallSpacing
-                anchors.bottomMargin: Kirigami.Units.smallSpacing
-                model: WindowManager.pageNum
-                spacing: Kirigami.Units.smallSpacing
+            anchors.leftMargin: Kirigami.Units.smallSpacing
+            anchors.rightMargin: Kirigami.Units.smallSpacing
+            model: WindowManager.pageNum
+            spacing: Kirigami.Units.smallSpacing
 
-                delegate: Item {
-                    width: thumbnailList.width
-                    height: thumbnailBackground.height
+            delegate: Item {
+                width: thumbnailList.width
+                height: thumbnailBackground.height
+                
+                Rectangle {
+                    id: thumbnailBackground
+                    width: parent.width
+                    implicitHeight: thumbnailStack.height + Kirigami.Units.smallSpacing * 2
+                    color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.activeBackgroundColor : "transparent"
+                    border.width: 1
+                    border.color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.highlightColor : "transparent"
+                    radius: Kirigami.Units.cornerRadius
                     
-                    Rectangle {
-                        id: thumbnailBackground
-                        width: parent.width
-                        implicitHeight: thumbnailStack.height + Kirigami.Units.smallSpacing * 2
-                        color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.activeBackgroundColor : "transparent"
-                        border.width: 1
-                        border.color: thumbnailMouseManager.containsMouse ? Kirigami.Theme.highlightColor : "transparent"
-                        radius: Kirigami.Units.cornerRadius
-                        
-                        Column {
-                            id: thumbnailStack
-                            anchors.top: parent.top
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.margins: Kirigami.Units.smallSpacing
-                            spacing: Kirigami.Units.smallSpacing
-                                
-                            Image {
-                                width: parent.width
-                                height: width * (WindowManager.windowSize.height / WindowManager.windowSize.width)
-                                fillMode: Image.PreserveAspectFit
-                                source: "image://Maki/" + (index + 1)
-                                mipmap: true
-                                cache: false
-                            }
+                    Column {
+                        id: thumbnailStack
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.margins: Kirigami.Units.smallSpacing
+                        spacing: Kirigami.Units.smallSpacing
+                            
+                        Image {
+                            width: parent.width
+                            height: width * (WindowManager.windowSize.height / WindowManager.windowSize.width)
+                            fillMode: Image.PreserveAspectFit
+                            source: "image://Maki/" + (index + 1)
+                            mipmap: true
+                            cache: false
+                        }
 
-                            Label {
-                                width: parent.width
-                                horizontalAlignment: Text.AlignHCenter
-                                text: index + 1
-                                color: Kirigami.Theme.textColor
-                            }
+                        Label {
+                            width: parent.width
+                            horizontalAlignment: Text.AlignHCenter
+                            text: index + 1
+                            color: Kirigami.Theme.textColor
                         }
                     }
+                }
 
-                    MouseArea {
-                        id: thumbnailMouseManager
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        cursorShape: Qt.PointingHandCursor
+                MouseArea {
+                    id: thumbnailMouseManager
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
 
-                        onClicked: {
-                            mainList.currentIndex = index;
-                            mainList.positionViewAtIndex(index, ListView.Beginning);
-                        }
+                    onClicked: {
+                        mainList.currentIndex = index;
+                        mainList.positionViewAtIndex(index, ListView.Beginning);
                     }
-                } 
-            }
+                }
+            } 
         }
     }
 
