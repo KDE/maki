@@ -30,7 +30,7 @@ It will move the executable to `/usr/bin/`, the .desktop file to `/usr/share/app
 By this point, you should be able to use Maki by right clicking in Dolphin and selecting `Quick Preview`. If not, you might need to restart or run `kbuildsycoca6` on Plasma 6 to reload service menus.
 
 ### Dependencies
-For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons poppler-qt6 mpvqt taglib gettext`
+For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons poppler-qt6 mpvqt gettext`
 
 ## Uninstallation
 

@@ -31,6 +31,7 @@ find_package(KF6 REQUIRED COMPONENTS
     KIO
     Archive
     DBusAddons
+    FileMetaData
 )
 
 # package for extracting images from pdfs
@@ -38,9 +39,6 @@ find_package(Poppler REQUIRED COMPONENTS Qt6)
 
 # package for video playback
 find_package(MpvQt REQUIRED)
-
-# package for audio metadata
-find_package(Taglib REQUIRED)
 
 ecm_find_qmlmodule(org.kde.kirigami REQUIRED)
 

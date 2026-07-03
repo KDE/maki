@@ -3,6 +3,9 @@
 
 #include "WindowManager.h"
 
+#include <KFileMetaData/EmbeddedImageData>
+#include <KFileMetaData/ExtractorCollection>
+#include <KFileMetaData/SimpleExtractionResult>
 #include <KIO/OpenUrlJob>
 #include <KIO/JobUiDelegateFactory>
 #include <KZip>
@@ -139,42 +142,39 @@ void WindowManager::setURL(const QUrl &url)
 
         setFileType(QStringLiteral("text"));
     } else if (mime.name().startsWith(QStringLiteral("audio/"))) {
-        TagLib::MPEG::File file(url.toLocalFile().toUtf8().constData());
+        // Extract the cover art
+        bool imageFound = false;
 
-        if (file.isValid()) {
-            // Extract all other metadata here
+        KFileMetaData::ExtractorCollection ec;
+        KFileMetaData::SimpleExtractionResult result(m_url.toLocalFile(), mime.name(), KFileMetaData::ExtractionResult::ExtractImageData);
 
-            // Extract the cover art
-            bool imageFound = false;
-            if (file.ID3v2Tag()) {
-                auto frames = file.ID3v2Tag()->frameListMap()["APIC"];
-                if (!frames.isEmpty()) {
-                    auto *frame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame *>(frames.front());
-                    if (frame) {
-                        QImage cover;
-                        cover.loadFromData(reinterpret_cast<const uchar *>(frame->picture().data()), frame->picture().size());
-                        if (!cover.isNull()) {
-                            if (m_imageProvider)
-                                m_imageProvider->setAudioCover(QPixmap::fromImage(cover));
-                            m_audioCoverURL = QUrl(QStringLiteral("image://Maki/audioCover?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
-                            Q_EMIT audioCoverURLChanged();
+        const auto extractors = ec.fetchExtractors(mime.name());
+        for (const auto& extractor : extractors) {
+            extractor->extract(&result);
+        }
+        
+        const auto imageData = result.imageData();
 
-                            imageFound = true;
-                        }
-                    }
+        if (!imageData.isEmpty()) {
+            if (imageData.contains(KFileMetaData::EmbeddedImageData::FrontCover)) {
+                QImage coverImage = QImage::fromData(imageData[KFileMetaData::EmbeddedImageData::FrontCover]);
+                if (m_imageProvider) {
+                    m_imageProvider->setAudioCover(QPixmap::fromImage(coverImage));
+                    imageFound = true;
                 }
             }
-
-            if (!imageFound) {
-                QIcon icon = QIcon::fromTheme(mime.iconName());
-
-                if (m_imageProvider)
-                    m_imageProvider->setAudioCover(icon.pixmap(512, 512));
-                m_audioCoverURL = QUrl(QStringLiteral("image://Maki/audioCover?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
-                Q_EMIT audioCoverURLChanged();
-                qWarning() << "fall back to generic";
-            }
         }
+
+        if (!imageFound) {
+            QIcon icon = QIcon::fromTheme(mime.iconName());
+
+            if (m_imageProvider)
+                m_imageProvider->setAudioCover(icon.pixmap(512, 512));
+            qWarning() << "fall back to generic";
+        }
+
+        m_audioCoverURL = QUrl(QStringLiteral("image://Maki/audioCover?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+        Q_EMIT audioCoverURLChanged();
 
         setFileType(QStringLiteral("audio"));
     } else if (mime.name().startsWith(QStringLiteral("video/"))) {
