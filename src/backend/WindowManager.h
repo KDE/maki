@@ -31,6 +31,7 @@ class WindowManager : public QObject
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QSize windowSize READ getWindowSize NOTIFY windowSizeChanged)
     Q_PROPERTY(QString fileText READ getFileText NOTIFY fileTextChanged)
+    Q_PROPERTY(QString fileSize READ getFileSize NOTIFY fileSizeChanged)
     Q_PROPERTY(QStandardItemModel* archiveModel READ getArchiveModel NOTIFY archiveModelChanged)
     Q_PROPERTY(int pageNum READ getPageNum NOTIFY pageNumChanged)
 
@@ -72,6 +73,9 @@ public:
     QString getFileText() const;
     Q_SIGNAL void fileTextChanged();
 
+    QString getFileSize() const;
+    Q_SIGNAL void fileSizeChanged();
+
     QStandardItemModel* getArchiveModel() const;
     Q_SIGNAL void archiveModelChanged();
 
@@ -88,6 +92,8 @@ private:
 
     void createFallbackImage(QMimeType mime);
 
+    qint64 getDirSize(const KArchiveDirectory *dir);
+
 private:
     QApplication *m_app{nullptr};
 
@@ -102,6 +108,7 @@ private:
 
     QString m_fileType{QStringLiteral("Placeholder")};
     QString m_fileText{QStringLiteral("Placeholder")};
+    QString m_fileSize{QStringLiteral("Placeholder")};
 
     QStandardItemModel *m_archiveModel{nullptr};
 

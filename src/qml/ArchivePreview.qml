@@ -7,64 +7,107 @@ import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 RowLayout {
-
     anchors.fill: parent
+
+    spacing: 0
 
     Component.onCompleted: {
         root.width = 600;
         root.height = 320;
     }
 
-    ColumnLayout {
+    Rectangle {
         Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-        Layout.fillWidth: true
         Layout.fillHeight: true
-        Layout.margins: 8
+        Layout.preferredWidth: 150
 
-        Image {
-            source: WindowManager.infoPanelURL
-            fillMode: Image.PreserveAspectFit
-        }
+        color: Qt.lighter(Kirigami.Theme.backgroundColor, 1.1)
 
-        Text {
-            text: WindowManager.fileName
-            color: Kirigami.Theme.textColor
+        ColumnLayout {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            width: parent.width
+
+            Image {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                source: WindowManager.infoPanelURL
+                fillMode: Image.PreserveAspectFit
+            }
+
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: WindowManager.fileName
+                color: Kirigami.Theme.textColor
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+            }
+            
+            Text {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                text: WindowManager.fileSize
+                color: Kirigami.Theme.textColor
+                wrapMode: Text.Wrap
+                horizontalAlignment: Text.AlignHCenter
+            }
         }
     }
 
     Kirigami.Separator {
-        Layout.preferredWidth: implicitWidth
         Layout.fillHeight: true
     }
 
-    TreeView {
+    ScrollView {
+        id: archiveTreeScrollView
+
         Layout.fillHeight: true
         Layout.fillWidth: true
 
-        Layout.minimumWidth: root.width * (2/5)
+        TreeView {
+            id: archiveTree
 
-        contentWidth: width
+            contentWidth: width
 
-        model: WindowManager.archiveModel
+            model: WindowManager.archiveModel
 
-        delegate: TreeViewDelegate {
-            implicitWidth: parent.width
-            implicitHeight: 32
+            delegate: TreeViewDelegate {
+                implicitWidth: parent.width
+                implicitHeight: contentItem.height
 
-            contentItem: Item {
-                Row {
-                    spacing: 8
+                clip: true
+                contentItem: RowLayout {
+                    spacing: Kirigami.Units.largeSpacing
+                    width: parent.width
+                    height: fileIcon.height + Kirigami.Units.largeSpacing
 
                     Kirigami.Icon {
-                        height: 16
-                        width: 16
+                        id: fileIcon
+
+                        //TODO: Icon Size should go into a config.
+                        Layout.preferredHeight: Kirigami.Units.iconSizes.medium
+                        Layout.preferredWidth: Kirigami.Units.iconSizes.medium
                         source: model.toolTip
                     }
 
                     Text {
+                        id: fileName
+
+                        Layout.fillWidth: true
                         text: model.display
                         color: Kirigami.Theme.textColor
-                        wrapMode: Text.Wrap
+                        elide: Text.ElideRight
+                        maximumLineCount: 2
+                    }
+                    
+                    Text {
+                        id: fileSize
+
+                        Layout.preferredWidth: contentWidth
+                        Layout.rightMargin: Kirigami.Units.largeSpacing
+                        text: model.statusTip
+                        color: Kirigami.Theme.textColor
                     }
                 }
             }

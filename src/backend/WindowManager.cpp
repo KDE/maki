@@ -15,10 +15,13 @@
 #include <poppler-qt6.h>
 
 #include <QFile>
+#include <QFileInfo>
 
 #include <QIcon>
 
 #include <QImageReader>
+
+#include <QLocale>
 
 #include <QMimeType>
 
@@ -222,6 +225,13 @@ void WindowManager::setURL(const QUrl &url)
 
         setFileType(QStringLiteral("pdf"));
     } else if (KArchive *archive = createArchive(url.toLocalFile())) {
+        QFileInfo fileInfo(url.toLocalFile());
+
+        if (fileInfo.exists() && fileInfo.isFile()) {
+            m_fileSize = QLocale::system().formattedDataSize(fileInfo.size(), 1);
+            Q_EMIT fileSizeChanged();
+        }
+
         if (!m_archiveModel) {
             m_archiveModel = new QStandardItemModel(this);
         }
@@ -299,6 +309,11 @@ void WindowManager::setFileType(const QString &fileType)
 QString WindowManager::getFileText() const
 {
     return m_fileText;
+}
+
+QString WindowManager::getFileSize() const
+{
+    return m_fileSize;
 }
 
 QStandardItemModel* WindowManager::getArchiveModel() const
@@ -385,7 +400,14 @@ void WindowManager::populateArchiveModel(QStandardItem *parent, const KArchiveDi
         item->setText(name);
 
         if (entry->isDirectory()) {
-            populateArchiveModel(item, static_cast<const KArchiveDirectory*>(entry));
+            const KArchiveDirectory *dir = static_cast<const KArchiveDirectory*>(entry);
+            item->setData(QLocale::system().formattedDataSize(getDirSize(dir), 1), Qt::StatusTipRole);
+            populateArchiveModel(item, dir);
+        } 
+        
+        if (entry->isFile()) {
+            const auto *file = static_cast<const KArchiveFile *>(entry);
+            item->setData(QLocale::system().formattedDataSize(file->size(), 1), Qt::StatusTipRole);
         }
         
         parent->appendRow(item);
@@ -405,4 +427,29 @@ void WindowManager::createFallbackImage(QMimeType mime)
         }
 
         setFileType(QStringLiteral("None"));
+}
+
+qint64 WindowManager::getDirSize(const KArchiveDirectory *dir)
+{
+    if (!dir) {
+        return 0;
+    }
+
+    qint64 size{0};
+
+    for (const QString &entryName : dir->entries())
+    {
+        const KArchiveEntry *entry = dir->entry(entryName);
+
+        if (entry->isFile()) {
+            const KArchiveFile *file = static_cast<const KArchiveFile *>(entry);
+            if (file) {
+                size += file->size();
+            }
+        } else if (entry->isDirectory()) {
+            size += getDirSize(static_cast<const KArchiveDirectory*>(entry));
+        }
+    }
+
+    return size;
 }
