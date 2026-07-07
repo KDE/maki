@@ -3,6 +3,7 @@
 
 #include "WindowManager.h"
 
+#include <KCompressionDevice>
 #include <KFileMetaData/EmbeddedImageData>
 #include <KFileMetaData/ExtractorCollection>
 #include <KFileMetaData/SimpleExtractionResult>
@@ -238,6 +239,7 @@ void WindowManager::setURL(const QUrl &url)
 
         if (archive->open(QIODevice::ReadOnly)) {
             m_archiveModel->clear();
+            
             populateArchiveModel(m_archiveModel->invisibleRootItem(), archive->directory());
 
             if (m_imageProvider) {
@@ -251,6 +253,55 @@ void WindowManager::setURL(const QUrl &url)
 
         delete archive;
         archive = nullptr;
+
+        setFileType(QStringLiteral("archive"));
+        Q_EMIT fileTypeChanged();
+        Q_EMIT archiveModelChanged();
+    } else if (KCompressionDevice::compressionTypeForMimeType(mime.name()) != KCompressionDevice::None) {
+        //Raw compressed file, extract without KArchive
+        auto compType = KCompressionDevice::compressionTypeForMimeType(mime.name());
+
+        KCompressionDevice compDevice(url.toLocalFile(), compType);
+        
+        if (!m_archiveModel) {
+            m_archiveModel = new QStandardItemModel(this);
+        }
+        
+        QFileInfo fileInfo(url.toLocalFile());
+        m_fileSize = QLocale::system().formattedDataSize(fileInfo.size(), 1);
+        Q_EMIT fileSizeChanged();
+
+        if (m_imageProvider) {
+            m_imageProvider->setInfoPanelImage(QIcon::fromTheme(mime.iconName()).pixmap(128, 128));
+            m_infoPanelURL = QUrl(QStringLiteral("image://Maki/infoPanel?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
+            Q_EMIT infoPanelURLChanged();
+        }
+        
+        QString innerFileName = fileInfo.completeBaseName();
+        
+        auto *item = new QStandardItem(innerFileName);
+        item->setText(innerFileName);
+        
+        if (compDevice.open(QIODevice::ReadOnly)) {
+            QByteArray decompressedData = compDevice.readAll();
+            compDevice.close();
+            
+            QMimeType innerMime;
+            QFileInfo innerFileInfo(innerFileName);
+
+            if (!innerFileInfo.suffix().isEmpty()) {
+                //Suffix is there, use it to get mime type
+                innerMime = db.mimeTypeForFile(innerFileName);
+            } else {
+                //pray that mimeTypeForData is accurate
+                innerMime = db.mimeTypeForData(decompressedData);
+            }
+            
+            item->setData(innerMime.iconName(), Qt::ToolTipRole);
+            item->setData(QLocale::system().formattedDataSize(decompressedData.size(), 1), Qt::StatusTipRole);
+        }
+
+        m_archiveModel->appendRow(item);
 
         setFileType(QStringLiteral("archive"));
         Q_EMIT fileTypeChanged();
@@ -364,22 +415,21 @@ KArchive* WindowManager::createArchive(const QString &filePath)
 {
     QMimeType mime = db.mimeTypeForFile(filePath);
     
-    if (mime.name() == QStringLiteral("application/zip")
-    ||  mime.name() == QStringLiteral("application/zip-compressed")
-    ||  mime.name() == QStringLiteral("application/x-zip-compressed")) {
+    if (mime.inherits(QStringLiteral("application/zip"))
+    ||  mime.inherits(QStringLiteral("application/zip-compressed"))
+    ||  mime.inherits(QStringLiteral("application/x-zip-compressed"))) {
         return new KZip(filePath);
     }
     
-    if (mime.name() == QStringLiteral("application/x-7z-compressed")) {
+    if (mime.inherits(QStringLiteral("application/x-7z-compressed"))) {
         return new K7Zip(filePath);
     }
     
-    if (mime.name() == QStringLiteral("application/x-gtar" )
-    ||  mime.name() == QStringLiteral("application/x-gzip" )
-    ||  mime.name() == QStringLiteral("application/x-tar"  )
-    ||  mime.name() == QStringLiteral("application/x-bzip" )
-    ||  mime.name() == QStringLiteral("application/x-bzip2")
-    ||  mime.name() == QStringLiteral("application/x-xz"   )) {
+    if (mime.inherits(QStringLiteral("application/x-tar"))
+    ||  mime.inherits(QStringLiteral("application/x-gtar"))
+    ||  mime.inherits(QStringLiteral("application/x-compressed-tar"))
+    ||  mime.inherits(QStringLiteral("application/x-bzip-compressed-tar"))
+    ||  mime.inherits(QStringLiteral("application/x-xz-compressed-tar"))) {
         return new KTar(filePath);
     }
 
