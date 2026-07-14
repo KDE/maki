@@ -9,6 +9,8 @@ import org.kde.kirigami as Kirigami
 RowLayout {
     anchors.fill: parent
 
+    readonly property ArchiveHandler archiveHandler: WindowManager.activeHandler
+
     spacing: 0
 
     Component.onCompleted: {
@@ -31,14 +33,14 @@ RowLayout {
             Image {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                source: WindowManager.infoPanelURL
+                source: archiveHandler ? archiveHandler.infoPanelUrl : ""
                 fillMode: Image.PreserveAspectFit
             }
 
             Text {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                text: WindowManager.fileName
+                text: archiveHandler ? archiveHandler.fileName : ""
                 color: Kirigami.Theme.textColor
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
@@ -47,7 +49,7 @@ RowLayout {
             Text {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                text: WindowManager.fileSize
+                text: archiveHandler ? archiveHandler.fileSize : ""
                 color: Kirigami.Theme.textColor
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
@@ -70,7 +72,7 @@ RowLayout {
 
             contentWidth: width
 
-            model: WindowManager.archiveModel
+            model: archiveHandler ? archiveHandler.archiveModel : 0
 
             delegate: TreeViewDelegate {
                 implicitWidth: parent.width

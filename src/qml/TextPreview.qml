@@ -7,6 +7,8 @@ import QtQuick.Controls
 Item {
     anchors.fill: parent
 
+    readonly property TextHandler textHandler : WindowManager.activeHandler
+
     ScrollView {
         anchors.fill: parent
 
@@ -14,7 +16,7 @@ Item {
             id: textArea
 
             readOnly: true
-            text: WindowManager.fileText
+            text: textHandler ? textHandler.text : ""
         }
     }
 

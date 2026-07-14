@@ -6,31 +6,21 @@ import QtQuick.Controls
 
 Item {
     anchors.fill: parent
+
+    readonly property ImageHandler imageHandler: WindowManager.activeHandler
     
     Image {
         anchors.fill: parent
-        source: WindowManager.url
+        source: imageHandler ? imageHandler.imageUrl : ""
         fillMode: Image.PreserveAspectFit
         mipmap: true
 
-        property url currentURL: WindowManager.url
+        property url currentURL: imageHandler ? imageHandler.imageUrl : ""
 
         onCurrentURLChanged: {
-            //TODO: Into a config
-            const maxScale = Qt.size(1280, 720);
-
-            const imageSize = WindowManager.windowSize;
-
-            const rw = maxScale.height * (imageSize.width / imageSize.height);
-
-            const useHeight = rw <= maxScale.width;
-
-            if (useHeight) {
-                root.width = rw;
-                root.height = maxScale.height;
-            } else {
-                root.width = maxScale.width;
-                root.height = maxScale.width * (imageSize.height / imageSize.width);
+            if (imageHandler && imageHandler.imageSize) {
+                root.width = imageHandler.imageSize.width
+                root.height = imageHandler.imageSize.height
             }
         }
     }

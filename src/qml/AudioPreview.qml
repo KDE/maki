@@ -8,11 +8,13 @@ import QtMultimedia
 
 Item {
     anchors.fill: parent
+
+    readonly property AudioHandler audioHandler: WindowManager.activeHandler
     
     MediaPlayer {
         id: audioPlayer
 
-        source: WindowManager.url
+        source: audioHandler ? audioHandler.audioUrl : ""
         autoPlay: true
         audioOutput: AudioOutput {
             volume: 1.0
@@ -66,7 +68,7 @@ Item {
             spacing: 16
             
             Image {
-                source: WindowManager.audioCoverURL
+                source: audioHandler ? audioHandler.audioCoverUrl : ""
 
                 fillMode: Image.PreserveAspectFit
 
@@ -76,7 +78,7 @@ Item {
             }
 
             Label {
-                text: WindowManager.fileName
+                text: audioHandler ? audioHandler.fileName : ""
 
                 verticalAlignment: Text.AlignVCenter
 

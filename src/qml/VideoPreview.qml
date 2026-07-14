@@ -11,6 +11,8 @@ import org.kde.kirigami as Kirigami
 Item {
     anchors.fill: parent
 
+    readonly property VideoHandler videoHandler: WindowManager.activeHandler
+
     property bool videoControlsVisible: false
 
     MpvItem {
@@ -18,14 +20,14 @@ Item {
 
         anchors.fill: parent
 
-        property url currentURL: WindowManager.url
+        property url currentURL: videoHandler ? videoHandler.videoUrl : ""
 
         onCurrentURLChanged: {
-            loadFile(WindowManager.url);
+            loadFile(videoHandler ? videoHandler.videoUrl : "");
         }
 
         onReady: {
-            loadFile(WindowManager.url);
+            loadFile(videoHandler ? videoHandler.videoUrl : "");
         }
 
         onVideoReconfig: {

@@ -21,6 +21,19 @@ set(Maki_SRCS
     backend/WindowManager.h
     backend/ImageProvider.h
     backend/DBusInterface.cpp
+    backend/PreviewHandler.h
+    backend/ImageHandler.h
+    backend/ImageHandler.cpp
+    backend/TextHandler.h
+    backend/TextHandler.cpp
+    backend/AudioHandler.h
+    backend/AudioHandler.cpp
+    backend/VideoHandler.h
+    backend/VideoHandler.cpp
+    backend/DocumentHandler.h
+    backend/DocumentHandler.cpp
+    backend/ArchiveHandler.h
+    backend/ArchiveHandler.cpp
     mpv/MpvItem.h
     mpv/MpvItem.cpp
 )

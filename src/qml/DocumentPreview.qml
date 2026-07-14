@@ -10,10 +10,14 @@ Item {
     id: documentPreview
     anchors.fill: parent
 
-    Component.onCompleted: {
+    readonly property DocumentHandler documentHandler: WindowManager.activeHandler
+
+    property size firstPageSize: documentHandler ? documentHandler.pageSize : Qt.size(100, 100)
+
+    onFirstPageSizeChanged: {
         //TODO: Put this into a config
         const maxPageScale = Qt.size(595, 842);
-        const pageSize = Qt.size(WindowManager.windowSize.width, WindowManager.windowSize.height);
+        const pageSize = firstPageSize
 
         const rw = maxPageScale.height * (pageSize.width / pageSize.height);
 
@@ -47,7 +51,7 @@ Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: WindowManager.pageNum
+            model: documentHandler ? documentHandler.pageNum : 0
             spacing: Kirigami.Units.smallSpacing
 
             delegate: Image {
@@ -55,6 +59,7 @@ Item {
                 height: width * (sourceSize.height / sourceSize.width)
                 fillMode: Image.PreserveAspectFit
                 source: "image://Maki/" + (index + 1)
+                cache: false
             }
 
             Kirigami.WheelHandler {
@@ -76,7 +81,7 @@ Item {
             Layout.preferredWidth: 100
             Layout.fillHeight: true
 
-            model: WindowManager.pageNum
+            model: documentHandler ? documentHandler.pageNum : 0
 
             delegate: ItemDelegate {
                 id: delegate
@@ -93,6 +98,7 @@ Item {
                     Image {
                         fillMode: Image.PreserveAspectFit
                         source: "image://Maki/" + (index + 1)
+                        cache: false
                         
                         Layout.fillWidth: true
                         Layout.preferredHeight: width * (sourceSize.height / sourceSize.width)

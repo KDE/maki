@@ -6,15 +6,12 @@
 #include <QApplication>
 #include <QObject>
 #include <qqmlintegration.h>
-#include <QQuickTextDocument>
 #include <QSize>
-#include <QStandardItemModel>
 #include <QUrl>
 #include <QMimeDatabase>
 
-#include <KArchive>
-
 #include "ImageProvider.h"
+#include "PreviewHandler.h"
 
 class WindowManager : public QObject
 {
@@ -26,29 +23,19 @@ class WindowManager : public QObject
     Q_PROPERTY(QString fileType READ getFileType WRITE setFileType NOTIFY fileTypeChanged)
     Q_PROPERTY(QUrl url READ getURL WRITE setURL NOTIFY urlChanged)
     Q_PROPERTY(QUrl fallbackURL READ getFallbackURL NOTIFY fallbackURLChanged)
-    Q_PROPERTY(QUrl audioCoverURL READ getAudioCoverURL NOTIFY audioCoverURLChanged)
-    Q_PROPERTY(QUrl infoPanelURL READ getInfoPanelURL NOTIFY infoPanelURLChanged)
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
-    Q_PROPERTY(QSize windowSize READ getWindowSize NOTIFY windowSizeChanged)
-    Q_PROPERTY(QString fileText READ getFileText NOTIFY fileTextChanged)
-    Q_PROPERTY(QString fileSize READ getFileSize NOTIFY fileSizeChanged)
-    Q_PROPERTY(QStandardItemModel* archiveModel READ getArchiveModel NOTIFY archiveModelChanged)
-    Q_PROPERTY(int pageNum READ getPageNum NOTIFY pageNumChanged)
+    Q_PROPERTY(PreviewHandler* activeHandler READ activeHandler NOTIFY activeHandlerChanged)
 
 public:
     explicit WindowManager(QObject *parent = nullptr);
 
     void initApp(QApplication *app);
-
     void setImageProvider(MakiImageProvider *provider);
 
 public:
     bool getVisible() const;
     void setVisible(bool visible);
     Q_SIGNAL void visibleChanged();
-
-    QSize getWindowSize() const;
-    Q_SIGNAL void windowSizeChanged();
 
     QUrl getURL() const;
     void setURL(const QUrl &url);
@@ -57,64 +44,37 @@ public:
     QUrl getFallbackURL() const;
     Q_SIGNAL void fallbackURLChanged();
 
-    QUrl getAudioCoverURL() const;
-    Q_SIGNAL void audioCoverURLChanged();
-
-    QUrl getInfoPanelURL() const;
-    Q_SIGNAL void infoPanelURLChanged();
-
     QString getFileName() const;
     Q_SIGNAL void fileNameChanged();
-
+    
     QString getFileType() const;
     void setFileType(const QString &fileType);
     Q_SIGNAL void fileTypeChanged();
-
-    QString getFileText() const;
-    Q_SIGNAL void fileTextChanged();
-
-    QString getFileSize() const;
-    Q_SIGNAL void fileSizeChanged();
-
-    QStandardItemModel* getArchiveModel() const;
-    Q_SIGNAL void archiveModelChanged();
-
-    int getPageNum() const;
-    Q_SIGNAL void pageNumChanged();
+    
+    PreviewHandler* activeHandler() const;
+    Q_SIGNAL void activeHandlerChanged();
 
     Q_INVOKABLE void openInDefaultApp();
-
     Q_INVOKABLE void releaseResources();
 
 private:
-    KArchive* createArchive(const QString &filePath);
-    void populateArchiveModel(QStandardItem *parent, const KArchiveDirectory *dir);
+    void initHandlers();
 
     void createFallbackImage(QMimeType mime);
-
-    qint64 getDirSize(const KArchiveDirectory *dir);
 
 private:
     QApplication *m_app{nullptr};
 
     bool m_visible{ false };
-
-    QSize m_windowSize;
-
     QUrl m_url;
     QUrl m_fallbackURL;
-    QUrl m_audioCoverURL;
-    QUrl m_infoPanelURL;
 
     QString m_fileType{QStringLiteral("Placeholder")};
-    QString m_fileText{QStringLiteral("Placeholder")};
-    QString m_fileSize{QStringLiteral("Placeholder")};
-
-    QStandardItemModel *m_archiveModel{nullptr};
 
     MakiImageProvider *m_imageProvider{nullptr};
 
-    int m_pageNum{0};
-
     QMimeDatabase db;
+
+    std::vector<std::unique_ptr<PreviewHandler>> m_handlers;
+    PreviewHandler *m_activeHandler{ nullptr };
 };
