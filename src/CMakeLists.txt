@@ -66,6 +66,7 @@ target_link_libraries(Maki
     Qt6::Gui
     Qt6::Widgets
     Qt6::Multimedia
+    Qt6::Concurrent
     KF6::I18n
     KF6::CoreAddons
     KF6::DBusAddons

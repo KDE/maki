@@ -132,6 +132,10 @@ void WindowManager::releaseResources()
     if (m_imageProvider) {
         m_imageProvider->releaseResources();
     }
+
+    for (auto &handler : m_handlers) {
+        handler->clearState();   
+    }
     
     Q_EMIT fallbackURLChanged();
     Q_EMIT fileTypeChanged();
@@ -144,6 +148,8 @@ void WindowManager::initHandlers()
     m_handlers.push_back(std::make_unique<AudioHandler>(this, m_imageProvider));
     m_handlers.push_back(std::make_unique<VideoHandler>(this));
     m_handlers.push_back(std::make_unique<DocumentHandler>(this, m_imageProvider));
+    //ArchiveHandler needs to be after DocumentHandler to ensure proper handling of Office files
+    //Since the inherit from zip archive mimes, the ArchiveHandler would be able to handle it 
     m_handlers.push_back(std::make_unique<ArchiveHandler>(this, m_imageProvider));
 }
 

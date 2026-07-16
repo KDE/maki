@@ -17,6 +17,7 @@ include(ECMUninstallTarget)
 # Core packages for most of the work
 find_package(Qt6 REQUIRED COMPONENTS
     Core
+    Concurrent
     Quick
     Gui
     Widgets

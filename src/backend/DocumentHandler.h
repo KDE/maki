@@ -7,7 +7,16 @@
 
 #include "ImageProvider.h"
 
+#include <QFutureWatcher>
+#include <QTemporaryFile>
 #include <QtQml/qqmlregistration.h>
+
+enum class ConversionBackend
+{
+    None = 0,
+    Libreoffice = 1,
+    Calligra = 2
+};
 
 class DocumentHandler : public PreviewHandler
 {
@@ -17,9 +26,11 @@ class DocumentHandler : public PreviewHandler
 
     Q_PROPERTY(int pageNum READ pageNum NOTIFY pageNumChanged)
     Q_PROPERTY(QSize pageSize READ pageSize NOTIFY pageSizeChanged)
+    Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
 
 public:
     explicit DocumentHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
+    ~DocumentHandler();
 
 public:
     //Overrides
@@ -34,9 +45,21 @@ public:
     QSize pageSize() const;
     Q_SIGNAL void pageSizeChanged();
 
+    bool isLoading() const;
+    Q_SIGNAL void isLoadingChanged();
+
+private:
+    void extractPageImages(const QUrl &url);
+    bool isOfficeFile(const QMimeType &mime) const;
+    ConversionBackend getConversionBackend() const;
+    void convertOfficeFile(const QString &inputFilePath, const QString &outputFilePath) const;
+
 private:
     int m_pageNum{ 0 };
     QSize m_pageSize{ 1, 1 };
-
+    
+    bool m_isLoading{ false };
+    QFutureWatcher<std::shared_ptr<QTemporaryFile>> m_watcher;
+    std::shared_ptr<QTemporaryFile> m_tempPdf;
     MakiImageProvider *m_imageProvider{ nullptr };
 };

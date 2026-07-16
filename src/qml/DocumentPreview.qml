@@ -127,6 +127,29 @@ Item {
         }
     }
 
+    Rectangle {
+        anchors.fill: parent
+
+        color: Kirigami.Theme.backgroundColor;
+
+        opacity: documentHandler.isLoading ? 1.0 : 0.0
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: Kirigami.Units.veryLongDuration
+            }
+        }
+
+        Label {
+            anchors.fill: parent
+
+            text: i18n("Loading...")
+
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+        }
+    }
+
 
     Button {
         anchors.top: parent.top
