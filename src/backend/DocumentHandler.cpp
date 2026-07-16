@@ -189,71 +189,40 @@ bool DocumentHandler::isOfficeFile(const QMimeType &mime) const
     return false;
 }
 
-ConversionBackend DocumentHandler::getConversionBackend() const
-{
-    if (!QStandardPaths::findExecutable(QStringLiteral("libreoffice")).isEmpty()) {
-        //Libreoffice is installed, use that to convert
-        return ConversionBackend::Libreoffice;
-    } else if (!QStandardPaths::findExecutable(QStringLiteral("calligraconverter")).isEmpty()) {
-        //Otherwise, use calligra if the user prefers that to libreoffice
-        return ConversionBackend::Calligra;
-    }
-    
-    //The user can't convert the file, show a fallback to tell the user to install something
-    return ConversionBackend::None;
-}
-
 void DocumentHandler::convertOfficeFile(const QString &inputFilePath, const QString &outputFilePath) const
 {
-    switch (getConversionBackend()) {
-    case ConversionBackend::None: {
+    if (QStandardPaths::findExecutable(QStringLiteral("libreoffice")).isEmpty()) {
+        //TODO: Implement warning to user to install libreoffice to preview office files
         return;
     }
-    case ConversionBackend::Calligra: {
-
-        QProcess process;
-        process.start(QStringLiteral("calligraconverter"), { inputFilePath, outputFilePath });
-        process.waitForFinished(-1);
-
-        if (process.exitCode() != 0) {
-            return;
-        }
         
-        break;
+    QTemporaryDir tempDir;
+    if (!tempDir.isValid()) {
+        return;
     }
-    case ConversionBackend::Libreoffice: {
-        
-        QTemporaryDir tempDir;
-        if (!tempDir.isValid()) {
-            return;
-        }
-        
-        QProcess process;
-        process.start(QStringLiteral("libreoffice"), {
-            QStringLiteral("--headless"),
-            QStringLiteral("--convert-to"), QStringLiteral("pdf"),
-            QStringLiteral("--outdir"), tempDir.path(),
-            inputFilePath
-        });
-        process.waitForFinished(-1);
-        
-        if (process.exitCode() != 0) {
-            return;
-        }
-
-        //Get the file path of the generated file by extending the original file with .pdf
-        QFileInfo inputFileInfo{ inputFilePath };
-        QString generatedFilePath{ tempDir.filePath(inputFileInfo.completeBaseName() + QStringLiteral(".pdf")) };
-
-        QFile srcFile{ generatedFilePath };
-        QFile destFile{ outputFilePath };
-
-        if (!srcFile.open(QIODevice::ReadOnly) || !destFile.open(QIODevice::WriteOnly)) {
-            return;
-        }
-        destFile.write(srcFile.readAll());
-
-        break;
+    
+    QProcess process;
+    process.start(QStringLiteral("libreoffice"), {
+        QStringLiteral("--headless"),
+        QStringLiteral("--convert-to"), QStringLiteral("pdf"),
+        QStringLiteral("--outdir"), tempDir.path(),
+        inputFilePath
+    });
+    process.waitForFinished(-1);
+    
+    if (process.exitCode() != 0) {
+        return;
     }
+
+    //Get the file path of the generated file by extending the original file with .pdf
+    QFileInfo inputFileInfo{ inputFilePath };
+    QString generatedFilePath{ tempDir.filePath(inputFileInfo.completeBaseName() + QStringLiteral(".pdf")) };
+
+    QFile srcFile{ generatedFilePath };
+    QFile destFile{ outputFilePath };
+
+    if (!srcFile.open(QIODevice::ReadOnly) || !destFile.open(QIODevice::WriteOnly)) {
+        return;
     }
+    destFile.write(srcFile.readAll());
 }

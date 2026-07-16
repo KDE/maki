@@ -11,13 +11,6 @@
 #include <QTemporaryFile>
 #include <QtQml/qqmlregistration.h>
 
-enum class ConversionBackend
-{
-    None = 0,
-    Libreoffice = 1,
-    Calligra = 2
-};
-
 class DocumentHandler : public PreviewHandler
 {
     Q_OBJECT
@@ -51,7 +44,6 @@ public:
 private:
     void extractPageImages(const QUrl &url);
     bool isOfficeFile(const QMimeType &mime) const;
-    ConversionBackend getConversionBackend() const;
     void convertOfficeFile(const QString &inputFilePath, const QString &outputFilePath) const;
 
 private:
