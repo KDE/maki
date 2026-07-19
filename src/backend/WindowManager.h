@@ -24,6 +24,7 @@ class WindowManager : public QObject
     Q_PROPERTY(QUrl url READ getURL WRITE setURL NOTIFY urlChanged)
     Q_PROPERTY(QUrl fallbackURL READ getFallbackURL NOTIFY fallbackURLChanged)
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
+    Q_PROPERTY(QString defaultAppName READ defaultAppName NOTIFY defaultAppNameChanged)
     Q_PROPERTY(PreviewHandler* activeHandler READ activeHandler NOTIFY activeHandlerChanged)
 
 public:
@@ -46,6 +47,9 @@ public:
 
     QString getFileName() const;
     Q_SIGNAL void fileNameChanged();
+
+    QString defaultAppName() const;
+    Q_SIGNAL void defaultAppNameChanged();
     
     QString getFileType() const;
     void setFileType(const QString &fileType);
@@ -70,6 +74,7 @@ private:
     QUrl m_fallbackURL;
 
     QString m_fileType{QStringLiteral("Placeholder")};
+    QString m_defaultAppName{QStringLiteral("Placeholder")};
 
     MakiImageProvider *m_imageProvider{nullptr};
 

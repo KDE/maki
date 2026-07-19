@@ -39,35 +39,44 @@ Item {
     }
 
     RowLayout {
+        id: documentPreviewLayout
+    
         spacing: Kirigami.Units.smallSpacing
 
         anchors.fill: parent
 
         anchors.margins: Kirigami.Units.smallSpacing
 
-        ListView {
-            id: mainList
+        Item {
+            id: mainListWrapper
 
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            model: documentHandler ? documentHandler.pageNum : 0
-            spacing: Kirigami.Units.smallSpacing
+            ListView {
+                id: mainList
 
-            delegate: Image {
-                width: mainList.width
-                height: width * (sourceSize.height / sourceSize.width)
-                fillMode: Image.PreserveAspectFit
-                source: "image://Maki/" + (index + 1)
-                cache: false
-            }
+                anchors.fill: parent
 
-            Kirigami.WheelHandler {
-                id: mainListWheelHandler
-                target: mainList
-                keyNavigationEnabled: true
+                model: documentHandler ? documentHandler.pageNum : 0
+                spacing: Kirigami.Units.smallSpacing
+
+                delegate: Image {
+                    width: mainList.width
+                    height: width * (sourceSize.height / sourceSize.width)
+                    fillMode: Image.PreserveAspectFit
+                    source: "image://Maki/" + (index + 1)
+                    cache: false
+                }
+
+                Kirigami.WheelHandler {
+                    id: mainListWheelHandler
+                    target: mainList
+                    keyNavigationEnabled: true
+                }
             }
         }
+
 
         Kirigami.Separator {
             id: separator
@@ -150,29 +159,17 @@ Item {
         }
     }
 
-
-    Button {
+    DefaultAppButton {
         anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 8
+        anchors.right: parent.right
+        anchors.topMargin: Kirigami.Units.largeSpacing
+        anchors.bottomMargin: Kirigami.Units.largeSpacing
+        anchors.leftMargin: Kirigami.Units.largeSpacing
+        //This seems hacky, but it works. Ideas are welcome
+        anchors.rightMargin: Kirigami.Units.largeSpacing
+            + thumbnailList.width + separator.width
+            + 2 * documentPreviewLayout.spacing
 
-        text: i18n("open")
-
-        opacity: buttonHover.hovered ? 1.0 : 0.0
-
-        Behavior on opacity {
-            NumberAnimation { duration: 150 }
-        }
-
-        onClicked: {
-            console.log("clicked");
-            WindowManager.openInDefaultApp();
-        }
-
-        HoverHandler {
-            id: buttonHover
-
-            margin: 64
-        }
+        appName: WindowManager.defaultAppName
     }
 }

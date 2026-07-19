@@ -57,6 +57,7 @@ ecm_target_qml_sources(Maki
     qml/VideoPreview.qml
     qml/DocumentPreview.qml
     qml/ArchivePreview.qml
+    qml/DefaultAppButton.qml
 )
 
 target_link_libraries(Maki
@@ -76,6 +77,7 @@ target_link_libraries(Maki
     KF6::KIOCore
     KF6::KIOGui
     KF6::SyntaxHighlighting
+    KF6::Service
     Poppler::Qt6
     MpvQt::MpvQt
 )

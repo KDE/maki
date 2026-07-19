@@ -54,6 +54,15 @@ RowLayout {
                 wrapMode: Text.Wrap
                 horizontalAlignment: Text.AlignHCenter
             }
+
+            DefaultAppButton {
+                Layout.alignment: Qt.AlignHCenter
+                Layout.preferredWidth: Math.min(parent.width - Kirigami.Units.mediumSpacing, implicitWidth)
+
+                appName: WindowManager.defaultAppName
+
+                hide: false
+            }
         }
     }
 

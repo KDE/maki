@@ -12,6 +12,8 @@ Item {
     readonly property TextHandler textHandler : WindowManager.activeHandler
 
     ScrollView {
+        id: textAreaScrollView
+
         anchors.fill: parent
 
         TextArea {
@@ -35,28 +37,14 @@ Item {
         }
     }
 
-    Button {
+    DefaultAppButton {
         anchors.top: parent.top
         anchors.right: parent.right
-        anchors.margins: 8
-
-        text: i18n("open")
-
-        opacity: buttonHover.hovered ? 1.0 : 0.0
-
-        Behavior on opacity {
-            NumberAnimation { duration: 150 }
-        }
-
-        onClicked: {
-            console.log("clicked");
-            WindowManager.openInDefaultApp();
-        }
-
-        HoverHandler {
-            id: buttonHover
-
-            margin: 64
-        }
+        anchors.topMargin: Kirigami.Units.largeSpacing
+        anchors.leftMargin: Kirigami.Units.largeSpacing
+        anchors.rightMargin: Kirigami.Units.largeSpacing + textAreaScrollView.effectiveScrollBarWidth
+        anchors.bottomMargin: Kirigami.Units.largeSpacing
+        
+        appName: WindowManager.defaultAppName
     }
 }

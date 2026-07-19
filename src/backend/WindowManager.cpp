@@ -10,8 +10,10 @@
 #include "DocumentHandler.h"
 #include "ArchiveHandler.h"
 
+#include <KApplicationTrader>
 #include <KIO/OpenUrlJob>
 #include <KIO/JobUiDelegateFactory>
+#include <KService>
 
 #include <QIcon>
 #include <QMimeType>
@@ -58,6 +60,13 @@ void WindowManager::setURL(const QUrl &url)
 
     QMimeType mime = db.mimeTypeForUrl(url);
 
+    KService::Ptr service = KApplicationTrader::preferredService(mime.name());
+
+    if (service) {
+        m_defaultAppName = service->name();
+        Q_EMIT defaultAppNameChanged();
+    }
+
     for (auto &handler : m_handlers) {
 
         if (handler->canHandle(mime)) {
@@ -94,6 +103,11 @@ QString WindowManager::getFileName() const
     return m_url.fileName();
 }
 
+QString WindowManager::defaultAppName() const
+{
+    return m_defaultAppName;
+}
+
 QString WindowManager::getFileType() const
 {
     return m_fileType;
@@ -118,7 +132,8 @@ void WindowManager::openInDefaultApp()
     connect(job, &KJob::result, this, [this](KJob *job) {
         if (job->error() == 0)
         {
-            m_app->quit();
+            releaseResources();
+            setVisible(false);
         }
     });
 

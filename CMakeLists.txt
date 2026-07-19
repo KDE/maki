@@ -34,6 +34,7 @@ find_package(KF6 REQUIRED COMPONENTS
     DBusAddons
     FileMetaData
     SyntaxHighlighting
+    Service
 )
 
 # package for extracting images from pdfs
