@@ -75,6 +75,7 @@ target_link_libraries(Maki
     KF6::Archive
     KF6::KIOCore
     KF6::KIOGui
+    KF6::SyntaxHighlighting
     Poppler::Qt6
     MpvQt::MpvQt
 )

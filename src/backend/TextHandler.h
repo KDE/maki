@@ -14,6 +14,7 @@ class TextHandler : public PreviewHandler
     QML_UNCREATABLE("Handlers are managed by WindowManager")
     
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
+    Q_PROPERTY(QString fileName READ fileName NOTIFY fileNameChanged)
 
 public:
     explicit TextHandler(QObject *parent = nullptr);
@@ -29,6 +30,10 @@ public:
     QString text() const;
     Q_SIGNAL void textChanged();
 
+    QString fileName() const;
+    Q_SIGNAL void fileNameChanged();
+
 private:
     QString m_text{ QStringLiteral("Placeholder") };
+    QString m_fileName{ QStringLiteral("Placeholder") };
 };

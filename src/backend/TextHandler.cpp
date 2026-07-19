@@ -19,6 +19,8 @@ void TextHandler::process(const QUrl &url, const QMimeType &mime)
     Q_UNUSED(mime);
     
     QFile textFile(url.toLocalFile());
+    m_fileName = textFile.fileName();
+    Q_EMIT fileNameChanged();
 
     if (textFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         m_text = QString::fromUtf8(textFile.readAll());
@@ -39,4 +41,9 @@ void TextHandler::clearState()
 QString TextHandler::text() const
 {
     return m_text;
+}
+
+QString TextHandler::fileName() const
+{
+    return m_fileName;
 }
