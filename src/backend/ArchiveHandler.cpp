@@ -21,7 +21,7 @@ bool ArchiveHandler::canHandle(const QMimeType &mime) const
     return mime.inherits(QStringLiteral("application/zip"))
         || mime.inherits(QStringLiteral("application/zip-compressed"))
         || mime.inherits(QStringLiteral("application/x-zip-compressed"))
-        || mime.inherits(QStringLiteral("application/7z-compressed"))
+        || mime.inherits(QStringLiteral("application/x-7z-compressed"))
         || mime.inherits(QStringLiteral("application/x-tar"))
         || mime.inherits(QStringLiteral("application/x-gtar"))
         || mime.inherits(QStringLiteral("application/x-compressed-tar"))
