@@ -13,6 +13,7 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMFindQmlModule)
 include(ECMQmlModule)
 include(ECMUninstallTarget)
+include(ECMAddTests)
 
 # Core packages for most of the work
 find_package(Qt6 REQUIRED COMPONENTS
@@ -46,6 +47,11 @@ find_package(MpvQt REQUIRED)
 ecm_find_qmlmodule(org.kde.kirigami REQUIRED)
 
 add_subdirectory(src)
+
+if(BUILD_TESTING)
+    add_subdirectory(autotests)
+endif()
+
 
 install(PROGRAMS io.github.FluxMusic.Maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
