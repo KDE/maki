@@ -4,6 +4,7 @@
 #include "TextHandler.h"
 
 #include <QFile>
+#include <QSet>
 
 TextHandler::TextHandler(QObject *parent)
 : PreviewHandler(parent)
@@ -11,7 +12,21 @@ TextHandler::TextHandler(QObject *parent)
 
 bool TextHandler::canHandle(const QMimeType &mime) const 
 {
-    return mime.name().startsWith(QStringLiteral("text/"));
+    //Files that are essentially just text, but whose mimetype for some reason doesn't start with 'text/' 
+    const QSet<QString> extraMimes {
+        QStringLiteral("application/vnd.dart"),
+        QStringLiteral("application/x-fishscript"),
+        QStringLiteral("application/x-php"),
+        QStringLiteral("application/x-perl"),
+        QStringLiteral("application/x-powershell"),
+        QStringLiteral("application/x-ruby"),
+        QStringLiteral("application/toml"),
+        QStringLiteral("application/typescript"),
+        QStringLiteral("application/x-tiled-tsx"),
+        QStringLiteral("application/yaml")
+    };
+
+    return mime.name().startsWith(QStringLiteral("text/")) || extraMimes.contains(mime.name());
 }
 
 void TextHandler::process(const QUrl &url, const QMimeType &mime)

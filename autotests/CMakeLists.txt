@@ -10,3 +10,10 @@ ecm_add_test(videotest.cpp
     LINK_LIBRARIES Qt6::Test Qt6::Core
 )
 
+ecm_add_test(texttest.cpp 
+    ../src/backend/PreviewHandler.h
+    ../src/backend/TextHandler.h
+    ../src/backend/TextHandler.cpp
+    TEST_NAME "texttest"
+    LINK_LIBRARIES Qt6::Test Qt6::Core
+)
