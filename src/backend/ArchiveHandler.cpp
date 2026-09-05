@@ -34,7 +34,7 @@ bool ArchiveHandler::canHandle(const QMimeType &mime) const
         || mime.inherits(QStringLiteral("application/x-bzip2"))
         || mime.inherits(QStringLiteral("application/x-lzip"))
         || mime.inherits(QStringLiteral("application/x-lzma"))
-        || mime.inherits(QStringLiteral("application/x-zstd"))
+        || mime.inherits(QStringLiteral("application/zstd"))
         || mime.inherits(QStringLiteral("application/x-xz"));
 }
 
@@ -176,7 +176,9 @@ KArchive* ArchiveHandler::createArchive(const QString &filePath)
     ||  mime.inherits(QStringLiteral("application/x-gtar"))
     ||  mime.inherits(QStringLiteral("application/x-compressed-tar"))
     ||  mime.inherits(QStringLiteral("application/x-bzip-compressed-tar"))
-    ||  mime.inherits(QStringLiteral("application/x-xz-compressed-tar"))) {
+    ||  mime.inherits(QStringLiteral("application/x-xz-compressed-tar"))
+    // ||  mime.inherits(QStringLiteral("application/x-lzma-compressed-tar"))  lzma compressed tars don't open at the moment
+    ||  mime.inherits(QStringLiteral("application/x-lzip-compressed-tar"))) {
         return new KTar(filePath);
     }
 
