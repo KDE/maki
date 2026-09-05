@@ -3,3 +3,9 @@
 
 *build/
 *TestFiles/
+# IDE files
+*.vscode
+compile_commands.json
+
+# Test Folder
+*Testing/
