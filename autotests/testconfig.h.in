@@ -6,3 +6,4 @@
 #define VIDEO_SAMPLE_FILES_PATH "@CMAKE_CURRENT_SOURCE_DIR@/samplefiles/video"
 #define TEXT_SAMPLE_FILES_PATH "@CMAKE_CURRENT_SOURCE_DIR@/samplefiles/text"
 #define IMAGE_SAMPLE_FILES_PATH "@CMAKE_CURRENT_SOURCE_DIR@/samplefiles/image"
+#define AUDIO_SAMPLE_FILES_PATH "@CMAKE_CURRENT_SOURCE_DIR@/samplefiles/audio"

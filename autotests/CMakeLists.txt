@@ -28,3 +28,11 @@ ecm_add_test(imagetest.cpp
     TEST_NAME "imagetest"
     LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
 )
+
+ecm_add_test(audiotest.cpp 
+    ../src/backend/PreviewHandler.h
+    ../src/backend/AudioHandler.h
+    ../src/backend/AudioHandler.cpp
+    TEST_NAME "audiotest"
+    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::FileMetaData
+)
