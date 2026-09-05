@@ -17,3 +17,11 @@ ecm_add_test(texttest.cpp
     TEST_NAME "texttest"
     LINK_LIBRARIES Qt6::Test Qt6::Core
 )
+
+ecm_add_test(imagetest.cpp 
+    ../src/backend/PreviewHandler.h
+    ../src/backend/ImageHandler.h
+    ../src/backend/ImageHandler.cpp
+    TEST_NAME "imagetest"
+    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
+)
