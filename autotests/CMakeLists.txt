@@ -44,3 +44,11 @@ ecm_add_test(archivetest.cpp
     TEST_NAME "archivetest"
     LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
 )
+
+ecm_add_test(documenttest.cpp 
+    ../src/backend/PreviewHandler.h
+    ../src/backend/DocumentHandler.h
+    ../src/backend/DocumentHandler.cpp
+    TEST_NAME "documenttest"
+    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick Qt6::Concurrent Poppler::Qt6
+)
