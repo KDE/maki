@@ -36,7 +36,7 @@ void ImageTest::testSupportStatus()
     const QMimeType mimeType = db.mimeTypeForFile(testImageFile);
     
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
-    QVERIFY2(imageHandler.canHandle(mimeType), "Video file not supported");
+    QVERIFY2(imageHandler.canHandle(mimeType), "Image file not supported");
 }
 
 void ImageTest::testSupportStatus_data()
