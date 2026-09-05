@@ -28,48 +28,7 @@ void ImageHandler::process(const QUrl &url, const QMimeType &mime)
         image = QPixmap(url.toLocalFile());
     } else if (mime.inherits(QStringLiteral("application/x-krita"))) {
         //Parse Krita files
-        KZip kritaArchive{ url.toLocalFile() };
-
-        if (!kritaArchive.open(QIODevice::ReadOnly)) {
-            return;
-        }
-
-        if (!kritaArchive.directory()) {
-            return;
-        }
-
-        const KArchiveDirectory *rootDir { kritaArchive.directory() };
-
-        if (const KArchiveEntry *mergedImageEntry{ rootDir->entry(QStringLiteral("mergedimage.png")) }) {
-            //File is a .kra file, we can extract the mergedimage.png for higher resolution
-            const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(mergedImageEntry);
-            
-            if (!imageFile) {
-                return;
-            }
-
-            QByteArray imageData{ imageFile->data() };
-            QImage mergedImage;
-
-            if (mergedImage.loadFromData(imageData, "PNG")) {
-                image = QPixmap::fromImage(mergedImage);
-            }
-        } else if (const KArchiveEntry *previewImageEntry = rootDir->entry(QStringLiteral("preview.png"))) {
-            //File is a .krz file, fall back to the lower resolution preview.png file
-            //Or if for whatever reason the mergedimage.png is missing, use preview.png instead
-            const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(previewImageEntry);
-            
-            if (!imageFile) {
-                return;
-            }
-
-            QByteArray imageData{ imageFile->data() };
-            QImage previewImage;
-
-            if (previewImage.loadFromData(imageData, "PNG")) {
-                image = QPixmap::fromImage(previewImage);
-            }
-        }
+        image = QPixmap::fromImage(extractKritaImage(url.toLocalFile()));
     }
     
     image = image.scaled(640, 640, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -102,4 +61,53 @@ QUrl ImageHandler::imageUrl() const
 QSize ImageHandler::imageSize() const
 {
     return m_imageSize;
+}
+
+QImage ImageHandler::extractKritaImage(const QString &fileName) const
+{
+    KZip kritaArchive{ fileName };
+
+    if (!kritaArchive.open(QIODevice::ReadOnly)) {
+        return QImage();
+    }
+
+    if (!kritaArchive.directory()) {
+        return QImage();
+    }
+
+    const KArchiveDirectory *rootDir { kritaArchive.directory() };
+
+    if (const KArchiveEntry *mergedImageEntry{ rootDir->entry(QStringLiteral("mergedimage.png")) }) {
+        //File is a .kra file, we can extract the mergedimage.png for higher resolution
+        const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(mergedImageEntry);
+        
+        if (!imageFile) {
+            return QImage();
+        }
+
+        QByteArray imageData{ imageFile->data() };
+        QImage mergedImage;
+
+        if (mergedImage.loadFromData(imageData, "PNG")) {
+            return mergedImage;
+        }
+    } else if (const KArchiveEntry *previewImageEntry = rootDir->entry(QStringLiteral("preview.png"))) {
+        //File is a .krz file, fall back to the lower resolution preview.png file
+        //Or if for whatever reason the mergedimage.png is missing, use preview.png instead
+        const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(previewImageEntry);
+        
+        if (!imageFile) {
+            return QImage();
+        }
+
+        QByteArray imageData{ imageFile->data() };
+        QImage previewImage;
+
+        if (previewImage.loadFromData(imageData, "PNG")) {
+            return previewImage;
+        }
+    }
+
+    //if everything fails, the file is corrupted or not a krita file
+    return QImage();
 }

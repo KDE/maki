@@ -14,6 +14,8 @@ class ImageTest: public QObject
 private Q_SLOTS:
     void testSupportStatus();
     void testSupportStatus_data();
+    void testKritaFiles();
+    void testKritaFiles_data();
 
 private:
     QString getImageFilePath(const QString &) const;
@@ -58,6 +60,49 @@ void ImageTest::testSupportStatus_data()
     QTest::addRow("webp") << QStringLiteral("test.webp");
     QTest::addRow("xbm")  << QStringLiteral("test.xbm");
     QTest::addRow("xpm")  << QStringLiteral("test.xpm");
+}
+
+void ImageTest::testKritaFiles()
+{
+    QFETCH(QString, fileName);
+    QFETCH(QString, mergedImageFileName);
+    QFETCH(QString, previewFileName);
+    QString testImageFile    = getImageFilePath(fileName);
+    QString mergedImageFile  = getImageFilePath(mergedImageFileName);
+    QString previewImageFile = getImageFilePath(previewFileName);
+
+    ImageHandler imageHandler{this};
+
+    const QMimeDatabase db;
+    const QMimeType mimeType = db.mimeTypeForFile(testImageFile);
+    
+    QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
+    QVERIFY2(mimeType.inherits(QStringLiteral("application/x-krita")), "File is not a Krita file");
+
+    const QImage extractedImage = imageHandler.extractKritaImage(testImageFile);
+    const QImage mergedImage  { mergedImageFile };
+    const QImage previewImage { previewImageFile };
+
+    QVERIFY2(!extractedImage.isNull(), "Extracted image is null");
+    QVERIFY2(!mergedImage.isNull(),    "mergedimage.png is null");
+    QVERIFY2(!previewImage.isNull(),   "preview.png is null");
+
+    const bool matchesMergedImage  { extractedImage == mergedImage };
+    const bool matchesPreviewImage { extractedImage == previewImage };
+
+    QVERIFY2(matchesMergedImage || matchesPreviewImage, "Extracted image doesn't match mergedimage.png nor preview.png");
+}
+
+void ImageTest::testKritaFiles_data()
+{
+    QTest::addColumn<QString>("fileName");
+    QTest::addColumn<QString>("mergedImageFileName");
+    QTest::addColumn<QString>("previewFileName");
+
+    //kra files can have preview.png extracted if mergedimage.png is missing, so check for both
+    //krz files don't have mergedimage.png, so compare preview.png twice for simplicity
+    QTest::addRow("kra") << QStringLiteral("test.kra") << QStringLiteral("kra.mergedimage.png") << QStringLiteral("kra.preview.png");
+    QTest::addRow("krz") << QStringLiteral("test.krz") << QStringLiteral("krz.preview.png") << QStringLiteral("krz.preview.png");
 }
 
 QTEST_GUILESS_MAIN(ImageTest)
