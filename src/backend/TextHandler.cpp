@@ -18,6 +18,7 @@ bool TextHandler::canHandle(const QMimeType &mime) const
         QStringLiteral("application/x-fishscript"),
         QStringLiteral("application/x-php"),
         QStringLiteral("application/x-perl"),
+        QStringLiteral("application/x-shellscript"),
         QStringLiteral("application/x-powershell"),
         QStringLiteral("application/x-ruby"),
         QStringLiteral("application/toml"),
