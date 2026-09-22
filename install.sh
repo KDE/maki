@@ -3,12 +3,17 @@
 
 #!/bin/bash
 
+set -euo pipefail
+
 BUILD_TYPE="${1:-Release}"
 
-echo "Building Maki in $BUILD_TYPE mode..."
-
+echo "==> Configuring Maki in $BUILD_TYPE mode..."
 cmake -B build/ -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+
+echo "==> Building Maki..."
 cmake --build build/
+
+echo "==> Installing Maki..."
 sudo cmake --install build/
 
-echo "Maki was installed successfully!"
+echo "==> Maki was installed successfully!"
