@@ -9,7 +9,7 @@
 
 #include <QtQml/qqmlregistration.h>
 
-class AudioHandler : public PreviewHandler
+class MAKILIB_EXPORT AudioHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

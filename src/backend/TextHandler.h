@@ -7,7 +7,7 @@
 
 #include <QtQml/qqmlregistration.h>
 
-class TextHandler : public PreviewHandler
+class MAKILIB_EXPORT TextHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

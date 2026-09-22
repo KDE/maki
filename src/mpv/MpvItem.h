@@ -3,9 +3,11 @@
 
 #pragma once
 
+#include "MakiLibExport.h"
+
 #include <MpvAbstractItem>
 
-class MpvItem : public MpvAbstractItem
+class MAKILIB_EXPORT MpvItem : public MpvAbstractItem
 {
     Q_OBJECT
     QML_ELEMENT

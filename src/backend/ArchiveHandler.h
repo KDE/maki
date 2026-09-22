@@ -12,7 +12,7 @@
 #include <QStandardItemModel>
 #include <QtQml/qqmlregistration.h>
 
-class ArchiveHandler : public PreviewHandler
+class MAKILIB_EXPORT ArchiveHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

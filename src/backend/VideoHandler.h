@@ -7,7 +7,7 @@
 
 #include <QtQml/qqmlregistration.h>
 
-class VideoHandler : public PreviewHandler
+class MAKILIB_EXPORT VideoHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

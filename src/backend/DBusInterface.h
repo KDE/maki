@@ -3,11 +3,13 @@
 
 #pragma once
 
+#include "MakiLibExport.h"
+
 #include <QObject>
 
 #include "WindowManager.h"
 
-class DBusInterface : public QObject
+class MAKILIB_EXPORT DBusInterface : public QObject
 {
     Q_OBJECT
 

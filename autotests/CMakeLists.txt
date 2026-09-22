@@ -6,49 +6,31 @@ find_package(Qt6 CONFIG REQUIRED Test)
 configure_file(testconfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/testconfig.h @ONLY)
 
 ecm_add_test(videotest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/VideoHandler.h
-    ../src/backend/VideoHandler.cpp
     TEST_NAME "videotest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core
 )
 
 ecm_add_test(texttest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/TextHandler.h
-    ../src/backend/TextHandler.cpp
     TEST_NAME "texttest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core
 )
 
 ecm_add_test(imagetest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/ImageHandler.h
-    ../src/backend/ImageHandler.cpp
     TEST_NAME "imagetest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
 )
 
 ecm_add_test(audiotest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/AudioHandler.h
-    ../src/backend/AudioHandler.cpp
     TEST_NAME "audiotest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::FileMetaData
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick KF6::FileMetaData
 )
 
 ecm_add_test(archivetest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/ArchiveHandler.h
-    ../src/backend/ArchiveHandler.cpp
     TEST_NAME "archivetest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick KF6::Archive
 )
 
 ecm_add_test(documenttest.cpp 
-    ../src/backend/PreviewHandler.h
-    ../src/backend/DocumentHandler.h
-    ../src/backend/DocumentHandler.cpp
     TEST_NAME "documenttest"
-    LINK_LIBRARIES Qt6::Test Qt6::Core Qt6::Quick Qt6::Concurrent Poppler::Qt6
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick Qt6::Concurrent Poppler::Qt6
 )

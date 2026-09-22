@@ -3,10 +3,12 @@
 
 #pragma once
 
+#include "MakiLibExport.h"
+
 #include <QQuickImageProvider>
 #include <QPixmap>
 
-class MakiImageProvider : public QQuickImageProvider
+class MAKILIB_EXPORT MakiImageProvider : public QQuickImageProvider
 {
 public:
     MakiImageProvider()

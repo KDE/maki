@@ -3,11 +3,13 @@
 
 #pragma once
 
+#include "MakiLibExport.h"
+
 #include <QMimeType>
 #include <QObject>
 #include <QUrl>
 
-class PreviewHandler : public QObject
+class MAKILIB_EXPORT PreviewHandler : public QObject
 {
     Q_OBJECT
 public:

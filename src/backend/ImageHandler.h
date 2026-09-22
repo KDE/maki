@@ -9,7 +9,7 @@
 
 #include <QSize>
 
-class ImageHandler : public PreviewHandler
+class MAKILIB_EXPORT ImageHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

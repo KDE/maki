@@ -11,7 +11,7 @@
 #include <QTemporaryFile>
 #include <QtQml/qqmlregistration.h>
 
-class DocumentHandler : public PreviewHandler
+class MAKILIB_EXPORT DocumentHandler : public PreviewHandler
 {
     Q_OBJECT
     QML_ELEMENT

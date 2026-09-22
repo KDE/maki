@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "MakiLibExport.h"
+
 #include <QApplication>
 #include <QObject>
 #include <qqmlintegration.h>
@@ -13,7 +15,7 @@
 #include "ImageProvider.h"
 #include "PreviewHandler.h"
 
-class WindowManager : public QObject
+class MAKILIB_EXPORT WindowManager : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
