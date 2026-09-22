@@ -4,7 +4,7 @@
 [Desktop Entry]
 Name=Maki
 Comment=Quick file previewer
-Exec=Maki
+Exec=maki
 Icon=document-preview
 Type=Application
 Terminal=false

@@ -1,21 +1,21 @@
 # SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
 # SPDX-License-Identifier: BSD-2-Clause
 
-add_executable(Maki)
+add_executable(maki)
 
-ecm_add_qml_module(Maki
+ecm_add_qml_module(maki
     URI
-    io.github.FluxMusic.Maki
+    io.github.FluxMusic.maki
 )
 
-target_include_directories(Maki
+target_include_directories(maki
     PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/backend"
     "${CMAKE_CURRENT_SOURCE_DIR}/mpv"
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-set(Maki_SRCS
+set(maki_SRCS
     main.cpp
     backend/WindowManager.cpp
     backend/WindowManager.h
@@ -38,16 +38,16 @@ set(Maki_SRCS
     mpv/MpvItem.cpp
 )
 
-set(Maki_dbusXML ${CMAKE_SOURCE_DIR}/dbus/io.github.FluxMusic.Maki.xml)
+set(maki_dbusXML ${CMAKE_SOURCE_DIR}/dbus/io.github.FluxMusic.maki.xml)
 
-qt_add_dbus_adaptor(Maki_SRCS ${Maki_dbusXML} backend/DBusInterface.h DBusInterface)
+qt_add_dbus_adaptor(maki_SRCS ${maki_dbusXML} backend/DBusInterface.h DBusInterface)
 
-target_sources(Maki
+target_sources(maki
     PRIVATE
-    ${Maki_SRCS}
+    ${maki_SRCS}
 )
 
-ecm_target_qml_sources(Maki
+ecm_target_qml_sources(maki
     SOURCES
     Main.qml
     qml/ImagePreview.qml
@@ -60,7 +60,7 @@ ecm_target_qml_sources(Maki
     qml/DefaultAppButton.qml
 )
 
-target_link_libraries(Maki
+target_link_libraries(maki
     PRIVATE
     Qt6::Quick
     Qt6::Qml
@@ -82,5 +82,5 @@ target_link_libraries(Maki
     MpvQt::MpvQt
 )
 
-install(TARGETS Maki ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-install(FILES ${Maki_dbusXML} DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})
+install(TARGETS maki ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES ${maki_dbusXML} DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR})

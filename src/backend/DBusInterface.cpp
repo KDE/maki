@@ -14,7 +14,7 @@ DBusInterface::DBusInterface(WindowManager* windowManager, QObject* parent)
     Q_UNUSED(parent);
 
     new MakiAdaptor(this);
-    QDBusConnection::sessionBus().registerObject(QStringLiteral("/Maki"), this);
+    QDBusConnection::sessionBus().registerObject(QStringLiteral("/maki"), this);
 }
 
 void DBusInterface::showFile(QString url) 

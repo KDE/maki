@@ -24,11 +24,11 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
     QApplication::setOrganizationName  (QStringLiteral("FluxMusic"));
     QApplication::setOrganizationDomain(QStringLiteral("FluxMusic.github.io"));
-    QApplication::setApplicationName   (QStringLiteral("Maki"));
+    QApplication::setApplicationName   (QStringLiteral("maki"));
 
     QApplication::setStyle(QStringLiteral("breeze"));
 
-    KAboutData aboutData(QStringLiteral("Maki"), 
+    KAboutData aboutData(QStringLiteral("maki"), 
                          i18n("Maki"), 
                          QStringLiteral("0.2"), 
                          i18n("Quick File Previewer"), 
@@ -64,9 +64,9 @@ int main(int argc, char* argv[])
     
     engine.addImageProvider(QStringLiteral("Maki"), imageProvider);
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
-    engine.loadFromModule("io.github.FluxMusic.Maki", "Main");
+    engine.loadFromModule("io.github.FluxMusic.maki", "Main");
     
-    WindowManager* manager = engine.singletonInstance<WindowManager*>("io.github.FluxMusic.Maki", "WindowManager");
+    WindowManager* manager = engine.singletonInstance<WindowManager*>("io.github.FluxMusic.maki", "WindowManager");
 
     DBusInterface interface(manager);
 

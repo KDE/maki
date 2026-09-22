@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 cmake_minimum_required(VERSION 3.20)
-project(Maki VERSION 0.1)
+project(maki VERSION 0.1)
 
 find_package(ECM 6.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
@@ -53,11 +53,11 @@ if(BUILD_TESTING)
 endif()
 
 
-install(PROGRAMS io.github.FluxMusic.Maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(PROGRAMS io.github.FluxMusic.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-install(FILES io.github.FluxMusic.Maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
+install(FILES io.github.FluxMusic.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
-configure_file(io.github.FluxMusic.Maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.Maki.service)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.Maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
+configure_file(io.github.FluxMusic.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
