@@ -8,7 +8,8 @@
 #include <QQuickWindow>
 #include <KAboutData>
 #include <KDBusService>
-#include <KLocalizedContext>
+#include <KLocalization>
+#include <KLocalizedQmlContext>
 #include <KLocalizedString>
 #include <KIconTheme>
 
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
     MakiImageProvider* imageProvider = new MakiImageProvider();
     
     engine.addImageProvider(QStringLiteral("Maki"), imageProvider);
-    engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
+    KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("io.github.FluxMusic.maki", "Main");
     
     WindowManager* manager = engine.singletonInstance<WindowManager*>("io.github.FluxMusic.maki", "WindowManager");
