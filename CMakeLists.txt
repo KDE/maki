@@ -52,6 +52,7 @@ if(BUILD_TESTING)
     add_subdirectory(autotests)
 endif()
 
+ki18n_install(po)
 
 install(PROGRAMS io.github.FluxMusic.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 

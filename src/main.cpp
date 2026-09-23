@@ -22,6 +22,8 @@ int main(int argc, char* argv[])
     
     KIconTheme::initTheme();
 
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("maki"));
+
     QApplication app(argc, argv);
     QApplication::setOrganizationName  (QStringLiteral("FluxMusic"));
     QApplication::setOrganizationDomain(QStringLiteral("FluxMusic.github.io"));
