@@ -10,7 +10,7 @@ Item {
 
     readonly property ImageHandler imageHandler: WindowManager.activeHandler
     
-    Image {
+    AnimatedImage {
         anchors.fill: parent
         source: imageHandler ? imageHandler.imageUrl : ""
         fillMode: Image.PreserveAspectFit
