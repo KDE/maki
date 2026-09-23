@@ -34,11 +34,7 @@ public:
     QSize imageSize() const;
     Q_SIGNAL void imageSizeChanged();
 
-    // Also gets called in an autotest, so needs to stay public for now. 
-    // Also the reason why a QImage is returned, since QPixmap needs to be on the GUI Thread.
-    QImage extractKritaImage(const QString &fileName) const;
-
-private:
+protected:
     QUrl m_imageUrl{ QUrl(QStringLiteral("Placeholder")) };
     QSize m_imageSize{ 1, 1 };
 

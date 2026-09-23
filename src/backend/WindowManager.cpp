@@ -4,6 +4,7 @@
 #include "WindowManager.h"
 
 #include "ImageHandler.h"
+#include "KritaHandler.h"
 #include "TextHandler.h"
 #include "AudioHandler.h"
 #include "VideoHandler.h"
@@ -159,6 +160,7 @@ void WindowManager::releaseResources()
 void WindowManager::initHandlers()
 {
     m_handlers.push_back(std::make_unique<ImageHandler>(this, m_imageProvider));
+    m_handlers.push_back(std::make_unique<KritaHandler>(this, m_imageProvider));
     m_handlers.push_back(std::make_unique<TextHandler>(this));
     m_handlers.push_back(std::make_unique<AudioHandler>(this, m_imageProvider));
     m_handlers.push_back(std::make_unique<VideoHandler>(this));

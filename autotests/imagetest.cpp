@@ -6,14 +6,17 @@
 
 #include "testconfig.h"
 #include "../src/backend/ImageHandler.h"
+#include "../src/backend/KritaHandler.h"
 
 class ImageTest: public QObject
 {
     Q_OBJECT
 
 private Q_SLOTS:
-    void testSupportStatus();
-    void testSupportStatus_data();
+    void testImageSupportStatus();
+    void testImageSupportStatus_data();
+    void testKritaSupportStatus();
+    void testKritaSupportStatus_data();
     void testKritaFiles();
     void testKritaFiles_data();
 
@@ -26,7 +29,7 @@ QString ImageTest::getImageFilePath(const QString &fileName) const
     return QLatin1String(IMAGE_SAMPLE_FILES_PATH) + QLatin1Char('/') + fileName;
 }
 
-void ImageTest::testSupportStatus()
+void ImageTest::testImageSupportStatus()
 {
     QFETCH(QString, fileName);
     QString testImageFile = getImageFilePath(fileName);
@@ -39,7 +42,7 @@ void ImageTest::testSupportStatus()
     QVERIFY2(imageHandler.canHandle(mimeType), "Image file not supported");
 }
 
-void ImageTest::testSupportStatus_data()
+void ImageTest::testImageSupportStatus_data()
 {
     QTest::addColumn<QString>("fileName");
 
@@ -52,14 +55,33 @@ void ImageTest::testSupportStatus_data()
     QTest::addRow("ico")  << QStringLiteral("test.ico");
     QTest::addRow("jpeg") << QStringLiteral("test.jpeg");
     QTest::addRow("jpg")  << QStringLiteral("test.jpg");
-    QTest::addRow("kra")  << QStringLiteral("test.kra");
-    QTest::addRow("krz")  << QStringLiteral("test.krz");
     QTest::addRow("png")  << QStringLiteral("test.png");
     QTest::addRow("svg")  << QStringLiteral("test.svg");
     QTest::addRow("tiff") << QStringLiteral("test.tiff");
     QTest::addRow("webp") << QStringLiteral("test.webp");
     QTest::addRow("xbm")  << QStringLiteral("test.xbm");
     QTest::addRow("xpm")  << QStringLiteral("test.xpm");
+}
+
+void ImageTest::testKritaSupportStatus()
+{
+    QFETCH(QString, fileName);
+    QString testImageFile = getImageFilePath(fileName);
+    KritaHandler kritaHandler{this};
+
+    const QMimeDatabase db;
+    const QMimeType mimeType = db.mimeTypeForFile(testImageFile);
+    
+    QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
+    QVERIFY2(kritaHandler.canHandle(mimeType), "Image file not supported");
+}
+
+void ImageTest::testKritaSupportStatus_data()
+{
+    QTest::addColumn<QString>("fileName");
+
+    QTest::addRow("kra")  << QStringLiteral("test.kra");
+    QTest::addRow("krz")  << QStringLiteral("test.krz");
 }
 
 void ImageTest::testKritaFiles()
@@ -71,7 +93,7 @@ void ImageTest::testKritaFiles()
     QString mergedImageFile  = getImageFilePath(mergedImageFileName);
     QString previewImageFile = getImageFilePath(previewFileName);
 
-    ImageHandler imageHandler{this};
+    KritaHandler kritaHandler{this};
 
     const QMimeDatabase db;
     const QMimeType mimeType = db.mimeTypeForFile(testImageFile);
@@ -79,9 +101,15 @@ void ImageTest::testKritaFiles()
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(mimeType.inherits(QStringLiteral("application/x-krita")), "File is not a Krita file");
 
-    const QImage extractedImage = imageHandler.extractKritaImage(testImageFile);
-    const QImage mergedImage  { mergedImageFile };
-    const QImage previewImage { previewImageFile };
+    kritaHandler.process(QUrl::fromLocalFile(testImageFile), mimeType);
+
+    const QImage extractedImage = QImage(kritaHandler.imageUrl().toLocalFile());
+    QImage mergedImage  { mergedImageFile };
+    QImage previewImage { previewImageFile };
+    
+    //KritaHandler scales the images, so these need to be scaled too
+    mergedImage = mergedImage.scaled(640, 640, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    previewImage = previewImage.scaled(640, 640, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     QVERIFY2(!extractedImage.isNull(), "Extracted image is null");
     QVERIFY2(!mergedImage.isNull(),    "mergedimage.png is null");
