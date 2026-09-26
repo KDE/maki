@@ -13,6 +13,8 @@
 #include <KLocalizedString>
 #include <KIconTheme>
 
+#include "../MakiVersion.h"
+
 #include "backend/WindowManager.h"
 #include "backend/DBusInterface.h"
 
@@ -33,7 +35,7 @@ int main(int argc, char* argv[])
 
     KAboutData aboutData(QStringLiteral("maki"), 
                          i18n("Maki"), 
-                         QStringLiteral("0.2"), 
+                         QStringLiteral(MAKI_VERSION_STRING), 
                          i18n("Quick File Previewer"), 
                          KAboutLicense::GPL_V3);
     aboutData.setOrganizationDomain("FluxMusic.github.io");

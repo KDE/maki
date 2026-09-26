@@ -2,7 +2,13 @@
 # SPDX-License-Identifier: BSD-2-Clause
 
 cmake_minimum_required(VERSION 3.20)
-project(maki VERSION 0.1.0)
+
+# KDE Application Version, managed by release script later
+set (RELEASE_SERVICE_VERSION_MAJOR "00")
+set (RELEASE_SERVICE_VERSION_MINOR "02")
+set (RELEASE_SERVICE_VERSION_MICRO "10")
+set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
+project(maki VERSION ${RELEASE_SERVICE_VERSION})
 
 find_package(ECM 6.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
@@ -14,6 +20,12 @@ include(ECMFindQmlModule)
 include(ECMQmlModule)
 include(ECMUninstallTarget)
 include(ECMAddTests)
+include(ECMSetupVersion)
+
+ecm_setup_version(${RELEASE_SERVICE_VERSION}
+    VARIABLE_PREFIX MAKI
+    VERSION_HEADER MakiVersion.h
+)
 
 # Core packages for most of the work
 find_package(Qt6 REQUIRED COMPONENTS
