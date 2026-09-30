@@ -60,4 +60,4 @@ void AudioTest::testSupportStatus_data()
 
 QTEST_GUILESS_MAIN(AudioTest)
 
-#include "audiotest.moc"
+#include "AudioTest.moc"

@@ -62,4 +62,4 @@ void ArchiveTest::testSupportStatus_data()
 
 QTEST_GUILESS_MAIN(ArchiveTest)
 
-#include "archivetest.moc"
+#include "ArchiveTest.moc"

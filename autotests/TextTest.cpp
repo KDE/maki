@@ -206,4 +206,4 @@ void TextTest::testContent_data()
 
 QTEST_GUILESS_MAIN(TextTest)
 
-#include "texttest.moc"
+#include "TextTest.moc"

@@ -56,4 +56,4 @@ void DocumentTest::testSupportStatus_data()
 
 QTEST_GUILESS_MAIN(DocumentTest)
 
-#include "documenttest.moc"
+#include "DocumentTest.moc"

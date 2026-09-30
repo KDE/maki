@@ -135,4 +135,4 @@ void ImageTest::testKritaFiles_data()
 
 QTEST_GUILESS_MAIN(ImageTest)
 
-#include "imagetest.moc"
+#include "ImageTest.moc"

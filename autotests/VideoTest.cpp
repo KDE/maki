@@ -53,4 +53,4 @@ void VideoTest::testVideoFiles_data()
 
 QTEST_GUILESS_MAIN(VideoTest)
 
-#include "videotest.moc"
+#include "VideoTest.moc"
