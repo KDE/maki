@@ -4,7 +4,6 @@
 #include <QTest>
 #include <QMimeDatabase>
 
-#include "testconfig.h"
 #include "../src/backend/TextHandler.h"
 
 class TextTest: public QObject
