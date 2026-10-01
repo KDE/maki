@@ -4,7 +4,6 @@
 #include <QTest>
 #include <QMimeDatabase>
 
-#include "testconfig.h"
 #include "../src/backend/AudioHandler.h"
 
 class AudioTest: public QObject
@@ -14,24 +13,15 @@ class AudioTest: public QObject
 private Q_SLOTS:
     void testSupportStatus();
     void testSupportStatus_data();
-
-private:
-    QString getAudioFilePath(const QString &) const;
 };
-
-QString AudioTest::getAudioFilePath(const QString &fileName) const
-{
-    return QLatin1String(AUDIO_SAMPLE_FILES_PATH) + QLatin1Char('/') + fileName;
-}
 
 void AudioTest::testSupportStatus()
 {
     QFETCH(QString, fileName);
-    QString testAudioFile = getAudioFilePath(fileName);
     AudioHandler audioHandler{this};
 
     const QMimeDatabase db;
-    const QMimeType mimeType = db.mimeTypeForFile(testAudioFile);
+    const QMimeType mimeType = db.mimeTypeForFile(fileName);
     
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(audioHandler.canHandle(mimeType), "Audio file not supported");
@@ -41,21 +31,21 @@ void AudioTest::testSupportStatus_data()
 {
     QTest::addColumn<QString>("fileName");
 
-    QTest::addRow("aiff")      << QStringLiteral("test.aiff");
-    QTest::addRow("ape")       << QStringLiteral("test.ape");
-    QTest::addRow("flac")      << QStringLiteral("test.flac");
-    QTest::addRow("flac.ogg")  << QStringLiteral("test.flac.ogg");
-    QTest::addRow("m4a")       << QStringLiteral("test.m4a");
-    QTest::addRow("mp3")       << QStringLiteral("test.mp3");
-    QTest::addRow("mpc")       << QStringLiteral("test.mpc");
-    QTest::addRow("ogg")       << QStringLiteral("test.ogg");
-    QTest::addRow("opus")      << QStringLiteral("test.opus");
-    QTest::addRow("opus.ogg")  << QStringLiteral("test.opus.ogg");
-    QTest::addRow("speex.ogg") << QStringLiteral("test.speex.ogg");
-    QTest::addRow("spx")       << QStringLiteral("test.spx");
-    QTest::addRow("wav")       << QStringLiteral("test.wav");
-    QTest::addRow("wma")       << QStringLiteral("test.wma");
-    QTest::addRow("wv")        << QStringLiteral("test.wv");
+    QTest::addRow("aiff")      << QFINDTESTDATA("samplefiles/audio/test.aiff");
+    QTest::addRow("ape")       << QFINDTESTDATA("samplefiles/audio/test.ape");
+    QTest::addRow("flac")      << QFINDTESTDATA("samplefiles/audio/test.flac");
+    QTest::addRow("flac.ogg")  << QFINDTESTDATA("samplefiles/audio/test.flac.ogg");
+    QTest::addRow("m4a")       << QFINDTESTDATA("samplefiles/audio/test.m4a");
+    QTest::addRow("mp3")       << QFINDTESTDATA("samplefiles/audio/test.mp3");
+    QTest::addRow("mpc")       << QFINDTESTDATA("samplefiles/audio/test.mpc");
+    QTest::addRow("ogg")       << QFINDTESTDATA("samplefiles/audio/test.ogg");
+    QTest::addRow("opus")      << QFINDTESTDATA("samplefiles/audio/test.opus");
+    QTest::addRow("opus.ogg")  << QFINDTESTDATA("samplefiles/audio/test.opus.ogg");
+    QTest::addRow("speex.ogg") << QFINDTESTDATA("samplefiles/audio/test.speex.ogg");
+    QTest::addRow("spx")       << QFINDTESTDATA("samplefiles/audio/test.spx");
+    QTest::addRow("wav")       << QFINDTESTDATA("samplefiles/audio/test.wav");
+    QTest::addRow("wma")       << QFINDTESTDATA("samplefiles/audio/test.wma");
+    QTest::addRow("wv")        << QFINDTESTDATA("samplefiles/audio/test.wv");
 }
 
 QTEST_GUILESS_MAIN(AudioTest)

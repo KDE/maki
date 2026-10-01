@@ -4,7 +4,6 @@
 #include <QTest>
 #include <QMimeDatabase>
 
-#include "testconfig.h"
 #include "../src/backend/DocumentHandler.h"
 
 class DocumentTest: public QObject
@@ -14,24 +13,15 @@ class DocumentTest: public QObject
 private Q_SLOTS:
     void testSupportStatus();
     void testSupportStatus_data();
-
-private:
-    QString getDocumentFilePath(const QString &) const;
 };
-
-QString DocumentTest::getDocumentFilePath(const QString &fileName) const
-{
-    return QLatin1String(DOCUMENT_SAMPLE_FILES_PATH) + QLatin1Char('/') + fileName;
-}
 
 void DocumentTest::testSupportStatus()
 {
     QFETCH(QString, fileName);
-    QString testDocumentFile = getDocumentFilePath(fileName);
     DocumentHandler documentHandler{this};
 
     const QMimeDatabase db;
-    const QMimeType mimeType = db.mimeTypeForFile(testDocumentFile);
+    const QMimeType mimeType = db.mimeTypeForFile(fileName);
     
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(documentHandler.canHandle(mimeType), "Document file not supported");
@@ -41,17 +31,17 @@ void DocumentTest::testSupportStatus_data()
 {
     QTest::addColumn<QString>("fileName");
 
-    QTest::addRow("doc")  << QStringLiteral("test.doc");
-    QTest::addRow("docx") << QStringLiteral("test.docx");
-    // QTest::addRow("epub") << QStringLiteral("test.epub");     EPUB support in planning
-    QTest::addRow("odp")  << QStringLiteral("test.odp");
-    QTest::addRow("ods")  << QStringLiteral("test.ods");
-    QTest::addRow("odt")  << QStringLiteral("test.odt");
-    QTest::addRow("pdf")  << QStringLiteral("test.pdf");
-    QTest::addRow("ppt")  << QStringLiteral("test.ppt");
-    QTest::addRow("pptx") << QStringLiteral("test.pptx");
-    QTest::addRow("xls")  << QStringLiteral("test.xls");
-    QTest::addRow("xlsx") << QStringLiteral("test.xlsx");
+    QTest::addRow("doc")  << QFINDTESTDATA("samplefiles/document/test.doc");
+    QTest::addRow("docx") << QFINDTESTDATA("samplefiles/document/test.docx");
+    // QTest::addRow("epub") << QFINDTESTDATA("samplefiles/document/test.epub");    // EPUB support in planning
+    QTest::addRow("odp")  << QFINDTESTDATA("samplefiles/document/test.odp");
+    QTest::addRow("ods")  << QFINDTESTDATA("samplefiles/document/test.ods");
+    QTest::addRow("odt")  << QFINDTESTDATA("samplefiles/document/test.odt");
+    QTest::addRow("pdf")  << QFINDTESTDATA("samplefiles/document/test.pdf");
+    QTest::addRow("ppt")  << QFINDTESTDATA("samplefiles/document/test.ppt");
+    QTest::addRow("pptx") << QFINDTESTDATA("samplefiles/document/test.pptx");
+    QTest::addRow("xls")  << QFINDTESTDATA("samplefiles/document/test.xls");
+    QTest::addRow("xlsx") << QFINDTESTDATA("samplefiles/document/test.xlsx");
 }
 
 QTEST_GUILESS_MAIN(DocumentTest)

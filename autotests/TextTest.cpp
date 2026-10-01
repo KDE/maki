@@ -18,22 +18,90 @@ private Q_SLOTS:
     void testContent_data();
 
 private:
-    QString getTextFilePath(const QString &) const;
+    void setupTestFiles() const;
 };
 
-QString TextTest::getTextFilePath(const QString &fileName) const
+void TextTest::setupTestFiles() const
 {
-    return QLatin1String(TEXT_SAMPLE_FILES_PATH) + QLatin1Char('/') + fileName;
+    QTest::addColumn<QString>("fileName");
+
+    QTest::addRow("meson")      << QFINDTESTDATA("samplefiles/text/meson.build");
+    QTest::addRow("adb")        << QFINDTESTDATA("samplefiles/text/test.adb");
+    QTest::addRow("asm")        << QFINDTESTDATA("samplefiles/text/test.asm");
+    QTest::addRow("c")          << QFINDTESTDATA("samplefiles/text/test.c");
+    QTest::addRow("cfg")        << QFINDTESTDATA("samplefiles/text/test.cfg");
+    QTest::addRow("clj")        << QFINDTESTDATA("samplefiles/text/test.clj");
+    QTest::addRow("cmake")      << QFINDTESTDATA("samplefiles/text/test.cmake");
+    QTest::addRow("cpp")        << QFINDTESTDATA("samplefiles/text/test.cpp");
+    QTest::addRow("cr")         << QFINDTESTDATA("samplefiles/text/test.cr");
+    QTest::addRow("cs")         << QFINDTESTDATA("samplefiles/text/test.cs");
+    QTest::addRow("css")        << QFINDTESTDATA("samplefiles/text/test.css");
+    QTest::addRow("d")          << QFINDTESTDATA("samplefiles/text/test.d");
+    QTest::addRow("dart")       << QFINDTESTDATA("samplefiles/text/test.dart");
+    QTest::addRow("dockerfile") << QFINDTESTDATA("samplefiles/text/test.dockerfile");
+    QTest::addRow("erl")        << QFINDTESTDATA("samplefiles/text/test.erl");
+    QTest::addRow("ex")         << QFINDTESTDATA("samplefiles/text/test.ex");
+    QTest::addRow("f")          << QFINDTESTDATA("samplefiles/text/test.f");
+    QTest::addRow("fish")       << QFINDTESTDATA("samplefiles/text/test.fish");
+    QTest::addRow("fs")         << QFINDTESTDATA("samplefiles/text/test.fs");
+    QTest::addRow("go")         << QFINDTESTDATA("samplefiles/text/test.go");
+    QTest::addRow("groovy")     << QFINDTESTDATA("samplefiles/text/test.groovy");
+    QTest::addRow("h")          << QFINDTESTDATA("samplefiles/text/test.h");
+    QTest::addRow("hpp")        << QFINDTESTDATA("samplefiles/text/test.hpp");
+    QTest::addRow("hs")         << QFINDTESTDATA("samplefiles/text/test.hs");
+    QTest::addRow("html")       << QFINDTESTDATA("samplefiles/text/test.html");
+    QTest::addRow("ini")        << QFINDTESTDATA("samplefiles/text/test.ini");
+    QTest::addRow("java")       << QFINDTESTDATA("samplefiles/text/test.java");
+    QTest::addRow("jl")         << QFINDTESTDATA("samplefiles/text/test.jl");
+    QTest::addRow("js")         << QFINDTESTDATA("samplefiles/text/test.js");
+    QTest::addRow("jsx")        << QFINDTESTDATA("samplefiles/text/test.jsx");
+    QTest::addRow("kt")         << QFINDTESTDATA("samplefiles/text/test.kt");
+    QTest::addRow("less")       << QFINDTESTDATA("samplefiles/text/test.less");
+    QTest::addRow("lisp")       << QFINDTESTDATA("samplefiles/text/test.lisp");
+    QTest::addRow("lua")        << QFINDTESTDATA("samplefiles/text/test.lua");
+    QTest::addRow("m")          << QFINDTESTDATA("samplefiles/text/test.m");
+    QTest::addRow("mk")         << QFINDTESTDATA("samplefiles/text/test.mk");
+    QTest::addRow("ml")         << QFINDTESTDATA("samplefiles/text/test.ml");
+    QTest::addRow("mm")         << QFINDTESTDATA("samplefiles/text/test.mm");
+    QTest::addRow("nim")        << QFINDTESTDATA("samplefiles/text/test.nim");
+    QTest::addRow("ninja")      << QFINDTESTDATA("samplefiles/text/test.ninja");
+    QTest::addRow("pas")        << QFINDTESTDATA("samplefiles/text/test.pas");
+    QTest::addRow("php")        << QFINDTESTDATA("samplefiles/text/test.php");
+    QTest::addRow("pl")         << QFINDTESTDATA("samplefiles/text/test.pl");
+    QTest::addRow("ps1")        << QFINDTESTDATA("samplefiles/text/test.ps1");
+    QTest::addRow("py")         << QFINDTESTDATA("samplefiles/text/test.py");
+    QTest::addRow("qml")        << QFINDTESTDATA("samplefiles/text/test.qml");
+    QTest::addRow("r")          << QFINDTESTDATA("samplefiles/text/test.r");
+    QTest::addRow("rb")         << QFINDTESTDATA("samplefiles/text/test.rb");
+    QTest::addRow("rs")         << QFINDTESTDATA("samplefiles/text/test.rs");
+    QTest::addRow("rst")        << QFINDTESTDATA("samplefiles/text/test.rst");
+    QTest::addRow("rtx")        << QFINDTESTDATA("samplefiles/text/test.rtx");
+    QTest::addRow("sass")       << QFINDTESTDATA("samplefiles/text/test.sass");
+    QTest::addRow("scala")      << QFINDTESTDATA("samplefiles/text/test.scala");
+    QTest::addRow("scm")        << QFINDTESTDATA("samplefiles/text/test.scm");
+    QTest::addRow("scss")       << QFINDTESTDATA("samplefiles/text/test.scss");
+    QTest::addRow("sh")         << QFINDTESTDATA("samplefiles/text/test.sh");
+    QTest::addRow("svelte")     << QFINDTESTDATA("samplefiles/text/test.svelte");
+    QTest::addRow("swift")      << QFINDTESTDATA("samplefiles/text/test.swift");
+    QTest::addRow("tcl")        << QFINDTESTDATA("samplefiles/text/test.tcl");
+    QTest::addRow("tex")        << QFINDTESTDATA("samplefiles/text/test.tex");
+    QTest::addRow("toml")       << QFINDTESTDATA("samplefiles/text/test.toml");
+    QTest::addRow("ts")         << QFINDTESTDATA("samplefiles/text/test.ts");
+    QTest::addRow("tsx")        << QFINDTESTDATA("samplefiles/text/test.tsx");
+    QTest::addRow("txt")        << QFINDTESTDATA("samplefiles/text/test.txt");
+    QTest::addRow("vb")         << QFINDTESTDATA("samplefiles/text/test.vb");
+    QTest::addRow("yaml")       << QFINDTESTDATA("samplefiles/text/test.yaml");
+    QTest::addRow("zig")        << QFINDTESTDATA("samplefiles/text/test.zig");
+    QTest::addRow("zsh")        << QFINDTESTDATA("samplefiles/text/test.zsh");
 }
 
 void TextTest::testSupportStatus()
 {
     QFETCH(QString, fileName);
-    QString testTextFile = getTextFilePath(fileName);
     TextHandler textHandler{this};
 
     const QMimeDatabase db;
-    const QMimeType mimeType = db.mimeTypeForFile(testTextFile);
+    const QMimeType mimeType = db.mimeTypeForFile(fileName);
     
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(textHandler.canHandle(mimeType), "Text file not supported");
@@ -41,90 +109,20 @@ void TextTest::testSupportStatus()
 
 void TextTest::testSupportStatus_data()
 {
-    QTest::addColumn<QString>("fileName");
-
-    QTest::addRow("meson")      << QStringLiteral("meson.build");
-    QTest::addRow("adb")        << QStringLiteral("test.adb");
-    QTest::addRow("asm")        << QStringLiteral("test.asm");
-    QTest::addRow("c")          << QStringLiteral("test.c");
-    QTest::addRow("cfg")        << QStringLiteral("test.cfg");
-    QTest::addRow("clj")        << QStringLiteral("test.clj");
-    QTest::addRow("cmake")      << QStringLiteral("test.cmake");
-    QTest::addRow("cpp")        << QStringLiteral("test.cpp");
-    QTest::addRow("cr")         << QStringLiteral("test.cr");
-    QTest::addRow("cs")         << QStringLiteral("test.cs");
-    QTest::addRow("css")        << QStringLiteral("test.css");
-    QTest::addRow("d")          << QStringLiteral("test.d");
-    QTest::addRow("dart")       << QStringLiteral("test.dart");
-    QTest::addRow("dockerfile") << QStringLiteral("test.dockerfile");
-    QTest::addRow("erl")        << QStringLiteral("test.erl");
-    QTest::addRow("ex")         << QStringLiteral("test.ex");
-    QTest::addRow("f")          << QStringLiteral("test.f");
-    QTest::addRow("fish")       << QStringLiteral("test.fish");
-    QTest::addRow("fs")         << QStringLiteral("test.fs");
-    QTest::addRow("go")         << QStringLiteral("test.go");
-    QTest::addRow("groovy")     << QStringLiteral("test.groovy");
-    QTest::addRow("h")          << QStringLiteral("test.h");
-    QTest::addRow("hpp")        << QStringLiteral("test.hpp");
-    QTest::addRow("hs")         << QStringLiteral("test.hs");
-    QTest::addRow("html")       << QStringLiteral("test.html");
-    QTest::addRow("ini")        << QStringLiteral("test.ini");
-    QTest::addRow("java")       << QStringLiteral("test.java");
-    QTest::addRow("jl")         << QStringLiteral("test.jl");
-    QTest::addRow("js")         << QStringLiteral("test.js");
-    QTest::addRow("jsx")        << QStringLiteral("test.jsx");
-    QTest::addRow("kt")         << QStringLiteral("test.kt");
-    QTest::addRow("less")       << QStringLiteral("test.less");
-    QTest::addRow("lisp")       << QStringLiteral("test.lisp");
-    QTest::addRow("lua")        << QStringLiteral("test.lua");
-    QTest::addRow("m")          << QStringLiteral("test.m");
-    QTest::addRow("mk")         << QStringLiteral("test.mk");
-    QTest::addRow("ml")         << QStringLiteral("test.ml");
-    QTest::addRow("mm")         << QStringLiteral("test.mm");
-    QTest::addRow("nim")        << QStringLiteral("test.nim");
-    QTest::addRow("ninja")      << QStringLiteral("test.ninja");
-    QTest::addRow("pas")        << QStringLiteral("test.pas");
-    QTest::addRow("php")        << QStringLiteral("test.php");
-    QTest::addRow("pl")         << QStringLiteral("test.pl");
-    QTest::addRow("ps1")        << QStringLiteral("test.ps1");
-    QTest::addRow("py")         << QStringLiteral("test.py");
-    QTest::addRow("qml")        << QStringLiteral("test.qml");
-    QTest::addRow("r")          << QStringLiteral("test.r");
-    QTest::addRow("rb")         << QStringLiteral("test.rb");
-    QTest::addRow("rs")         << QStringLiteral("test.rs");
-    QTest::addRow("rst")        << QStringLiteral("test.rst");
-    QTest::addRow("rtx")        << QStringLiteral("test.rtx");
-    QTest::addRow("sass")       << QStringLiteral("test.sass");
-    QTest::addRow("scala")      << QStringLiteral("test.scala");
-    QTest::addRow("scm")        << QStringLiteral("test.scm");
-    QTest::addRow("scss")       << QStringLiteral("test.scss");
-    QTest::addRow("sh")         << QStringLiteral("test.sh");
-    QTest::addRow("svelte")     << QStringLiteral("test.svelte");
-    QTest::addRow("swift")      << QStringLiteral("test.swift");
-    QTest::addRow("tcl")        << QStringLiteral("test.tcl");
-    QTest::addRow("tex")        << QStringLiteral("test.tex");
-    QTest::addRow("toml")       << QStringLiteral("test.toml");
-    QTest::addRow("ts")         << QStringLiteral("test.ts");
-    QTest::addRow("tsx")        << QStringLiteral("test.tsx");
-    QTest::addRow("txt")        << QStringLiteral("test.txt");
-    QTest::addRow("vb")         << QStringLiteral("test.vb");
-    QTest::addRow("yaml")       << QStringLiteral("test.yaml");
-    QTest::addRow("zig")        << QStringLiteral("test.zig");
-    QTest::addRow("zsh")        << QStringLiteral("test.zsh");
+    setupTestFiles();
 }
 
 void TextTest::testContent()
 {
     QFETCH(QString, fileName);
-    QString testTextFile = getTextFilePath(fileName);
     TextHandler textHandler{this};
 
     const QMimeDatabase db;
-    const QMimeType mimeType = db.mimeTypeForFile(testTextFile);
+    const QMimeType mimeType = db.mimeTypeForFile(fileName);
 
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
 
-    textHandler.process(QUrl::fromLocalFile(testTextFile), mimeType);
+    textHandler.process(QUrl::fromLocalFile(fileName), mimeType);
 
     //All test files have a newline, so compare for that as well
     QCOMPARE(textHandler.text(), QStringLiteral("test\n"));
@@ -132,76 +130,7 @@ void TextTest::testContent()
 
 void TextTest::testContent_data()
 {
-    QTest::addColumn<QString>("fileName");
-
-    QTest::addRow("meson")      << QStringLiteral("meson.build");
-    QTest::addRow("adb")        << QStringLiteral("test.adb");
-    QTest::addRow("asm")        << QStringLiteral("test.asm");
-    QTest::addRow("c")          << QStringLiteral("test.c");
-    QTest::addRow("cfg")        << QStringLiteral("test.cfg");
-    QTest::addRow("clj")        << QStringLiteral("test.clj");
-    QTest::addRow("cmake")      << QStringLiteral("test.cmake");
-    QTest::addRow("cpp")        << QStringLiteral("test.cpp");
-    QTest::addRow("cr")         << QStringLiteral("test.cr");
-    QTest::addRow("cs")         << QStringLiteral("test.cs");
-    QTest::addRow("css")        << QStringLiteral("test.css");
-    QTest::addRow("d")          << QStringLiteral("test.d");
-    QTest::addRow("dart")       << QStringLiteral("test.dart");
-    QTest::addRow("dockerfile") << QStringLiteral("test.dockerfile");
-    QTest::addRow("erl")        << QStringLiteral("test.erl");
-    QTest::addRow("ex")         << QStringLiteral("test.ex");
-    QTest::addRow("f")          << QStringLiteral("test.f");
-    QTest::addRow("fish")       << QStringLiteral("test.fish");
-    QTest::addRow("fs")         << QStringLiteral("test.fs");
-    QTest::addRow("go")         << QStringLiteral("test.go");
-    QTest::addRow("groovy")     << QStringLiteral("test.groovy");
-    QTest::addRow("h")          << QStringLiteral("test.h");
-    QTest::addRow("hpp")        << QStringLiteral("test.hpp");
-    QTest::addRow("hs")         << QStringLiteral("test.hs");
-    QTest::addRow("html")       << QStringLiteral("test.html");
-    QTest::addRow("ini")        << QStringLiteral("test.ini");
-    QTest::addRow("java")       << QStringLiteral("test.java");
-    QTest::addRow("jl")         << QStringLiteral("test.jl");
-    QTest::addRow("js")         << QStringLiteral("test.js");
-    QTest::addRow("jsx")        << QStringLiteral("test.jsx");
-    QTest::addRow("kt")         << QStringLiteral("test.kt");
-    QTest::addRow("less")       << QStringLiteral("test.less");
-    QTest::addRow("lisp")       << QStringLiteral("test.lisp");
-    QTest::addRow("lua")        << QStringLiteral("test.lua");
-    QTest::addRow("m")          << QStringLiteral("test.m");
-    QTest::addRow("mk")         << QStringLiteral("test.mk");
-    QTest::addRow("ml")         << QStringLiteral("test.ml");
-    QTest::addRow("mm")         << QStringLiteral("test.mm");
-    QTest::addRow("nim")        << QStringLiteral("test.nim");
-    QTest::addRow("ninja")      << QStringLiteral("test.ninja");
-    QTest::addRow("pas")        << QStringLiteral("test.pas");
-    QTest::addRow("php")        << QStringLiteral("test.php");
-    QTest::addRow("pl")         << QStringLiteral("test.pl");
-    QTest::addRow("ps1")        << QStringLiteral("test.ps1");
-    QTest::addRow("py")         << QStringLiteral("test.py");
-    QTest::addRow("qml")        << QStringLiteral("test.qml");
-    QTest::addRow("r")          << QStringLiteral("test.r");
-    QTest::addRow("rb")         << QStringLiteral("test.rb");
-    QTest::addRow("rs")         << QStringLiteral("test.rs");
-    QTest::addRow("rst")        << QStringLiteral("test.rst");
-    QTest::addRow("rtx")        << QStringLiteral("test.rtx");
-    QTest::addRow("sass")       << QStringLiteral("test.sass");
-    QTest::addRow("scala")      << QStringLiteral("test.scala");
-    QTest::addRow("scm")        << QStringLiteral("test.scm");
-    QTest::addRow("scss")       << QStringLiteral("test.scss");
-    QTest::addRow("sh")         << QStringLiteral("test.sh");
-    QTest::addRow("svelte")     << QStringLiteral("test.svelte");
-    QTest::addRow("swift")      << QStringLiteral("test.swift");
-    QTest::addRow("tcl")        << QStringLiteral("test.tcl");
-    QTest::addRow("tex")        << QStringLiteral("test.tex");
-    QTest::addRow("toml")       << QStringLiteral("test.toml");
-    QTest::addRow("ts")         << QStringLiteral("test.ts");
-    QTest::addRow("tsx")        << QStringLiteral("test.tsx");
-    QTest::addRow("txt")        << QStringLiteral("test.txt");
-    QTest::addRow("vb")         << QStringLiteral("test.vb");
-    QTest::addRow("yaml")       << QStringLiteral("test.yaml");
-    QTest::addRow("zig")        << QStringLiteral("test.zig");
-    QTest::addRow("zsh")        << QStringLiteral("test.zsh");
+    setupTestFiles();
 }
 
 QTEST_GUILESS_MAIN(TextTest)

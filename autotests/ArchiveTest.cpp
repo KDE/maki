@@ -4,7 +4,6 @@
 #include <QTest>
 #include <QMimeDatabase>
 
-#include "testconfig.h"
 #include "../src/backend/ArchiveHandler.h"
 
 class ArchiveTest: public QObject
@@ -14,24 +13,15 @@ class ArchiveTest: public QObject
 private Q_SLOTS:
     void testSupportStatus();
     void testSupportStatus_data();
-
-private:
-    QString getArchiveFilePath(const QString &) const;
 };
-
-QString ArchiveTest::getArchiveFilePath(const QString &fileName) const
-{
-    return QLatin1String(ARCHIVE_SAMPLE_FILES_PATH) + QLatin1Char('/') + fileName;
-}
 
 void ArchiveTest::testSupportStatus()
 {
     QFETCH(QString, fileName);
-    QString testArchiveFile = getArchiveFilePath(fileName);
     ArchiveHandler archiveHandler{this};
 
     const QMimeDatabase db;
-    const QMimeType mimeType = db.mimeTypeForFile(testArchiveFile);
+    const QMimeType mimeType = db.mimeTypeForFile(fileName);
     
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(archiveHandler.canHandle(mimeType), "Archive file not supported");
@@ -42,22 +32,22 @@ void ArchiveTest::testSupportStatus_data()
     QTest::addColumn<QString>("fileName");
 
     //Archives
-    QTest::addRow("7z")       << QStringLiteral("test.7z");
-    QTest::addRow("tar")      << QStringLiteral("test.tar");
-    QTest::addRow("tar.bz2")  << QStringLiteral("test.tar.bz2");
-    QTest::addRow("tar.gz")   << QStringLiteral("test.tar.gz");
-    QTest::addRow("tar.lz")   << QStringLiteral("test.tar.lz");
-    QTest::addRow("tar.lzma") << QStringLiteral("test.tar.lzma");
-    QTest::addRow("tar.xz")   << QStringLiteral("test.tar.xz");
-    QTest::addRow("tar.zst")  << QStringLiteral("test.tar.zst");
-    QTest::addRow("zip")      << QStringLiteral("test.zip");
+    QTest::addRow("7z")       << QFINDTESTDATA("samplefiles/archive/test.7z");
+    QTest::addRow("tar")      << QFINDTESTDATA("samplefiles/archive/test.tar");
+    QTest::addRow("tar.bz2")  << QFINDTESTDATA("samplefiles/archive/test.tar.bz2");
+    QTest::addRow("tar.gz")   << QFINDTESTDATA("samplefiles/archive/test.tar.gz");
+    QTest::addRow("tar.lz")   << QFINDTESTDATA("samplefiles/archive/test.tar.lz");
+    // QTest::addRow("tar.lzma") << QFINDTESTDATA("samplefiles/archive/test.tar.lzma");      // LZMA Tars are currently bugged with KArchive. Fix pending
+    QTest::addRow("tar.xz")   << QFINDTESTDATA("samplefiles/archive/test.tar.xz");
+    QTest::addRow("tar.zst")  << QFINDTESTDATA("samplefiles/archive/test.tar.zst");
+    QTest::addRow("zip")      << QFINDTESTDATA("samplefiles/archive/test.zip");
     //Raw compression
-    QTest::addRow("raw.bz2")  << QStringLiteral("test.txt.bz2");
-    QTest::addRow("raw.gz")   << QStringLiteral("test.txt.gz");
-    QTest::addRow("raw.xz")   << QStringLiteral("test.txt.xz");
-    QTest::addRow("raw.lz")   << QStringLiteral("test.txt.lz");
-    QTest::addRow("raw.lzma") << QStringLiteral("test.txt.lzma");
-    QTest::addRow("raw.zst")  << QStringLiteral("test.txt.zst");
+    QTest::addRow("raw.bz2")  << QFINDTESTDATA("samplefiles/archive/test.txt.bz2");
+    QTest::addRow("raw.gz")   << QFINDTESTDATA("samplefiles/archive/test.txt.gz");
+    QTest::addRow("raw.xz")   << QFINDTESTDATA("samplefiles/archive/test.txt.xz");
+    QTest::addRow("raw.lz")   << QFINDTESTDATA("samplefiles/archive/test.txt.lz");
+    QTest::addRow("raw.lzma") << QFINDTESTDATA("samplefiles/archive/test.txt.lzma");
+    QTest::addRow("raw.zst")  << QFINDTESTDATA("samplefiles/archive/test.txt.zst");
 }
 
 QTEST_GUILESS_MAIN(ArchiveTest)

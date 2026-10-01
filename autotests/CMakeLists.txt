@@ -3,8 +3,6 @@
 
 find_package(Qt6 CONFIG REQUIRED Test)
 
-configure_file(TestConfig.h.in ${CMAKE_CURRENT_BINARY_DIR}/TestConfig.h @ONLY)
-
 ecm_add_test(FileRoutingTest.cpp
     TEST_NAME "fileroutingtest"
     LINK_LIBRARIES makiLib Qt6::Test Qt6::Core
