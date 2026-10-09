@@ -68,7 +68,7 @@ ki18n_install(po)
 
 install(PROGRAMS io.github.FluxMusic.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-install(FILES io.github.FluxMusic.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
+install(PROGRAMS io.github.FluxMusic.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
 configure_file(io.github.FluxMusic.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
