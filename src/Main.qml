@@ -1,4 +1,6 @@
 // SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
+// SPDX-FileCopyrightText: 2026 Kristen McWilliam <kristen@kde.org>
+//
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import QtQuick
@@ -15,6 +17,12 @@ Kirigami.ApplicationWindow {
     title: i18nc("@title:window", "Maki Preview")
 
     visible: WindowManager.visible
+
+    Shortcut {
+        sequence: "Space"
+        context: Qt.ApplicationShortcut
+        onActivated: WindowManager.visible = false
+    }
 
     onClosing: (close) => {
         close.accepted = false
