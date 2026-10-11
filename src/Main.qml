@@ -12,7 +12,7 @@ Kirigami.ApplicationWindow {
     width: 640
     height: 360
 
-    title: i18nc("@title:window", "Maki Preview")
+    title: WindowManager.fileName
 
     visible: WindowManager.visible
 
