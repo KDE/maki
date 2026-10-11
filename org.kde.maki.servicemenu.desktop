@@ -8,6 +8,6 @@ Type=Service
 MimeType=all/allfiles
 
 [Desktop Action QuickPreview]
-Exec=qdbus io.github.FluxMusic.maki /maki showFile "%u"
+Exec=qdbus org.kde.maki /maki showFile "%u"
 Icon=document-preview
 Name=Quick Preview
