@@ -68,7 +68,7 @@ ki18n_install(po)
 
 install(PROGRAMS org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-install(FILES org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
+install(PROGRAMS org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
 configure_file(org.kde.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.service)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
