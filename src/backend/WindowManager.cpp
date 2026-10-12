@@ -56,6 +56,7 @@ void WindowManager::setURL(const QUrl &url)
 
     m_url = url;
     Q_EMIT urlChanged();
+    Q_EMIT fileNameChanged();
 
     setVisible(true);
 

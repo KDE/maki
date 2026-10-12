@@ -2,5 +2,5 @@
 # SPDX-License-Identifier: CC0-1.0
 
 [D-BUS Service]
-Name=io.github.FluxMusic.maki
+Name=org.kde.maki
 Exec=@CMAKE_INSTALL_PREFIX@/bin/maki --daemon
