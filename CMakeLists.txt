@@ -66,11 +66,11 @@ endif()
 
 ki18n_install(po)
 
-install(PROGRAMS io.github.FluxMusic.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(PROGRAMS org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
-install(PROGRAMS io.github.FluxMusic.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
+install(PROGRAMS org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
-configure_file(io.github.FluxMusic.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/io.github.FluxMusic.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
+configure_file(org.kde.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.service)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)

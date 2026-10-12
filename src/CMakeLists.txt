@@ -13,7 +13,7 @@ ecm_generate_export_header(makiLib
 
 ecm_add_qml_module(makiLib
     URI
-    io.github.FluxMusic.maki
+    org.kde.maki
     GENERATE_PLUGIN_SOURCE
 )
 
@@ -48,7 +48,7 @@ set(makiLib_SRCS
     mpv/MpvItem.cpp
 )
 
-set(maki_dbusXML ${CMAKE_SOURCE_DIR}/dbus/io.github.FluxMusic.maki.xml)
+set(maki_dbusXML ${CMAKE_SOURCE_DIR}/dbus/org.kde.maki.xml)
 
 qt_add_dbus_adaptor(makiLib_SRCS ${maki_dbusXML} backend/DBusInterface.h DBusInterface)
 

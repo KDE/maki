@@ -27,18 +27,18 @@ int main(int argc, char* argv[])
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("maki"));
 
     QApplication app(argc, argv);
-    QApplication::setOrganizationName  (QStringLiteral("FluxMusic"));
-    QApplication::setOrganizationDomain(QStringLiteral("FluxMusic.github.io"));
-    QApplication::setApplicationName   (QStringLiteral("maki"));
 
     QApplication::setStyle(QStringLiteral("breeze"));
 
     KAboutData aboutData(QStringLiteral("maki"), 
-                         i18n("Maki"), 
+                         i18nc("@title", "Maki"), 
                          QStringLiteral(MAKI_VERSION_STRING), 
-                         i18n("Quick File Previewer"), 
-                         KAboutLicense::GPL_V3);
-    aboutData.setOrganizationDomain("FluxMusic.github.io");
+                         i18nc("@info", "Quick File Previewer"), 
+                         KAboutLicense::GPL_V3,
+                         i18nc("@info:credit", "Maki contributors"),
+                         QString(),
+                         QStringLiteral("https://invent.kde.org/fluxmusic/maki"),
+                         QStringLiteral("https://invent.kde.org/fluxmusic/maki/-/work_items"));
 
     KAboutData::setApplicationData(aboutData);
     
@@ -69,9 +69,9 @@ int main(int argc, char* argv[])
     
     engine.addImageProvider(QStringLiteral("Maki"), imageProvider);
     KLocalization::setupLocalizedContext(&engine);
-    engine.loadFromModule("io.github.FluxMusic.maki", "Main");
+    engine.loadFromModule("org.kde.maki", "Main");
     
-    WindowManager* manager = engine.singletonInstance<WindowManager*>("io.github.FluxMusic.maki", "WindowManager");
+    WindowManager* manager = engine.singletonInstance<WindowManager*>("org.kde.maki", "WindowManager");
 
     DBusInterface interface(manager);
 
