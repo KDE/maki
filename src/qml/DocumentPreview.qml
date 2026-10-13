@@ -158,18 +158,4 @@ Item {
             verticalAlignment: Text.AlignVCenter
         }
     }
-
-    DefaultAppButton {
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.topMargin: Kirigami.Units.largeSpacing
-        anchors.bottomMargin: Kirigami.Units.largeSpacing
-        anchors.leftMargin: Kirigami.Units.largeSpacing
-        //This seems hacky, but it works. Ideas are welcome
-        anchors.rightMargin: Kirigami.Units.largeSpacing
-            + thumbnailList.width + separator.width
-            + 2 * documentPreviewLayout.spacing
-
-        appName: WindowManager.defaultAppName
-    }
 }

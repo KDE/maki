@@ -50,6 +50,9 @@ find_package(KF6 REQUIRED COMPONENTS
     Service
 )
 
+# for displaying an about page
+ecm_find_qmlmodule(org.kde.kirigamiaddons.formcard REQUIRED)
+
 # package for extracting images from pdfs
 find_package(Poppler REQUIRED COMPONENTS Qt6)
 

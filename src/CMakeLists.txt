@@ -67,7 +67,7 @@ ecm_target_qml_sources(makiLib
     qml/VideoPreview.qml
     qml/DocumentPreview.qml
     qml/ArchivePreview.qml
-    qml/DefaultAppButton.qml
+    qml/HeaderBar.qml
 )
 
 target_link_libraries(makiLib

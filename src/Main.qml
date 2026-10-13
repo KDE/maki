@@ -19,6 +19,8 @@ Kirigami.ApplicationWindow {
 
     visible: WindowManager.visible
 
+    header: HeaderBar {}
+
     //Show the file path in the footer
     footer: Item {
         height: footerText.implicitHeight + Kirigami.Units.smallSpacing

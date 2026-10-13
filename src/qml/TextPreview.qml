@@ -36,15 +36,4 @@ Item {
             }
         }
     }
-
-    DefaultAppButton {
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.topMargin: Kirigami.Units.largeSpacing
-        anchors.leftMargin: Kirigami.Units.largeSpacing
-        anchors.rightMargin: Kirigami.Units.largeSpacing + textAreaScrollView.effectiveScrollBarWidth
-        anchors.bottomMargin: Kirigami.Units.largeSpacing
-        
-        appName: WindowManager.defaultAppName
-    }
 }

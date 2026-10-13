@@ -25,12 +25,4 @@ Item {
             }
         }
     }
-
-    DefaultAppButton {
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.margins: Kirigami.Units.largeSpacing
-        
-        appName: WindowManager.defaultAppName
-    }
 }
