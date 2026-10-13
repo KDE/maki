@@ -67,6 +67,14 @@ void WindowManager::setURL(const QUrl &url)
     if (service) {
         m_defaultAppName = service->name();
         Q_EMIT defaultAppNameChanged();
+
+        QString defaultAppIcon = service->icon();
+        if (defaultAppIcon.isEmpty()) {
+            m_defaultAppIcon = mime.iconName();
+        } else {
+            m_defaultAppIcon = defaultAppIcon;
+        }
+        Q_EMIT defaultAppIconChanged();
     }
 
     for (auto &handler : m_handlers) {
@@ -108,6 +116,11 @@ QString WindowManager::getFileName() const
 QString WindowManager::defaultAppName() const
 {
     return m_defaultAppName;
+}
+
+QString WindowManager::defaultAppIcon() const
+{
+    return m_defaultAppIcon;
 }
 
 QString WindowManager::getFileType() const

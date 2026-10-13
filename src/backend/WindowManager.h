@@ -27,6 +27,7 @@ class MAKILIB_EXPORT WindowManager : public QObject
     Q_PROPERTY(QUrl fallbackURL READ getFallbackURL NOTIFY fallbackURLChanged)
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString defaultAppName READ defaultAppName NOTIFY defaultAppNameChanged)
+    Q_PROPERTY(QString defaultAppIcon READ defaultAppIcon NOTIFY defaultAppIconChanged)
     Q_PROPERTY(PreviewHandler* activeHandler READ activeHandler NOTIFY activeHandlerChanged)
 
 public:
@@ -53,6 +54,9 @@ public:
     QString defaultAppName() const;
     Q_SIGNAL void defaultAppNameChanged();
     
+    QString defaultAppIcon() const;
+    Q_SIGNAL void defaultAppIconChanged();
+
     QString getFileType() const;
     void setFileType(const QString &fileType);
     Q_SIGNAL void fileTypeChanged();
@@ -77,6 +81,7 @@ private:
 
     QString m_fileType{QStringLiteral("Placeholder")};
     QString m_defaultAppName{QStringLiteral("Placeholder")};
+    QString m_defaultAppIcon{QStringLiteral("Placeholder")};
 
     MakiImageProvider *m_imageProvider{nullptr};
 

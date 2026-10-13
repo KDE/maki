@@ -3,6 +3,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 Button {
@@ -12,18 +13,32 @@ Button {
     property int fadeDuration: Kirigami.Units.longDuration
     property int hoverMargin: Kirigami.Units.largeSpacing * 2
 
-    implicitWidth: contentItem.implicitWidth + 2 * Kirigami.Units.largeSpacing
+    implicitWidth: contentItem.implicitWidth + 2 * Kirigami.Units.mediumSpacing
     
-    contentItem: Text {
-        anchors.fill: parent
-        anchors.margins: Kirigami.Units.largeSpacing
+    contentItem: RowLayout {
+            anchors.fill: parent
+            anchors.margins: Kirigami.Units.mediumSpacing
+            spacing: Kirigami.Units.smallSpacing
 
-        text: i18n("Open in %1", appName)
-        elide: Text.ElideRight
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        color: Kirigami.Theme.textColor
-    }
+            Kirigami.Icon {
+                Layout.preferredWidth: parent.height
+                Layout.fillHeight: true
+                source: WindowManager.defaultAppIcon
+                roundToIconSize: false
+            }
+            
+            Text {
+                id: buttonText
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+
+                text: i18n("Open in %1", appName)
+                elide: Text.ElideRight
+                verticalAlignment: Text.AlignVCenter
+                // horizontalAlignment: Text.AlignHCenter
+                color: Kirigami.Theme.textColor
+            }
+        }
 
 
     opacity: {
