@@ -26,13 +26,45 @@ Open for suggestions!
 
 ## Installation
 
+### Dependencies
+For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons poppler-qt6 mpvqt gettext`
+
+### kde-builder
+
+Maki can be easily built with
+[kde-builder](https://develop.kde.org/docs/getting-started/building/kde-builder-setup/):
+
+```bash
+kde-builder maki
+```
+
+Run Maki:
+
+```bash
+kde-builder --run maki --replace
+```
+
+Build the development version of Dolphin, which will see the development version
+of Maki:
+
+```bash
+kde-builder dolphin
+```
+
+Run the development version of Dolphin:
+
+```bash
+kde-builder --run dolphin
+```
+
+Now you should be able to [use Maki for quick previews](#how-does-it-work).
+
+### Manual
+
 Maki can be installed by running the install script from the project root. 
 It will move the executable to `/usr/bin/`, the .desktop file to `/usr/share/applications/` and the servicemenu to `/usr/share/kio/servicemenus/`.
 By this point, you should be able to use Maki by right clicking in Dolphin and selecting `Quick Preview`. If not, you might need to restart or run `kbuildsycoca6` on Plasma 6 to reload service menus.
 NOTE: `Quick Preview` might be under `Actions` on certain distros such as Fedora Linux.
-
-### Dependencies
-For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons poppler-qt6 mpvqt gettext`
 
 ## Uninstallation
 
