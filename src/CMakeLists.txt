@@ -87,6 +87,7 @@ target_link_libraries(makiLib
     KF6::Archive
     KF6::KIOCore
     KF6::KIOGui
+    KirigamiApp # For KirigamiAppDefaults
     KF6::SyntaxHighlighting
     KF6::Service
     Poppler::Qt6

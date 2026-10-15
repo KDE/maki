@@ -8,6 +8,7 @@
 #include <QQuickWindow>
 #include <KAboutData>
 #include <KDBusService>
+#include <KirigamiAddons/App/KirigamiAppDefaults>
 #include <KLocalization>
 #include <KLocalizedQmlContext>
 #include <KLocalizedString>
@@ -21,14 +22,12 @@
 int main(int argc, char* argv[])
 {
     QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
-    
-    KIconTheme::initTheme();
 
     KLocalizedString::setApplicationDomain(QByteArrayLiteral("maki"));
 
     QApplication app(argc, argv);
 
-    QApplication::setStyle(QStringLiteral("breeze"));
+    KirigamiAppDefaults::apply(&app);
 
     KAboutData aboutData(QStringLiteral("maki"), 
                          i18nc("@title", "Maki"), 

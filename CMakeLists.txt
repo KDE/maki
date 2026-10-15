@@ -39,6 +39,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     
 find_package(KF6 REQUIRED COMPONENTS
     Kirigami
+    KirigamiAddons
     I18n
     CoreAddons
     IconThemes
@@ -49,9 +50,6 @@ find_package(KF6 REQUIRED COMPONENTS
     SyntaxHighlighting
     Service
 )
-
-# for displaying an about page
-ecm_find_qmlmodule(org.kde.kirigamiaddons.formcard REQUIRED)
 
 # package for extracting images from pdfs
 find_package(Poppler REQUIRED COMPONENTS Qt6)
