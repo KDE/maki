@@ -9,20 +9,29 @@ Item {
     anchors.fill: parent
 
     readonly property ImageHandler imageHandler: WindowManager.activeHandler
+    property url currentURL: imageHandler ? imageHandler.imageUrl : ""
     
-    AnimatedImage {
+    onCurrentURLChanged: {
+        if (imageHandler && imageHandler.imageSize) {
+            root.width = imageHandler.imageSize.width
+            root.height = imageHandler.imageSize.height
+        }
+    }
+
+    Image {
+        visible: !imageHandler.isAnimated
         anchors.fill: parent
-        source: imageHandler ? imageHandler.imageUrl : ""
+        source: parent.currentURL
         fillMode: Image.PreserveAspectFit
         mipmap: true
-
-        property url currentURL: imageHandler ? imageHandler.imageUrl : ""
-
-        onCurrentURLChanged: {
-            if (imageHandler && imageHandler.imageSize) {
-                root.width = imageHandler.imageSize.width
-                root.height = imageHandler.imageSize.height
-            }
-        }
+        autoTransform: true
+    }
+    
+    AnimatedImage {
+        visible: imageHandler.isAnimated
+        anchors.fill: parent
+        source: parent.currentURL
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
     }
 }
