@@ -4,6 +4,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Pdf
 import org.kde.kirigami as Kirigami
 
 Item {
@@ -12,11 +13,18 @@ Item {
 
     readonly property DocumentHandler documentHandler: WindowManager.activeHandler
 
-    property size firstPageSize: documentHandler ? documentHandler.pageSize : Qt.size(100, 100)
+    readonly property url documentUrl: documentHandler ? documentHandler.documentUrl : ""
+
+    PdfDocument {
+        id: doc
+        source: documentUrl
+    }
+
+    readonly property size firstPageSize: doc.status === PdfDocument.Ready ? doc.pagePointSize(0) : Qt.size(1, 1)
 
     onFirstPageSizeChanged: {
         //TODO: Put this into a config
-        const maxPageScale = Qt.size(595, 842);
+        const maxPageScale = Qt.size(root.screen.width * 0.8, root.screen.height * 0.8);
         const pageSize = firstPageSize
 
         const rw = maxPageScale.height * (pageSize.width / pageSize.height);
@@ -57,16 +65,26 @@ Item {
 
                 anchors.fill: parent
 
-                model: documentHandler ? documentHandler.pageNum : 0
+                model: doc.status === PdfDocument.Ready ? doc.pageCount : 0
                 spacing: Kirigami.Units.smallSpacing
 
-                delegate: Image {
+                clip: true
+
+                delegate: Rectangle {
                     width: mainList.width
-                    height: width * (sourceSize.height / sourceSize.width)
-                    fillMode: Image.PreserveAspectFit
-                    source: "image://Maki/" + (index + 1)
-                    cache: false
-                }
+                    height: width * (documentPreview.firstPageSize.height / documentPreview.firstPageSize.width)
+                    color: "white"
+
+                    PdfPageImage {
+                        anchors.fill: parent
+                        document: doc
+                        currentFrame: index
+                        fillMode: Image.PreserveAspectFit
+                        sourceSize.width: width * Screen.devicePixelRatio
+                        sourceSize.height: height * Screen.devicePixelRatio
+                        cache: false
+                    }
+                } 
 
                 Kirigami.WheelHandler {
                     id: mainListWheelHandler
@@ -89,7 +107,9 @@ Item {
             Layout.preferredWidth: 100
             Layout.fillHeight: true
 
-            model: documentHandler ? documentHandler.pageNum : 0
+            model: doc.status === PdfDocument.Ready ? doc.pageCount : 0
+
+            clip: true
 
             delegate: ItemDelegate {
                 id: delegate
@@ -103,13 +123,19 @@ Item {
 
                     spacing: Kirigami.Units.smallSpacing
 
-                    Image {
-                        fillMode: Image.PreserveAspectFit
-                        source: "image://Maki/" + (index + 1)
-                        cache: false
-                        
+                    Rectangle {
                         Layout.fillWidth: true
-                        Layout.preferredHeight: width * (sourceSize.height / sourceSize.width)
+                        Layout.preferredHeight: width * (documentPreview.firstPageSize.height / documentPreview.firstPageSize.width)
+
+                        color: "white"
+
+                        PdfPageImage {
+                            anchors.fill: parent
+                            document: doc
+                            currentFrame: index
+                            fillMode: Image.PreserveAspectFit
+                            cache: false
+                        }
                     }
 
                     Label {
@@ -135,6 +161,7 @@ Item {
         }
     }
 
+    //Loading Screen
     Rectangle {
         anchors.fill: parent
 

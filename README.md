@@ -27,7 +27,7 @@ Open for suggestions!
 ## Installation
 
 ### Dependencies
-For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons poppler-qt6 mpvqt gettext`
+For Arch Linux: `sudo pacman -S extra-cmake-modules qt6-base qt6-declarative qt6-multimedia kirigami ki18n kiconthemes kcoreaddons kio kdbusaddons mpvqt gettext`
 
 ### kde-builder
 

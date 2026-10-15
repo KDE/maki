@@ -3,8 +3,6 @@
 
 #include "DocumentHandler.h"
 
-#include <poppler-qt6.h>
-
 #include <QDir>
 #include <QProcess>
 #include <QStandardPaths>
@@ -25,8 +23,9 @@ DocumentHandler::DocumentHandler(QObject *parent, MakiImageProvider *imageProvid
         Q_EMIT isLoadingChanged();
         
         m_tempPdf = m_watcher.result();
-
-        extractPageImages(QUrl::fromLocalFile(m_tempPdf->fileName()));
+        
+        m_documentUrl = QUrl::fromLocalFile(m_tempPdf->fileName());
+        Q_EMIT documentUrlChanged();
     });
 }
 
@@ -42,11 +41,9 @@ bool DocumentHandler::canHandle(const QMimeType &mime) const
 
 void DocumentHandler::process(const QUrl &url, const QMimeType &mime)
 {
-    //delete the Temp file
-    clearState();
-
     if (mime.inherits(QStringLiteral("application/pdf"))) {
-        extractPageImages(url);
+        m_documentUrl = url;
+        Q_EMIT documentUrlChanged();
     } else if (isOfficeFile(mime)) {
         if (m_isLoading) {
             return;
@@ -88,68 +85,16 @@ void DocumentHandler::clearState()
     //Delete all instances of the shared ptr
     m_watcher.setFuture(QFuture<std::shared_ptr<QTemporaryFile>>());
     m_tempPdf.reset();
-
-    //only pageNum cleanup is necessary
-    m_pageNum = 0;
-    Q_EMIT pageNumChanged();
 }
 
-int DocumentHandler::pageNum() const
+QUrl DocumentHandler::documentUrl() const
 {
-    return m_pageNum;
-}
-
-QSize DocumentHandler::pageSize() const
-{
-    return m_pageSize;
+    return m_documentUrl;
 }
 
 bool DocumentHandler::isLoading() const
 {
     return m_isLoading;
-}
-
-void DocumentHandler::extractPageImages(const QUrl &url)
-{
-    std::unique_ptr<Poppler::Document> doc = Poppler::Document::load(url.toLocalFile());
-
-    if (!doc) {
-        return;
-    }
-
-    doc->setRenderHint(Poppler::Document::RenderHint::Antialiasing, true);
-    doc->setRenderHint(Poppler::Document::RenderHint::TextAntialiasing, true);
-    doc->setRenderHint(Poppler::Document::RenderHint::ThinLineSolid, true);
-
-    int numPages = doc->numPages();
-    m_pageNum = numPages;
-
-    std::vector<QImage> pageImages;
-
-    pageImages.reserve(numPages);
-
-    for (int i = 0; i < numPages; i++) {
-        std::unique_ptr<Poppler::Page> page = doc->page(i);
-
-        if (page) {
-            // TODO: DPI as config?
-            pageImages.push_back(page->renderToImage(72, 72));
-        }
-    }
-
-    // TODO: Currently sets the window size to the first page's size
-    //       But if there is ever a bigger page in the document
-    //       It will clip. Maybe set the size to the dimensions
-    //       of the biggest pages? So the width will be the max
-    //       width of all the pages and the height as well
-    m_pageSize = pageImages[0].size();
-    Q_EMIT pageSizeChanged();
-
-    if (m_imageProvider) {
-        m_imageProvider->setDocumentImages(pageImages);
-    }
-
-    Q_EMIT pageNumChanged();
 }
 
 bool DocumentHandler::isOfficeFile(const QMimeType &mime) const

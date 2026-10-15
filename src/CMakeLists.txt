@@ -93,7 +93,6 @@ target_link_libraries(makiLib
     KirigamiApp # For KirigamiAppDefaults
     KF6::SyntaxHighlighting
     KF6::Service
-    Poppler::Qt6
     MpvQt::MpvQt
 )
 add_executable(maki main.cpp)

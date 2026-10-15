@@ -17,8 +17,7 @@ class MAKILIB_EXPORT DocumentHandler : public PreviewHandler
     QML_ELEMENT
     QML_UNCREATABLE("Handlers are managed by WindowManager")
 
-    Q_PROPERTY(int pageNum READ pageNum NOTIFY pageNumChanged)
-    Q_PROPERTY(QSize pageSize READ pageSize NOTIFY pageSizeChanged)
+    Q_PROPERTY(QUrl documentUrl READ documentUrl NOTIFY documentUrlChanged)
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
 
 public:
@@ -32,11 +31,8 @@ public:
     HandlerUtils::HandlerKey fileTypeKey() const override;
     void clearState() override;
 
-    int pageNum() const;
-    Q_SIGNAL void pageNumChanged();
-
-    QSize pageSize() const;
-    Q_SIGNAL void pageSizeChanged();
+    QUrl documentUrl() const;
+    Q_SIGNAL void documentUrlChanged();
 
     bool isLoading() const;
     Q_SIGNAL void isLoadingChanged();
@@ -47,10 +43,9 @@ private:
     void convertOfficeFile(const QString &inputFilePath, const QString &outputFilePath) const;
 
 private:
-    int m_pageNum{ 0 };
-    QSize m_pageSize{ 1, 1 };
-    
+    QUrl m_documentUrl;
     bool m_isLoading{ false };
+    
     QFutureWatcher<std::shared_ptr<QTemporaryFile>> m_watcher;
     std::shared_ptr<QTemporaryFile> m_tempPdf;
     MakiImageProvider *m_imageProvider{ nullptr };

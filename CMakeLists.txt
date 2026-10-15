@@ -35,6 +35,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Gui
     Widgets
     Multimedia
+    Pdf
 )
     
 find_package(KF6 REQUIRED COMPONENTS
@@ -50,9 +51,6 @@ find_package(KF6 REQUIRED COMPONENTS
     SyntaxHighlighting
     Service
 )
-
-# package for extracting images from pdfs
-find_package(Poppler REQUIRED COMPONENTS Qt6)
 
 # package for video playback
 find_package(MpvQt REQUIRED)

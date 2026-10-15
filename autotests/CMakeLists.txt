@@ -20,7 +20,7 @@ ecm_add_test(AudioTest.cpp
 
 ecm_add_test(DocumentTest.cpp 
     TEST_NAME "documenttest"
-    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick Qt6::Concurrent Poppler::Qt6
+    LINK_LIBRARIES makiLib Qt6::Test Qt6::Core Qt6::Quick Qt6::Concurrent
 )
 
 ecm_add_test(ImageTest.cpp 
