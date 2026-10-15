@@ -22,39 +22,7 @@ Kirigami.ApplicationWindow {
     header: HeaderBar {}
 
     //Show the file path in the footer
-    footer: Item {
-        height: footerText.implicitHeight + Kirigami.Units.smallSpacing
-        width: root.width
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: Platform.ColorUtils.linearInterpolation(
-                    Platform.Theme.backgroundColor,
-                    Platform.Theme.textColor,
-                    Platform.Theme.frameContrast)
-        }
-
-        Text {
-            id: footerText
-            anchors.fill: parent
-            anchors.margins: Kirigami.Units.mediumSpacing
-            text: stripURL(WindowManager.url)
-            color: Kirigami.Theme.textColor
-            elide: Text.ElideLeft
-            horizontalAlignment: Text.AlignRight
-            verticalAlignment: Text.AlignVCenter
-
-            //Directly assigning to text throws an error, because WindowManager.url is empty at first, so that needs to be checked.
-            function stripURL(fileUrl) {
-                if (fileUrl === "" || fileUrl === Qt.url("") || fileUrl === undefined || fileUrl === null) {
-                    return "";
-                }
-
-                return decodeURIComponent(new URL(fileUrl).pathname);
-            }
-        }
-    } 
+    footer: FooterBar {}
 
     Shortcut {
         sequence: "Space"

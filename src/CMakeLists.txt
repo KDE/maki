@@ -68,6 +68,7 @@ ecm_target_qml_sources(makiLib
     qml/DocumentPreview.qml
     qml/ArchivePreview.qml
     qml/HeaderBar.qml
+    qml/FooterBar.qml
 )
 
 target_link_libraries(makiLib
