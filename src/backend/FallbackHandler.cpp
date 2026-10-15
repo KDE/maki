@@ -9,6 +9,8 @@ FallbackHandler::FallbackHandler(QObject *parent)
 
 bool FallbackHandler::canHandle(const QMimeType &mime) const 
 {
+    Q_UNUSED(mime);
+
     return true;
 }
 
