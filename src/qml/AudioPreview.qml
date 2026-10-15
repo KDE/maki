@@ -23,8 +23,7 @@ Item {
 
         Component.onCompleted: {
             //TODO: put this in config
-            root.width = 500;
-            root.height = 280;
+            root.resizeWindow(Qt.size(500, 280));
         }
     }
 

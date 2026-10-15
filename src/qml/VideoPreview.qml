@@ -40,13 +40,17 @@ Item {
 
             const useHeight = rw <= maxScale.width;
 
+            let contentSize = videoSize;
+
             if (useHeight) {
-                root.width = rw;
-                root.height = maxScale.height;
+                contentSize.width = rw;
+                contentSize.height = maxScale.height;
             } else {
-                root.width = maxScale.width;
-                root.height = maxScale.width * (videoSize.height / videoSize.width);
+                contentSize.width = maxScale.width;
+                contentSize.height = maxScale.width * (videoSize.height / videoSize.width);
             }
+
+            root.resizeWindow(contentSize);
         }
 
         MouseArea {

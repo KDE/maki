@@ -34,8 +34,7 @@ Item {
             windowWidth = maxPageScale.width;
         }
 
-        root.width = windowWidth + 100;
-        root.height = windowHeight;
+        root.resizeWindow(Qt.size(windowWidth + 100, windowHeight));
     }
 
     RowLayout {

@@ -17,8 +17,7 @@ Item {
 
         Component.onCompleted: {
             //TODO: Move this to a config
-            root.width = 512;
-            root.height = 512;
+            root.resizeWindow(Qt.size(512, 512));
         }
     }
     Label {

@@ -14,8 +14,7 @@ RowLayout {
     spacing: 0
 
     Component.onCompleted: {
-        root.width = 600;
-        root.height = 320;
+        root.resizeWindow(Qt.size(600, 320));
     }
 
     Rectangle {

@@ -13,8 +13,7 @@ Item {
     
     onCurrentURLChanged: {
         if (imageHandler && imageHandler.imageSize) {
-            root.width = imageHandler.imageSize.width
-            root.height = imageHandler.imageSize.height
+            root.resizeWindow(imageHandler.imageSize)
         }
     }
 

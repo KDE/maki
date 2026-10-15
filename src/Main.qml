@@ -23,6 +23,11 @@ Kirigami.ApplicationWindow {
     //Show the file path in the footer
     footer: FooterBar {}
 
+    function resizeWindow(contentSize: size): void {
+        root.width = contentSize.width;
+        root.height = contentSize.height + header.height + footer.height;
+    }
+
     Shortcut {
         sequence: "Space"
         context: Qt.ApplicationShortcut
