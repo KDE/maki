@@ -39,6 +39,9 @@ int main(int argc, char* argv[])
                          QString(),
                          QStringLiteral("https://invent.kde.org/fluxmusic/maki"),
                          QStringLiteral("https://invent.kde.org/fluxmusic/maki/-/work_items"));
+    
+    aboutData.addAuthor(QStringLiteral("Alex Huber"), i18nc("@label", "Creator"), QStringLiteral("dev.flu7x@gmail.com"));
+    aboutData.addAuthor(QStringLiteral("Kristen McWilliam"), i18nc("@label", "Author"), QStringLiteral("kristen@kde.org"));
 
     KAboutData::setApplicationData(aboutData);
     
