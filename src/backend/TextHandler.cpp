@@ -44,9 +44,9 @@ void TextHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-QString TextHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey TextHandler::fileTypeKey() const 
 {
-    return QStringLiteral("text");
+    return HandlerUtils::HandlerKey::Text;
 }
 
 void TextHandler::clearState()

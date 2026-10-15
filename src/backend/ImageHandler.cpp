@@ -32,9 +32,9 @@ void ImageHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT imageSizeChanged();
 }
 
-QString ImageHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey ImageHandler::fileTypeKey() const 
 {
-    return QStringLiteral("image");
+    return HandlerUtils::HandlerKey::Image;
 }
 
 void ImageHandler::clearState()

@@ -20,9 +20,9 @@ void FallbackHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT fallbackIconChanged();
 }
 
-QString FallbackHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey FallbackHandler::fileTypeKey() const 
 {
-    return QStringLiteral("none");
+    return HandlerUtils::HandlerKey::None;
 }
 
 void FallbackHandler::clearState()

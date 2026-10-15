@@ -78,9 +78,9 @@ void DocumentHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-QString DocumentHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey DocumentHandler::fileTypeKey() const 
 {
-    return QStringLiteral("document");
+    return HandlerUtils::HandlerKey::Document;
 }
 
 void DocumentHandler::clearState()

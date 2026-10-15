@@ -22,7 +22,7 @@ class MAKILIB_EXPORT WindowManager : public QObject
     QML_SINGLETON
 
     Q_PROPERTY(bool visible READ getVisible WRITE setVisible NOTIFY visibleChanged)
-    Q_PROPERTY(QString fileType READ getFileType WRITE setFileType NOTIFY fileTypeChanged)
+    Q_PROPERTY(HandlerUtils::HandlerKey fileKey READ fileKey NOTIFY fileKeyChanged)
     Q_PROPERTY(QUrl url READ getURL WRITE setURL NOTIFY urlChanged)
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString defaultAppName READ defaultAppName NOTIFY defaultAppNameChanged)
@@ -53,9 +53,8 @@ public:
     QString defaultAppIcon() const;
     Q_SIGNAL void defaultAppIconChanged();
 
-    QString getFileType() const;
-    void setFileType(const QString &fileType);
-    Q_SIGNAL void fileTypeChanged();
+    HandlerUtils::HandlerKey fileKey() const;
+    Q_SIGNAL void fileKeyChanged();
     
     PreviewHandler* activeHandler() const;
     Q_SIGNAL void activeHandlerChanged();
@@ -74,7 +73,8 @@ private:
     bool m_visible{ false };
     QUrl m_url;
 
-    QString m_fileType{QStringLiteral("Placeholder")};
+    HandlerUtils::HandlerKey m_fileKey{HandlerUtils::HandlerKey::None};
+
     QString m_defaultAppName{QStringLiteral("Placeholder")};
     QString m_defaultAppIcon{QStringLiteral("Placeholder")};
 

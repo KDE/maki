@@ -30,7 +30,7 @@ public:
     //Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
-    QString fileTypeKey() const override;
+    HandlerUtils::HandlerKey fileTypeKey() const override;
     void clearState() override;
 
     //QProperty accessors

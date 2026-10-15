@@ -82,9 +82,11 @@ void WindowManager::setURL(const QUrl &url)
 
         if (handler->canHandle(mime)) {
             m_activeHandler = handler.get();
-            Q_EMIT activeHandlerChanged();
             handler->process(url, mime);
-            setFileType(handler->fileTypeKey());
+            m_fileKey = handler->fileTypeKey();
+            Q_EMIT fileKeyChanged();
+            //Emit this signal last so you don't get warnings about assigning the wrong handler
+            Q_EMIT activeHandlerChanged();
             
             return;
         }    
@@ -106,15 +108,9 @@ QString WindowManager::defaultAppIcon() const
     return m_defaultAppIcon;
 }
 
-QString WindowManager::getFileType() const
+HandlerUtils::HandlerKey WindowManager::fileKey() const
 {
-    return m_fileType;
-}
-
-void WindowManager::setFileType(const QString &fileType)
-{
-    m_fileType = fileType;
-    Q_EMIT fileTypeChanged();
+    return m_fileKey;
 }
 
 PreviewHandler* WindowManager::activeHandler() const
@@ -140,7 +136,6 @@ void WindowManager::openInDefaultApp()
 
 void WindowManager::releaseResources()
 {
-    m_fileType = QString();
     if (m_imageProvider) {
         m_imageProvider->releaseResources();
     }
@@ -148,8 +143,6 @@ void WindowManager::releaseResources()
     for (auto &handler : m_handlers) {
         handler->clearState();   
     }
-    
-    Q_EMIT fileTypeChanged();
 }
 
 void WindowManager::initHandlers()

@@ -36,18 +36,16 @@ Kirigami.ApplicationWindow {
     }
 
     Loader {
-        anchors.fill: parent
-
-        active: WindowManager.fileType !== "" 
+        anchors.fill: parent 
 
         source: {
-            switch(WindowManager.fileType) {
-            case "image"    : return "ImagePreview.qml"
-            case "text"     : return "TextPreview.qml"
-            case "audio"    : return "AudioPreview.qml"
-            case "video"    : return "VideoPreview.qml"
-            case "document" : return "DocumentPreview.qml"
-            case "archive"  : return "ArchivePreview.qml"
+            switch(WindowManager.fileKey) {
+            case HandlerUtils.HandlerKey.Image    : return "ImagePreview.qml"
+            case HandlerUtils.HandlerKey.Text     : return "TextPreview.qml"
+            case HandlerUtils.HandlerKey.Audio    : return "AudioPreview.qml"
+            case HandlerUtils.HandlerKey.Video    : return "VideoPreview.qml"
+            case HandlerUtils.HandlerKey.Document : return "DocumentPreview.qml"
+            case HandlerUtils.HandlerKey.Archive  : return "ArchivePreview.qml"
 
             default         : return "FallbackPreview.qml"
             }

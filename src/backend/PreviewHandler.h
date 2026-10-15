@@ -9,6 +9,26 @@
 #include <QObject>
 #include <QUrl>
 
+#include <QtQml/qqmlregistration.h>
+
+namespace HandlerUtils {
+    Q_NAMESPACE_EXPORT(MAKILIB_EXPORT)
+
+    QML_NAMED_ELEMENT(HandlerUtils)
+
+    enum HandlerKey {
+        None = 0,
+    
+        Archive  = 1,
+        Audio    = 2,
+        Document = 3,
+        Image    = 4,
+        Text     = 5,
+        Video    = 6
+    };
+    Q_ENUM_NS(HandlerKey)
+}
+
 class MAKILIB_EXPORT PreviewHandler : public QObject
 {
     Q_OBJECT
@@ -18,7 +38,7 @@ public:
 
     virtual bool canHandle(const QMimeType &mime) const = 0;
     virtual void process(const QUrl &url, const QMimeType &mime) = 0;
-    virtual QString fileTypeKey() const = 0;
+    virtual HandlerUtils::HandlerKey fileTypeKey() const = 0;
 
     virtual void clearState() = 0;
 };

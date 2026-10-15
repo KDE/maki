@@ -127,9 +127,9 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-QString ArchiveHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey ArchiveHandler::fileTypeKey() const 
 {
-    return QStringLiteral("archive");
+    return HandlerUtils::HandlerKey::Archive;
 }
 
 void ArchiveHandler::clearState()

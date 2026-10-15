@@ -61,9 +61,9 @@ void AudioHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT audioCoverUrlChanged();
 }
 
-QString AudioHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey AudioHandler::fileTypeKey() const 
 {
-    return QStringLiteral("audio");
+    return HandlerUtils::HandlerKey::Audio;
 }
 
 void AudioHandler::clearState()

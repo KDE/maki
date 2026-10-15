@@ -20,9 +20,9 @@ void VideoHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT videoUrlChanged();
 }
 
-QString VideoHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey VideoHandler::fileTypeKey() const 
 {
-    return QStringLiteral("video");
+    return HandlerUtils::HandlerKey::Video;
 }
 
 void VideoHandler::clearState()
