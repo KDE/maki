@@ -24,7 +24,6 @@ class MAKILIB_EXPORT WindowManager : public QObject
     Q_PROPERTY(bool visible READ getVisible WRITE setVisible NOTIFY visibleChanged)
     Q_PROPERTY(QString fileType READ getFileType WRITE setFileType NOTIFY fileTypeChanged)
     Q_PROPERTY(QUrl url READ getURL WRITE setURL NOTIFY urlChanged)
-    Q_PROPERTY(QUrl fallbackURL READ getFallbackURL NOTIFY fallbackURLChanged)
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString defaultAppName READ defaultAppName NOTIFY defaultAppNameChanged)
     Q_PROPERTY(QString defaultAppIcon READ defaultAppIcon NOTIFY defaultAppIconChanged)
@@ -44,9 +43,6 @@ public:
     QUrl getURL() const;
     void setURL(const QUrl &url);
     Q_SIGNAL void urlChanged();
-
-    QUrl getFallbackURL() const;
-    Q_SIGNAL void fallbackURLChanged();
 
     QString getFileName() const;
     Q_SIGNAL void fileNameChanged();
@@ -77,7 +73,6 @@ private:
 
     bool m_visible{ false };
     QUrl m_url;
-    QUrl m_fallbackURL;
 
     QString m_fileType{QStringLiteral("Placeholder")};
     QString m_defaultAppName{QStringLiteral("Placeholder")};

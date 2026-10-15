@@ -3,15 +3,17 @@
 
 import QtQuick
 import QtQuick.Controls
+import org.kde.kirigami as Kirigami
 
 Item {
     anchors.fill: parent
+
+    readonly property FallbackHandler fallbackHandler: WindowManager.activeHandler
     
-    Image {
+    Kirigami.Icon {
         anchors.fill: parent
-        source: WindowManager.fallbackURL
-        visible: WindowManager.fallbackURL !== ""
-        fillMode: Image.PreserveAspectFit
+        source: fallbackHandler ? fallbackHandler.fallbackIcon : ""
+        visible: fallbackHandler ? fallbackHandler.fallbackIcon !== "" : false
 
         Component.onCompleted: {
             //TODO: Move this to a config
@@ -22,6 +24,6 @@ Item {
     Label {
         anchors.centerIn: parent
         text: "No Preview available"
-        visible: WindowManager.fallbackURL === ""
+        visible: fallbackHandler ? fallbackHandler.fallbackIcon === "" : true
     }
 }

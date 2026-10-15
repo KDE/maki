@@ -44,6 +44,8 @@ set(makiLib_SRCS
     backend/DocumentHandler.cpp
     backend/ArchiveHandler.h
     backend/ArchiveHandler.cpp
+    backend/FallbackHandler.h
+    backend/FallbackHandler.cpp
     mpv/MpvItem.h
     mpv/MpvItem.cpp
 )

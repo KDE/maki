@@ -10,6 +10,7 @@
 #include "VideoHandler.h"
 #include "DocumentHandler.h"
 #include "ArchiveHandler.h"
+#include "FallbackHandler.h"
 
 #include <KApplicationTrader>
 #include <KIO/OpenUrlJob>
@@ -88,24 +89,6 @@ void WindowManager::setURL(const QUrl &url)
             return;
         }    
     }
-    
-    //Fallback to generic
-    QIcon icon = QIcon::fromTheme(mime.iconName());
-
-    if (m_imageProvider) {
-        // TODO: Should this be in a config?
-        m_imageProvider->setFallbackImage(icon.pixmap(128, 128));
-
-        m_fallbackURL = QUrl(QStringLiteral("image://Maki/fallback"));
-        Q_EMIT fallbackURLChanged();
-    }
-
-    setFileType(QStringLiteral("None"));
-}
-
-QUrl WindowManager::getFallbackURL() const 
-{
-    return m_fallbackURL;
 }
 
 QString WindowManager::getFileName() const
@@ -157,7 +140,6 @@ void WindowManager::openInDefaultApp()
 
 void WindowManager::releaseResources()
 {
-    m_fallbackURL = QUrl();
     m_fileType = QString();
     if (m_imageProvider) {
         m_imageProvider->releaseResources();
@@ -167,7 +149,6 @@ void WindowManager::releaseResources()
         handler->clearState();   
     }
     
-    Q_EMIT fallbackURLChanged();
     Q_EMIT fileTypeChanged();
 }
 
@@ -182,19 +163,6 @@ void WindowManager::initHandlers()
     //ArchiveHandler needs to be after DocumentHandler to ensure proper handling of Office files
     //Since the inherit from zip archive mimes, the ArchiveHandler would be able to handle it 
     m_handlers.push_back(std::make_unique<ArchiveHandler>(this, m_imageProvider));
-}
-
-void WindowManager::createFallbackImage(QMimeType mime)
-{
-    QIcon icon = QIcon::fromTheme(mime.iconName());
-
-    if (m_imageProvider) {
-        // TODO: Should this be in a config?
-        m_imageProvider->setFallbackImage(icon.pixmap(512, 512));
-
-        m_fallbackURL = QUrl(QStringLiteral("image://Maki/fallback"));
-        Q_EMIT fallbackURLChanged();
-    }
-
-    setFileType(QStringLiteral("None"));
+    //FallbackHandler always evaluates to canHandle() == true, so it has to be last
+    m_handlers.push_back(std::make_unique<FallbackHandler>(this));
 }
