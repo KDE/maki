@@ -17,6 +17,7 @@ class MAKILIB_EXPORT ImageHandler : public PreviewHandler
     
     Q_PROPERTY(QUrl imageUrl READ imageUrl NOTIFY imageUrlChanged)
     Q_PROPERTY(QSize imageSize READ imageSize NOTIFY imageSizeChanged)
+    Q_PROPERTY(bool isAnimated READ isAnimated NOTIFY isAnimatedChanged)
 public:
     explicit ImageHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
 
@@ -34,9 +35,14 @@ public:
     QSize imageSize() const;
     Q_SIGNAL void imageSizeChanged();
 
+    bool isAnimated() const;
+    Q_SIGNAL void isAnimatedChanged();
+
 protected:
     QUrl m_imageUrl{ QUrl(QStringLiteral("Placeholder")) };
     QSize m_imageSize{ 1, 1 };
+
+    bool m_isAnimated{ false };
 
     MakiImageProvider *m_imageProvider{ nullptr };
 };

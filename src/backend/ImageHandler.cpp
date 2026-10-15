@@ -6,6 +6,7 @@
 #include <KZip>
 
 #include <QDateTime>
+#include <QImageReader>
 #include <QPixmap>
 
 ImageHandler::ImageHandler(QObject *parent, MakiImageProvider *imageProvider)
@@ -20,16 +21,19 @@ bool ImageHandler::canHandle(const QMimeType &mime) const
 
 void ImageHandler::process(const QUrl &url, const QMimeType &mime)
 {
-    if (mime.name().startsWith(QStringLiteral("image"))) {
-        //Parse regular images
-        QImage image = QImage(url.toLocalFile());
-        image = image.scaled(640, 640, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        m_imageSize = image.size();
-    }
+    Q_UNUSED(mime);
 
-    m_imageUrl = QUrl(url);
+    QImageReader imageReader(url.toLocalFile());
+    imageReader.setAutoTransform(true);
+    m_isAnimated = imageReader.supportsAnimation();
+    QImage image(imageReader.read());
+    image = image.scaled(640, 640, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    m_imageSize = image.size();
+
+    m_imageUrl = url;
     Q_EMIT imageUrlChanged();
     Q_EMIT imageSizeChanged();
+    Q_EMIT isAnimatedChanged();
 }
 
 HandlerUtils::HandlerKey ImageHandler::fileTypeKey() const 
@@ -50,4 +54,9 @@ QUrl ImageHandler::imageUrl() const
 QSize ImageHandler::imageSize() const
 {
     return m_imageSize;
+}
+
+bool ImageHandler::isAnimated() const
+{
+    return m_isAnimated;
 }
