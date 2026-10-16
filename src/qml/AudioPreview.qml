@@ -43,10 +43,10 @@ Item {
             anchors.fill: parent
             spacing: 16
             
-            Image {
-                source: audioHandler ? audioHandler.audioCoverUrl : ""
-
-                fillMode: Image.PreserveAspectFit
+            Kirigami.Icon {
+                source: audioHandler ? audioHandler.audioCoverUrl : "not-an-icon"
+                fallback: "audio-mp3"
+                roundToIconSize: false
 
                 Layout.fillWidth: true
                 Layout.preferredWidth: parent.width * (2/5)

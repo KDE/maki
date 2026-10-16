@@ -5,8 +5,6 @@
 
 #include "ImageHandler.h"
 
-#include "ImageProvider.h"
-
 #include <QSize>
 #include <QTemporaryFile>
 
@@ -17,7 +15,7 @@ class MAKILIB_EXPORT KritaHandler : public ImageHandler
     QML_UNCREATABLE("Handlers are managed by WindowManager")
 
 public:
-    explicit KritaHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
+    explicit KritaHandler(QObject *parent = nullptr);
 
 public:
     // Overrides

@@ -27,7 +27,7 @@ target_include_directories(makiLib
 set(makiLib_SRCS
     backend/WindowManager.cpp
     backend/WindowManager.h
-    backend/ImageProvider.h
+    backend/EmbeddedCoverImageProvider.h
     backend/DBusInterface.cpp
     backend/PreviewHandler.h
     backend/ImageHandler.h

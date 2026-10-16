@@ -29,11 +29,12 @@ RowLayout {
             anchors.verticalCenter: parent.verticalCenter
             width: parent.width
 
-            Image {
+            Kirigami.Icon {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                source: archiveHandler ? archiveHandler.infoPanelUrl : ""
-                fillMode: Image.PreserveAspectFit
+                source: archiveHandler ? archiveHandler.iconName : "not-an-icon"
+                roundToIconSize: false
+                fallback: "application-x-archive"
             }
 
             Text {

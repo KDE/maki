@@ -17,6 +17,7 @@
 #include "../MakiVersion.h"
 
 #include "backend/DBusInterface.h"
+#include "backend/EmbeddedCoverImageProvider.h"
 #include "backend/WindowManager.h"
 
 int main(int argc, char *argv[])
@@ -69,9 +70,9 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    MakiImageProvider *imageProvider = new MakiImageProvider();
-
-    engine.addImageProvider(QStringLiteral("Maki"), imageProvider);
+    EmbeddedCoverImageProvider *imageProvider = new EmbeddedCoverImageProvider();
+    engine.addImageProvider(QStringLiteral("audioCover"), imageProvider);
+    
     KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("org.kde.maki", "Main");
 
@@ -81,9 +82,6 @@ int main(int argc, char *argv[])
 
     auto setup = [&]() {
         if (manager) {
-            manager->initApp(&app);
-            manager->setImageProvider(imageProvider);
-
             if (parser.isSet(daemonOption)) {
                 manager->setVisible(false);
             } else if (parser.isSet(previewOption)) {

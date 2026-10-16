@@ -5,8 +5,6 @@
 
 #include "PreviewHandler.h"
 
-#include "ImageProvider.h"
-
 #include <KArchive>
 
 #include <QStandardItemModel>
@@ -20,11 +18,11 @@ class MAKILIB_EXPORT ArchiveHandler : public PreviewHandler
 
     Q_PROPERTY(QString fileSize READ fileSize NOTIFY fileSizeChanged)
     Q_PROPERTY(QString fileName READ fileName NOTIFY fileNameChanged)
-    Q_PROPERTY(QUrl infoPanelUrl READ infoPanelUrl NOTIFY infoPanelUrlChanged)
+    Q_PROPERTY(QString iconName READ iconName NOTIFY iconNameChanged)
     Q_PROPERTY(QStandardItemModel *archiveModel READ archiveModel NOTIFY archiveModelChanged)
 
 public:
-    explicit ArchiveHandler(QObject *parent, MakiImageProvider *imageProvider = nullptr);
+    explicit ArchiveHandler(QObject *parent);
 
 public:
     // Overrides
@@ -40,8 +38,8 @@ public:
     QString fileName() const;
     Q_SIGNAL void fileNameChanged();
 
-    QUrl infoPanelUrl() const;
-    Q_SIGNAL void infoPanelUrlChanged();
+    QString iconName() const;
+    Q_SIGNAL void iconNameChanged();
 
     QStandardItemModel *archiveModel() const;
     Q_SIGNAL void archiveModelChanged();
@@ -54,8 +52,6 @@ private:
 private:
     QString m_fileSize{QStringLiteral("Placeholder")};
     QString m_fileName{QStringLiteral("Placeholder")};
-    QUrl m_infoPanelUrl{QStringLiteral("Placeholder")};
+    QString m_iconName{QStringLiteral("Placeholder")};
     QStandardItemModel *m_archiveModel{nullptr};
-
-    MakiImageProvider *m_imageProvider{nullptr};
 };

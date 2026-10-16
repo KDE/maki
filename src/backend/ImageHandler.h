@@ -5,8 +5,6 @@
 
 #include "PreviewHandler.h"
 
-#include "ImageProvider.h"
-
 #include <QSize>
 
 class MAKILIB_EXPORT ImageHandler : public PreviewHandler
@@ -19,7 +17,7 @@ class MAKILIB_EXPORT ImageHandler : public PreviewHandler
     Q_PROPERTY(QSize imageSize READ imageSize NOTIFY imageSizeChanged)
     Q_PROPERTY(bool isAnimated READ isAnimated NOTIFY isAnimatedChanged)
 public:
-    explicit ImageHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
+    explicit ImageHandler(QObject *parent = nullptr);
 
 public:
     // Overrides
@@ -43,6 +41,4 @@ protected:
     QSize m_imageSize{1, 1};
 
     bool m_isAnimated{false};
-
-    MakiImageProvider *m_imageProvider{nullptr};
 };

@@ -5,8 +5,6 @@
 
 #include "PreviewHandler.h"
 
-#include "ImageProvider.h"
-
 #include <QFutureWatcher>
 #include <QTemporaryFile>
 #include <QtQml/qqmlregistration.h>
@@ -21,7 +19,7 @@ class MAKILIB_EXPORT DocumentHandler : public PreviewHandler
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
 
 public:
-    explicit DocumentHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
+    explicit DocumentHandler(QObject *parent = nullptr);
     ~DocumentHandler();
 
 public:
@@ -48,5 +46,4 @@ private:
 
     QFutureWatcher<std::shared_ptr<QTemporaryFile>> m_watcher;
     std::shared_ptr<QTemporaryFile> m_tempPdf;
-    MakiImageProvider *m_imageProvider{nullptr};
 };
