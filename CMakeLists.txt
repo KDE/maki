@@ -15,6 +15,8 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
+include(KDEClangFormat)
+include(KDEGitCommitHooks)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMFindQmlModule)
 include(ECMQmlModule)
@@ -73,3 +75,7 @@ configure_file(org.kde.maki.service.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.service DESTINATION ${KDE_INSTALL_DBUSSERVICEDIR})
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
+kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
