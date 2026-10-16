@@ -9,9 +9,8 @@
 #include <QImageReader>
 #include <QPixmap>
 
-ImageHandler::ImageHandler(QObject *parent, MakiImageProvider *imageProvider)
+ImageHandler::ImageHandler(QObject *parent)
     : PreviewHandler(parent)
-    , m_imageProvider(imageProvider)
 {
 }
 

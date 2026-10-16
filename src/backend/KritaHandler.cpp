@@ -9,8 +9,8 @@
 #include <QDir>
 #include <QPixmap>
 
-KritaHandler::KritaHandler(QObject *parent, MakiImageProvider *imageProvider)
-    : ImageHandler(parent, imageProvider)
+KritaHandler::KritaHandler(QObject *parent)
+    : ImageHandler(parent)
 {
 }
 

@@ -12,7 +12,6 @@
 #include <QUrl>
 #include <qqmlintegration.h>
 
-#include "ImageProvider.h"
 #include "PreviewHandler.h"
 
 class MAKILIB_EXPORT WindowManager : public QObject
@@ -31,9 +30,6 @@ class MAKILIB_EXPORT WindowManager : public QObject
 
 public:
     explicit WindowManager(QObject *parent = nullptr);
-
-    void initApp(QApplication *app);
-    void setImageProvider(MakiImageProvider *provider);
 
 public:
     bool getVisible() const;
@@ -65,11 +61,7 @@ public:
 private:
     void initHandlers();
 
-    void createFallbackImage(QMimeType mime);
-
 private:
-    QApplication *m_app{nullptr};
-
     bool m_visible{false};
     QUrl m_url;
 
@@ -77,8 +69,6 @@ private:
 
     QString m_defaultAppName{QStringLiteral("Placeholder")};
     QString m_defaultAppIcon{QStringLiteral("Placeholder")};
-
-    MakiImageProvider *m_imageProvider{nullptr};
 
     QMimeDatabase db;
 

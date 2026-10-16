@@ -9,9 +9,8 @@
 #include <QTemporaryDir>
 #include <QtConcurrentRun>
 
-DocumentHandler::DocumentHandler(QObject *parent, MakiImageProvider *imageProvider)
+DocumentHandler::DocumentHandler(QObject *parent)
     : PreviewHandler(parent)
-    , m_imageProvider(imageProvider)
 {
     connect(&m_watcher, &QFutureWatcher<std::shared_ptr<QTemporaryFile>>::finished, this, [this]() {
         // necessary to be able to clear the shared ptr from m_watcher

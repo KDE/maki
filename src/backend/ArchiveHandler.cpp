@@ -11,9 +11,8 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 
-ArchiveHandler::ArchiveHandler(QObject *parent, MakiImageProvider *imageProvider)
+ArchiveHandler::ArchiveHandler(QObject *parent)
     : PreviewHandler(parent)
-    , m_imageProvider(imageProvider)
 {
 }
 
@@ -63,11 +62,8 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
 
             populateArchiveModel(m_archiveModel->invisibleRootItem(), archive->directory());
 
-            if (m_imageProvider) {
-                m_imageProvider->setInfoPanelImage(QIcon::fromTheme(mime.iconName()).pixmap(128, 128));
-                m_infoPanelUrl = QUrl(QStringLiteral("image://Maki/infoPanel?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
-                Q_EMIT infoPanelUrlChanged();
-            }
+            m_iconName = mime.iconName();
+            Q_EMIT iconNameChanged();
 
             archive->close();
         }
@@ -94,12 +90,9 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
         m_fileSize = QLocale::system().formattedDataSize(fileInfo.size(), 1);
         Q_EMIT fileSizeChanged();
 
-        if (m_imageProvider) {
-            m_imageProvider->setInfoPanelImage(QIcon::fromTheme(mime.iconName()).pixmap(128, 128));
-            m_infoPanelUrl = QUrl(QStringLiteral("image://Maki/infoPanel?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
-            Q_EMIT infoPanelUrlChanged();
-        }
-
+        m_iconName = mime.iconName();
+        Q_EMIT iconNameChanged();
+        
         QString innerFileName = fileInfo.completeBaseName();
 
         auto *item = new QStandardItem(innerFileName);
@@ -149,9 +142,9 @@ QString ArchiveHandler::fileName() const
     return m_fileName;
 }
 
-QUrl ArchiveHandler::infoPanelUrl() const
+QString ArchiveHandler::iconName() const
 {
-    return m_infoPanelUrl;
+    return m_iconName;
 }
 
 QStandardItemModel *ArchiveHandler::archiveModel() const

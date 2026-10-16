@@ -20,10 +20,6 @@ void FileRoutingTest::testRouting()
     QFETCH(HandlerUtils::HandlerKey, expectedHandlerKey);
 
     WindowManager windowManager;
-    // Necessary right now to construct all handlers.
-    // Image Provider will be removed at some point
-    MakiImageProvider imageProvider;
-    windowManager.setImageProvider(&imageProvider);
     windowManager.setURL(QUrl::fromLocalFile(fileName));
 
     QVERIFY2(windowManager.fileKey() == expectedHandlerKey, "File is routed to the wrong handler");

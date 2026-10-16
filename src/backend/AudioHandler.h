@@ -5,8 +5,6 @@
 
 #include "PreviewHandler.h"
 
-#include "ImageProvider.h"
-
 #include <QtQml/qqmlregistration.h>
 
 class MAKILIB_EXPORT AudioHandler : public PreviewHandler
@@ -20,7 +18,7 @@ class MAKILIB_EXPORT AudioHandler : public PreviewHandler
     Q_PROPERTY(QString fileName READ fileName NOTIFY fileNameChanged)
 
 public:
-    explicit AudioHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
+    explicit AudioHandler(QObject *parent = nullptr);
 
 public:
     // Overrides
@@ -42,6 +40,4 @@ public:
 private:
     QUrl m_audioUrl{QStringLiteral("Placeholder")};
     QUrl m_audioCoverUrl{QStringLiteral("Placeholder")};
-
-    MakiImageProvider *m_imageProvider{nullptr};
 };
