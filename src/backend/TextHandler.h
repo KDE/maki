@@ -12,7 +12,7 @@ class MAKILIB_EXPORT TextHandler : public PreviewHandler
     Q_OBJECT
     QML_ELEMENT
     QML_UNCREATABLE("Handlers are managed by WindowManager")
-    
+
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
     Q_PROPERTY(QString fileName READ fileName NOTIFY fileNameChanged)
 
@@ -20,13 +20,13 @@ public:
     explicit TextHandler(QObject *parent = nullptr);
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     HandlerUtils::HandlerKey fileTypeKey() const override;
     void clearState() override;
 
-    //QProperties
+    // QProperties
     QString text() const;
     Q_SIGNAL void textChanged();
 
@@ -34,6 +34,6 @@ public:
     Q_SIGNAL void fileNameChanged();
 
 private:
-    QString m_text{ QStringLiteral("Placeholder") };
-    QString m_fileName{ QStringLiteral("Placeholder") };
+    QString m_text{QStringLiteral("Placeholder")};
+    QString m_fileName{QStringLiteral("Placeholder")};
 };

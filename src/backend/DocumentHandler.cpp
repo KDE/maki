@@ -6,24 +6,24 @@
 #include <QDir>
 #include <QProcess>
 #include <QStandardPaths>
-#include <QtConcurrentRun>
 #include <QTemporaryDir>
+#include <QtConcurrentRun>
 
 DocumentHandler::DocumentHandler(QObject *parent, MakiImageProvider *imageProvider)
-: PreviewHandler(parent)
-, m_imageProvider(imageProvider)
+    : PreviewHandler(parent)
+    , m_imageProvider(imageProvider)
 {
     connect(&m_watcher, &QFutureWatcher<std::shared_ptr<QTemporaryFile>>::finished, this, [this]() {
-        //necessary to be able to clear the shared ptr from m_watcher
+        // necessary to be able to clear the shared ptr from m_watcher
         if (m_watcher.future().resultCount() == 0) {
             return;
         }
-        
+
         m_isLoading = false;
         Q_EMIT isLoadingChanged();
-        
+
         m_tempPdf = m_watcher.result();
-        
+
         m_documentUrl = QUrl::fromLocalFile(m_tempPdf->fileName());
         Q_EMIT documentUrlChanged();
     });
@@ -34,7 +34,7 @@ DocumentHandler::~DocumentHandler()
     clearState();
 }
 
-bool DocumentHandler::canHandle(const QMimeType &mime) const 
+bool DocumentHandler::canHandle(const QMimeType &mime) const
 {
     return mime.inherits(QStringLiteral("application/pdf")) || isOfficeFile(mime);
 }
@@ -51,19 +51,19 @@ void DocumentHandler::process(const QUrl &url, const QMimeType &mime)
 
         m_isLoading = true;
         Q_EMIT isLoadingChanged();
-        
+
         std::shared_ptr<QTemporaryFile> tempFile = std::make_shared<QTemporaryFile>();
-        
+
         tempFile->setFileTemplate(QDir::tempPath() + QStringLiteral("/preview_XXXXXX.pdf"));
-        
+
         if (!tempFile->open()) {
             m_isLoading = false;
             Q_EMIT isLoadingChanged();
             return;
         }
 
-        QString inputFilePath{ url.toLocalFile() };
-        QString tempFilePath{ tempFile->fileName() };
+        QString inputFilePath{url.toLocalFile()};
+        QString tempFilePath{tempFile->fileName()};
         tempFile->close();
 
         QFuture<std::shared_ptr<QTemporaryFile>> future = QtConcurrent::run([this, inputFilePath, tempFile]() {
@@ -75,14 +75,14 @@ void DocumentHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-HandlerUtils::HandlerKey DocumentHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey DocumentHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::Document;
 }
 
 void DocumentHandler::clearState()
 {
-    //Delete all instances of the shared ptr
+    // Delete all instances of the shared ptr
     m_watcher.setFuture(QFuture<std::shared_ptr<QTemporaryFile>>());
     m_tempPdf.reset();
 }
@@ -99,6 +99,7 @@ bool DocumentHandler::isLoading() const
 
 bool DocumentHandler::isOfficeFile(const QMimeType &mime) const
 {
+    // clang-format off
     const QSet<QString> officeMimes {
         // OpenDocument files
         QStringLiteral("application/vnd.oasis.opendocument.text"),
@@ -126,6 +127,7 @@ bool DocumentHandler::isOfficeFile(const QMimeType &mime) const
         QStringLiteral("application/vnd.ms-excel"),
         QStringLiteral("application/vnd.ms-powerpoint")
     };
+    // clang-format on
 
     if (officeMimes.contains(mime.name())) {
         return true;
@@ -137,15 +139,16 @@ bool DocumentHandler::isOfficeFile(const QMimeType &mime) const
 void DocumentHandler::convertOfficeFile(const QString &inputFilePath, const QString &outputFilePath) const
 {
     if (QStandardPaths::findExecutable(QStringLiteral("libreoffice")).isEmpty()) {
-        //TODO: Implement warning to user to install libreoffice to preview office files
+        // TODO: Implement warning to user to install libreoffice to preview office files
         return;
     }
-        
+
     QTemporaryDir tempDir;
     if (!tempDir.isValid()) {
         return;
     }
-    
+
+    // clang-format off
     QProcess process;
     process.start(QStringLiteral("libreoffice"), {
         QStringLiteral("--headless"),
@@ -154,17 +157,18 @@ void DocumentHandler::convertOfficeFile(const QString &inputFilePath, const QStr
         inputFilePath
     });
     process.waitForFinished(-1);
-    
+    // clang-format on
+
     if (process.exitCode() != 0) {
         return;
     }
 
-    //Get the file path of the generated file by extending the original file with .pdf
-    QFileInfo inputFileInfo{ inputFilePath };
-    QString generatedFilePath{ tempDir.filePath(inputFileInfo.completeBaseName() + QStringLiteral(".pdf")) };
+    // Get the file path of the generated file by extending the original file with .pdf
+    QFileInfo inputFileInfo{inputFilePath};
+    QString generatedFilePath{tempDir.filePath(inputFileInfo.completeBaseName() + QStringLiteral(".pdf"))};
 
-    QFile srcFile{ generatedFilePath };
-    QFile destFile{ outputFilePath };
+    QFile srcFile{generatedFilePath};
+    QFile destFile{outputFilePath};
 
     if (!srcFile.open(QIODevice::ReadOnly) || !destFile.open(QIODevice::WriteOnly)) {
         return;

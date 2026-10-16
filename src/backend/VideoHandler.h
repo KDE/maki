@@ -15,11 +15,11 @@ class MAKILIB_EXPORT VideoHandler : public PreviewHandler
 
     Q_PROPERTY(QUrl videoUrl READ videoUrl NOTIFY videoUrlChanged)
 
-public: 
+public:
     explicit VideoHandler(QObject *parent = nullptr);
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     HandlerUtils::HandlerKey fileTypeKey() const override;

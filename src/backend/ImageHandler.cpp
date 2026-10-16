@@ -10,11 +10,12 @@
 #include <QPixmap>
 
 ImageHandler::ImageHandler(QObject *parent, MakiImageProvider *imageProvider)
-: PreviewHandler(parent)
-, m_imageProvider(imageProvider)
-{}
+    : PreviewHandler(parent)
+    , m_imageProvider(imageProvider)
+{
+}
 
-bool ImageHandler::canHandle(const QMimeType &mime) const 
+bool ImageHandler::canHandle(const QMimeType &mime) const
 {
     return mime.name().startsWith(QStringLiteral("image/"));
 }
@@ -36,14 +37,13 @@ void ImageHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT isAnimatedChanged();
 }
 
-HandlerUtils::HandlerKey ImageHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey ImageHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::Image;
 }
 
 void ImageHandler::clearState()
 {
-
 }
 
 QUrl ImageHandler::imageUrl() const

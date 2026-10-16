@@ -3,13 +3,13 @@
 
 #include "DBusInterface.h"
 
+#include "makiadaptor.h"
 #include <QDBusConnection>
 #include <QString>
 #include <QUrl>
-#include "makiadaptor.h"
 
-DBusInterface::DBusInterface(WindowManager* windowManager, QObject* parent)
-: m_windowManager(windowManager)
+DBusInterface::DBusInterface(WindowManager *windowManager, QObject *parent)
+    : m_windowManager(windowManager)
 {
     Q_UNUSED(parent);
 
@@ -17,7 +17,7 @@ DBusInterface::DBusInterface(WindowManager* windowManager, QObject* parent)
     QDBusConnection::sessionBus().registerObject(QStringLiteral("/maki"), this);
 }
 
-void DBusInterface::showFile(QString url) 
+void DBusInterface::showFile(QString url)
 {
     if (m_windowManager) {
         m_windowManager->setURL(QUrl::fromUserInput(url));

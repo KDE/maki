@@ -4,10 +4,11 @@
 #include "VideoHandler.h"
 
 VideoHandler::VideoHandler(QObject *parent)
-: PreviewHandler(parent)
-{}
+    : PreviewHandler(parent)
+{
+}
 
-bool VideoHandler::canHandle(const QMimeType &mime) const 
+bool VideoHandler::canHandle(const QMimeType &mime) const
 {
     return mime.name().startsWith(QStringLiteral("video/"));
 }
@@ -20,14 +21,13 @@ void VideoHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT videoUrlChanged();
 }
 
-HandlerUtils::HandlerKey VideoHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey VideoHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::Video;
 }
 
 void VideoHandler::clearState()
 {
-    
 }
 
 QUrl VideoHandler::videoUrl() const

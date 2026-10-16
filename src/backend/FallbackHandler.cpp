@@ -4,10 +4,11 @@
 #include "FallbackHandler.h"
 
 FallbackHandler::FallbackHandler(QObject *parent)
-: PreviewHandler(parent)
-{}
+    : PreviewHandler(parent)
+{
+}
 
-bool FallbackHandler::canHandle(const QMimeType &mime) const 
+bool FallbackHandler::canHandle(const QMimeType &mime) const
 {
     Q_UNUSED(mime);
 
@@ -22,7 +23,7 @@ void FallbackHandler::process(const QUrl &url, const QMimeType &mime)
     Q_EMIT fallbackIconChanged();
 }
 
-HandlerUtils::HandlerKey FallbackHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey FallbackHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::None;
 }

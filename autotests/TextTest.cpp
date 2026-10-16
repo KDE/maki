@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QTest>
 #include <QMimeDatabase>
+#include <QTest>
 
 #include "../src/backend/TextHandler.h"
 
-class TextTest: public QObject
+class TextTest : public QObject
 {
     Q_OBJECT
 
@@ -24,6 +24,7 @@ void TextTest::setupTestFiles() const
 {
     QTest::addColumn<QString>("fileName");
 
+    // clang-format off
     QTest::addRow("meson")      << QFINDTESTDATA("samplefiles/text/meson.build");
     QTest::addRow("adb")        << QFINDTESTDATA("samplefiles/text/test.adb");
     QTest::addRow("asm")        << QFINDTESTDATA("samplefiles/text/test.asm");
@@ -92,6 +93,7 @@ void TextTest::setupTestFiles() const
     QTest::addRow("yaml")       << QFINDTESTDATA("samplefiles/text/test.yaml");
     QTest::addRow("zig")        << QFINDTESTDATA("samplefiles/text/test.zig");
     QTest::addRow("zsh")        << QFINDTESTDATA("samplefiles/text/test.zsh");
+    // clang-format on
 }
 
 void TextTest::testSupportStatus()
@@ -101,7 +103,7 @@ void TextTest::testSupportStatus()
 
     const QMimeDatabase db;
     const QMimeType mimeType = db.mimeTypeForFile(fileName);
-    
+
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(textHandler.canHandle(mimeType), "Text file not supported");
 }
@@ -123,7 +125,7 @@ void TextTest::testContent()
 
     textHandler.process(QUrl::fromLocalFile(fileName), mimeType);
 
-    //All test files have a newline, so compare for that as well
+    // All test files have a newline, so compare for that as well
     QCOMPARE(textHandler.text(), QStringLiteral("test\n"));
 }
 

@@ -5,8 +5,8 @@
 
 #include "MakiLibExport.h"
 
-#include <QQuickImageProvider>
 #include <QPixmap>
+#include <QQuickImageProvider>
 
 class MAKILIB_EXPORT MakiImageProvider : public QQuickImageProvider
 {
@@ -60,7 +60,7 @@ public:
     {
         m_audioCover = pixmap;
     }
-    
+
     void setInfoPanelImage(const QPixmap &pixmap)
     {
         m_infoPanelImage = pixmap;

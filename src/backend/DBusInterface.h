@@ -14,11 +14,11 @@ class MAKILIB_EXPORT DBusInterface : public QObject
     Q_OBJECT
 
 public:
-    DBusInterface(WindowManager* windowManager, QObject* parent = nullptr);
+    DBusInterface(WindowManager *windowManager, QObject *parent = nullptr);
 
 public Q_SLOTS:
     void showFile(QString url);
 
 private:
-    WindowManager* m_windowManager{ nullptr };
+    WindowManager *m_windowManager{nullptr};
 };

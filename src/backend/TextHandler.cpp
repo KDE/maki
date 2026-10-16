@@ -7,12 +7,14 @@
 #include <QSet>
 
 TextHandler::TextHandler(QObject *parent)
-: PreviewHandler(parent)
-{}
-
-bool TextHandler::canHandle(const QMimeType &mime) const 
+    : PreviewHandler(parent)
 {
-    //Files that are essentially just text, but whose mimetype for some reason doesn't start with 'text/' 
+}
+
+bool TextHandler::canHandle(const QMimeType &mime) const
+{
+    // Files that are essentially just text, but whose mimetype for some reason doesn't start with 'text/'
+    // clang-format off
     const QSet<QString> extraMimes {
         QStringLiteral("application/vnd.dart"),
         QStringLiteral("application/x-fishscript"),
@@ -26,6 +28,7 @@ bool TextHandler::canHandle(const QMimeType &mime) const
         QStringLiteral("application/x-tiled-tsx"),
         QStringLiteral("application/yaml")
     };
+    // clang-format on
 
     return mime.name().startsWith(QStringLiteral("text/")) || extraMimes.contains(mime.name());
 }
@@ -33,7 +36,7 @@ bool TextHandler::canHandle(const QMimeType &mime) const
 void TextHandler::process(const QUrl &url, const QMimeType &mime)
 {
     Q_UNUSED(mime);
-    
+
     QFile textFile(url.toLocalFile());
     m_fileName = textFile.fileName();
     Q_EMIT fileNameChanged();
@@ -44,7 +47,7 @@ void TextHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-HandlerUtils::HandlerKey TextHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey TextHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::Text;
 }
