@@ -25,7 +25,7 @@ public:
     ~DocumentHandler();
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     HandlerUtils::HandlerKey fileTypeKey() const override;
@@ -44,9 +44,9 @@ private:
 
 private:
     QUrl m_documentUrl;
-    bool m_isLoading{ false };
-    
+    bool m_isLoading{false};
+
     QFutureWatcher<std::shared_ptr<QTemporaryFile>> m_watcher;
     std::shared_ptr<QTemporaryFile> m_tempPdf;
-    MakiImageProvider *m_imageProvider{ nullptr };
+    MakiImageProvider *m_imageProvider{nullptr};
 };

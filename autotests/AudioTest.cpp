@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QTest>
 #include <QMimeDatabase>
+#include <QTest>
 
 #include "../src/backend/AudioHandler.h"
 
-class AudioTest: public QObject
+class AudioTest : public QObject
 {
     Q_OBJECT
 
@@ -22,7 +22,7 @@ void AudioTest::testSupportStatus()
 
     const QMimeDatabase db;
     const QMimeType mimeType = db.mimeTypeForFile(fileName);
-    
+
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(audioHandler.canHandle(mimeType), "Audio file not supported");
 }
@@ -31,6 +31,7 @@ void AudioTest::testSupportStatus_data()
 {
     QTest::addColumn<QString>("fileName");
 
+    // clang-format off
     QTest::addRow("aiff")      << QFINDTESTDATA("samplefiles/audio/test.aiff");
     QTest::addRow("ape")       << QFINDTESTDATA("samplefiles/audio/test.ape");
     QTest::addRow("flac")      << QFINDTESTDATA("samplefiles/audio/test.flac");
@@ -46,6 +47,7 @@ void AudioTest::testSupportStatus_data()
     QTest::addRow("wav")       << QFINDTESTDATA("samplefiles/audio/test.wav");
     QTest::addRow("wma")       << QFINDTESTDATA("samplefiles/audio/test.wma");
     QTest::addRow("wv")        << QFINDTESTDATA("samplefiles/audio/test.wv");
+    // clang-format on
 }
 
 QTEST_GUILESS_MAIN(AudioTest)

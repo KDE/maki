@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include <QTest>
 #include <QMimeDatabase>
+#include <QTest>
 
 #include "../src/backend/VideoHandler.h"
 
-class VideoTest: public QObject
+class VideoTest : public QObject
 {
     Q_OBJECT
 
@@ -22,7 +22,7 @@ void VideoTest::testVideoFiles()
 
     const QMimeDatabase db;
     const QMimeType mimeType = db.mimeTypeForFile(fileName);
-    
+
     QVERIFY2(mimeType.isValid(), "Failed to determine mimetype");
     QVERIFY2(videoHandler.canHandle(mimeType), "Video file not supported");
 }
@@ -31,6 +31,7 @@ void VideoTest::testVideoFiles_data()
 {
     QTest::addColumn<QString>("fileName");
 
+    // clang-format off
     QTest::addRow("avi")  << QFINDTESTDATA("samplefiles/video/test.avi");
     QTest::addRow("mkv")  << QFINDTESTDATA("samplefiles/video/test.mkv");
     QTest::addRow("mov")  << QFINDTESTDATA("samplefiles/video/test.mov");
@@ -39,6 +40,7 @@ void VideoTest::testVideoFiles_data()
     QTest::addRow("vob")  << QFINDTESTDATA("samplefiles/video/test.vob");
     QTest::addRow("webm") << QFINDTESTDATA("samplefiles/video/test.webm");
     QTest::addRow("wmv")  << QFINDTESTDATA("samplefiles/video/test.wmv");
+    // clang-format on
 }
 
 QTEST_GUILESS_MAIN(VideoTest)

@@ -6,11 +6,11 @@
 #include "MakiLibExport.h"
 
 #include <QApplication>
+#include <QMimeDatabase>
 #include <QObject>
-#include <qqmlintegration.h>
 #include <QSize>
 #include <QUrl>
-#include <QMimeDatabase>
+#include <qqmlintegration.h>
 
 #include "ImageProvider.h"
 #include "PreviewHandler.h"
@@ -27,7 +27,7 @@ class MAKILIB_EXPORT WindowManager : public QObject
     Q_PROPERTY(QString fileName READ getFileName NOTIFY fileNameChanged)
     Q_PROPERTY(QString defaultAppName READ defaultAppName NOTIFY defaultAppNameChanged)
     Q_PROPERTY(QString defaultAppIcon READ defaultAppIcon NOTIFY defaultAppIconChanged)
-    Q_PROPERTY(PreviewHandler* activeHandler READ activeHandler NOTIFY activeHandlerChanged)
+    Q_PROPERTY(PreviewHandler *activeHandler READ activeHandler NOTIFY activeHandlerChanged)
 
 public:
     explicit WindowManager(QObject *parent = nullptr);
@@ -49,14 +49,14 @@ public:
 
     QString defaultAppName() const;
     Q_SIGNAL void defaultAppNameChanged();
-    
+
     QString defaultAppIcon() const;
     Q_SIGNAL void defaultAppIconChanged();
 
     HandlerUtils::HandlerKey fileKey() const;
     Q_SIGNAL void fileKeyChanged();
-    
-    PreviewHandler* activeHandler() const;
+
+    PreviewHandler *activeHandler() const;
     Q_SIGNAL void activeHandlerChanged();
 
     Q_INVOKABLE void openInDefaultApp();
@@ -70,7 +70,7 @@ private:
 private:
     QApplication *m_app{nullptr};
 
-    bool m_visible{ false };
+    bool m_visible{false};
     QUrl m_url;
 
     HandlerUtils::HandlerKey m_fileKey{HandlerUtils::HandlerKey::None};
@@ -83,5 +83,5 @@ private:
     QMimeDatabase db;
 
     std::vector<std::unique_ptr<PreviewHandler>> m_handlers;
-    PreviewHandler *m_activeHandler{ nullptr };
+    PreviewHandler *m_activeHandler{nullptr};
 };

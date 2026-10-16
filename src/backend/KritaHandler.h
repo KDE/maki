@@ -20,15 +20,15 @@ public:
     explicit KritaHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     void clearState() override;
 
-    // Also gets called in an autotest, so needs to stay public for now. 
+    // Also gets called in an autotest, so needs to stay public for now.
     // Also the reason why a QImage is returned, since QPixmap needs to be on the GUI Thread.
     QImage extractKritaImage(const QString &fileName) const;
 
 private:
-    std::unique_ptr<QTemporaryFile> m_tempFile { nullptr };
+    std::unique_ptr<QTemporaryFile> m_tempFile{nullptr};
 };

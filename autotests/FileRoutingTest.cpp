@@ -5,7 +5,7 @@
 
 #include "../src/backend/WindowManager.h"
 
-class FileRoutingTest: public QObject
+class FileRoutingTest : public QObject
 {
     Q_OBJECT
 
@@ -20,8 +20,8 @@ void FileRoutingTest::testRouting()
     QFETCH(HandlerUtils::HandlerKey, expectedHandlerKey);
 
     WindowManager windowManager;
-    //Necessary right now to construct all handlers.
-    //Image Provider will be removed at some point
+    // Necessary right now to construct all handlers.
+    // Image Provider will be removed at some point
     MakiImageProvider imageProvider;
     windowManager.setImageProvider(&imageProvider);
     windowManager.setURL(QUrl::fromLocalFile(fileName));
@@ -34,7 +34,8 @@ void FileRoutingTest::testRouting_data()
     QTest::addColumn<QString>("fileName");
     QTest::addColumn<HandlerUtils::HandlerKey>("expectedHandlerKey");
 
-    //Archives
+    // clang-format off
+    // Archives
     QTest::addRow("7z")       << QFINDTESTDATA("samplefiles/archive/test.7z")       << HandlerUtils::HandlerKey::Archive;
     QTest::addRow("tar")      << QFINDTESTDATA("samplefiles/archive/test.tar")      << HandlerUtils::HandlerKey::Archive;
     QTest::addRow("tar.bz2")  << QFINDTESTDATA("samplefiles/archive/test.tar.bz2")  << HandlerUtils::HandlerKey::Archive;
@@ -50,7 +51,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("txt.zst")  << QFINDTESTDATA("samplefiles/archive/test.txt.zst")  << HandlerUtils::HandlerKey::Archive;
     QTest::addRow("zip")      << QFINDTESTDATA("samplefiles/archive/test.zip")      << HandlerUtils::HandlerKey::Archive;
     
-    //Audio Files
+    // Audio Files
     QTest::addRow("aiff")      << QFINDTESTDATA("samplefiles/audio/test.aiff")      << HandlerUtils::HandlerKey::Audio;
     QTest::addRow("ape")       << QFINDTESTDATA("samplefiles/audio/test.ape")       << HandlerUtils::HandlerKey::Audio;
     QTest::addRow("flac")      << QFINDTESTDATA("samplefiles/audio/test.flac")      << HandlerUtils::HandlerKey::Audio;
@@ -67,7 +68,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("wma")       << QFINDTESTDATA("samplefiles/audio/test.wma")       << HandlerUtils::HandlerKey::Audio;
     QTest::addRow("wv")        << QFINDTESTDATA("samplefiles/audio/test.wv")        << HandlerUtils::HandlerKey::Audio;
     
-    //Document Files
+    // Document Files
     QTest::addRow("doc")  << QFINDTESTDATA("samplefiles/document/test.doc")  << HandlerUtils::HandlerKey::Document;
     QTest::addRow("docx") << QFINDTESTDATA("samplefiles/document/test.docx") << HandlerUtils::HandlerKey::Document;
     // QTest::addRow("epub") << QFINDTESTDATA("samplefiles/document/test.epub") << HandlerUtils::HandlerKey::Document; // EPUB support in planning
@@ -80,7 +81,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("xls")  << QFINDTESTDATA("samplefiles/document/test.xls")  << HandlerUtils::HandlerKey::Document;
     QTest::addRow("xlsx") << QFINDTESTDATA("samplefiles/document/test.xlsx") << HandlerUtils::HandlerKey::Document;
 
-    //Image Files
+    // Image Files
     QTest::addRow("avif") << QFINDTESTDATA("samplefiles/image/test.avif") << HandlerUtils::HandlerKey::Image;
     QTest::addRow("bmp")  << QFINDTESTDATA("samplefiles/image/test.bmp")  << HandlerUtils::HandlerKey::Image;
     QTest::addRow("gif")  << QFINDTESTDATA("samplefiles/image/test.gif")  << HandlerUtils::HandlerKey::Image;
@@ -99,7 +100,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("kra")  << QFINDTESTDATA("samplefiles/image/test.kra")  << HandlerUtils::HandlerKey::Image;
     QTest::addRow("krz")  << QFINDTESTDATA("samplefiles/image/test.krz")  << HandlerUtils::HandlerKey::Image;
 
-    //Text Files
+    // Text Files
     QTest::addRow("meson")      << QFINDTESTDATA("samplefiles/text/meson.build")     << HandlerUtils::HandlerKey::Text;
     QTest::addRow("adb")        << QFINDTESTDATA("samplefiles/text/test.adb")        << HandlerUtils::HandlerKey::Text;
     QTest::addRow("asm")        << QFINDTESTDATA("samplefiles/text/test.asm")        << HandlerUtils::HandlerKey::Text;
@@ -169,7 +170,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("zig")        << QFINDTESTDATA("samplefiles/text/test.zig")        << HandlerUtils::HandlerKey::Text;
     QTest::addRow("zsh")        << QFINDTESTDATA("samplefiles/text/test.zsh")        << HandlerUtils::HandlerKey::Text;
 
-    //Video Files
+    // Video Files
     QTest::addRow("avi")  << QFINDTESTDATA("samplefiles/video/test.avi")  << HandlerUtils::HandlerKey::Video;
     QTest::addRow("mkv")  << QFINDTESTDATA("samplefiles/video/test.mkv")  << HandlerUtils::HandlerKey::Video;
     QTest::addRow("mov")  << QFINDTESTDATA("samplefiles/video/test.mov")  << HandlerUtils::HandlerKey::Video;
@@ -178,6 +179,7 @@ void FileRoutingTest::testRouting_data()
     QTest::addRow("vob")  << QFINDTESTDATA("samplefiles/video/test.vob")  << HandlerUtils::HandlerKey::Video;
     QTest::addRow("webm") << QFINDTESTDATA("samplefiles/video/test.webm") << HandlerUtils::HandlerKey::Video;
     QTest::addRow("wmv")  << QFINDTESTDATA("samplefiles/video/test.wmv")  << HandlerUtils::HandlerKey::Video;
+    // clang-format on
 }
 
 QTEST_GUILESS_MAIN(FileRoutingTest)

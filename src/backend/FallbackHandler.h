@@ -15,11 +15,11 @@ class MAKILIB_EXPORT FallbackHandler : public PreviewHandler
 
     Q_PROPERTY(QString fallbackIcon READ fallbackIcon NOTIFY fallbackIconChanged)
 
-public: 
+public:
     explicit FallbackHandler(QObject *parent = nullptr);
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     HandlerUtils::HandlerKey fileTypeKey() const override;

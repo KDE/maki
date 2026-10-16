@@ -3,21 +3,23 @@
 
 #include "ArchiveHandler.h"
 
-#include <KCompressionDevice>
-#include <KZip>
 #include <K7Zip>
+#include <KCompressionDevice>
 #include <KTar>
+#include <KZip>
 
 #include <QFileInfo>
 #include <QMimeDatabase>
 
 ArchiveHandler::ArchiveHandler(QObject *parent, MakiImageProvider *imageProvider)
-: PreviewHandler(parent)
-, m_imageProvider(imageProvider)
-{}
-
-bool ArchiveHandler::canHandle(const QMimeType &mime) const 
+    : PreviewHandler(parent)
+    , m_imageProvider(imageProvider)
 {
+}
+
+bool ArchiveHandler::canHandle(const QMimeType &mime) const
+{
+    // clang-format off
     return mime.inherits(QStringLiteral("application/zip"))
         || mime.inherits(QStringLiteral("application/zip-compressed"))
         || mime.inherits(QStringLiteral("application/x-zip-compressed"))
@@ -36,6 +38,7 @@ bool ArchiveHandler::canHandle(const QMimeType &mime) const
         || mime.inherits(QStringLiteral("application/x-lzma"))
         || mime.inherits(QStringLiteral("application/zstd"))
         || mime.inherits(QStringLiteral("application/x-xz"));
+    // clang-format on
 }
 
 void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
@@ -57,7 +60,7 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
 
         if (archive->open(QIODevice::ReadOnly)) {
             m_archiveModel->clear();
-            
+
             populateArchiveModel(m_archiveModel->invisibleRootItem(), archive->directory());
 
             if (m_imageProvider) {
@@ -74,19 +77,19 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
 
         Q_EMIT archiveModelChanged();
     } else if (KCompressionDevice::compressionTypeForMimeType(mime.name()) != KCompressionDevice::None) {
-        //Raw compressed file, extract without KArchive
+        // Raw compressed file, extract without KArchive
         auto compType = KCompressionDevice::compressionTypeForMimeType(mime.name());
 
         QMimeDatabase db;
 
         KCompressionDevice compDevice(url.toLocalFile(), compType);
-        
+
         if (!m_archiveModel) {
             m_archiveModel = new QStandardItemModel(this);
         }
 
         m_archiveModel->clear();
-        
+
         QFileInfo fileInfo(url.toLocalFile());
         m_fileSize = QLocale::system().formattedDataSize(fileInfo.size(), 1);
         Q_EMIT fileSizeChanged();
@@ -96,27 +99,27 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
             m_infoPanelUrl = QUrl(QStringLiteral("image://Maki/infoPanel?") + QString::number(QDateTime::currentMSecsSinceEpoch()));
             Q_EMIT infoPanelUrlChanged();
         }
-        
+
         QString innerFileName = fileInfo.completeBaseName();
-        
+
         auto *item = new QStandardItem(innerFileName);
         item->setText(innerFileName);
-        
+
         if (compDevice.open(QIODevice::ReadOnly)) {
             QByteArray decompressedData = compDevice.readAll();
             compDevice.close();
-            
+
             QMimeType innerMime;
             QFileInfo innerFileInfo(innerFileName);
 
             if (!innerFileInfo.suffix().isEmpty()) {
-                //Suffix is there, use it to get mime type
+                // Suffix is there, use it to get mime type
                 innerMime = db.mimeTypeForFile(innerFileName);
             } else {
-                //pray that mimeTypeForData is accurate
+                // pray that mimeTypeForData is accurate
                 innerMime = db.mimeTypeForData(decompressedData);
             }
-            
+
             item->setData(innerMime.iconName(), Qt::ToolTipRole);
             item->setData(QLocale::system().formattedDataSize(decompressedData.size(), 1), Qt::StatusTipRole);
         }
@@ -127,14 +130,13 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
     }
 }
 
-HandlerUtils::HandlerKey ArchiveHandler::fileTypeKey() const 
+HandlerUtils::HandlerKey ArchiveHandler::fileTypeKey() const
 {
     return HandlerUtils::HandlerKey::Archive;
 }
 
 void ArchiveHandler::clearState()
 {
-    
 }
 
 QString ArchiveHandler::fileSize() const
@@ -152,26 +154,29 @@ QUrl ArchiveHandler::infoPanelUrl() const
     return m_infoPanelUrl;
 }
 
-QStandardItemModel* ArchiveHandler::archiveModel() const
+QStandardItemModel *ArchiveHandler::archiveModel() const
 {
     return m_archiveModel;
 }
 
-KArchive* ArchiveHandler::createArchive(const QString &filePath)
+KArchive *ArchiveHandler::createArchive(const QString &filePath)
 {
     QMimeDatabase db;
     QMimeType mime = db.mimeTypeForFile(filePath);
-    
+
+    // clang-format off
     if (mime.inherits(QStringLiteral("application/zip"))
     ||  mime.inherits(QStringLiteral("application/zip-compressed"))
     ||  mime.inherits(QStringLiteral("application/x-zip-compressed"))) {
         return new KZip(filePath);
     }
-    
+    // clang-format on
+
     if (mime.inherits(QStringLiteral("application/x-7z-compressed"))) {
         return new K7Zip(filePath);
     }
-    
+
+    // clang-format off
     if (mime.inherits(QStringLiteral("application/x-tar"))
     ||  mime.inherits(QStringLiteral("application/x-gtar"))
     ||  mime.inherits(QStringLiteral("application/x-compressed-tar"))
@@ -181,6 +186,7 @@ KArchive* ArchiveHandler::createArchive(const QString &filePath)
     ||  mime.inherits(QStringLiteral("application/x-lzip-compressed-tar"))) {
         return new KTar(filePath);
     }
+    // clang-format on
 
     return nullptr;
 }
@@ -192,24 +198,26 @@ void ArchiveHandler::populateArchiveModel(QStandardItem *parent, const KArchiveD
         const KArchiveEntry *entry = dir->entry(name);
         auto *item = new QStandardItem(name);
 
+        // clang-format off
         const QString iconName = entry->isDirectory()
             ? QStringLiteral("inode-directory")
             : QString(db.mimeTypeForFile(name, QMimeDatabase::MatchExtension).iconName());
+        // clang-format on
 
         item->setData(iconName, Qt::ToolTipRole);
         item->setText(name);
 
         if (entry->isDirectory()) {
-            const KArchiveDirectory *dir = static_cast<const KArchiveDirectory*>(entry);
+            const KArchiveDirectory *dir = static_cast<const KArchiveDirectory *>(entry);
             item->setData(QLocale::system().formattedDataSize(getDirSize(dir), 1), Qt::StatusTipRole);
             populateArchiveModel(item, dir);
-        } 
-        
+        }
+
         if (entry->isFile()) {
             const auto *file = static_cast<const KArchiveFile *>(entry);
             item->setData(QLocale::system().formattedDataSize(file->size(), 1), Qt::StatusTipRole);
         }
-        
+
         parent->appendRow(item);
     }
 }
@@ -222,8 +230,7 @@ qint64 ArchiveHandler::getDirSize(const KArchiveDirectory *dir)
 
     qint64 size{0};
 
-    for (const QString &entryName : dir->entries())
-    {
+    for (const QString &entryName : dir->entries()) {
         const KArchiveEntry *entry = dir->entry(entryName);
 
         if (entry->isFile()) {
@@ -232,7 +239,7 @@ qint64 ArchiveHandler::getDirSize(const KArchiveDirectory *dir)
                 size += file->size();
             }
         } else if (entry->isDirectory()) {
-            size += getDirSize(static_cast<const KArchiveDirectory*>(entry));
+            size += getDirSize(static_cast<const KArchiveDirectory *>(entry));
         }
     }
 

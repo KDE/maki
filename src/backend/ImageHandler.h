@@ -14,7 +14,7 @@ class MAKILIB_EXPORT ImageHandler : public PreviewHandler
     Q_OBJECT
     QML_ELEMENT
     QML_UNCREATABLE("Handlers are managed by WindowManager")
-    
+
     Q_PROPERTY(QUrl imageUrl READ imageUrl NOTIFY imageUrlChanged)
     Q_PROPERTY(QSize imageSize READ imageSize NOTIFY imageSizeChanged)
     Q_PROPERTY(bool isAnimated READ isAnimated NOTIFY isAnimatedChanged)
@@ -22,16 +22,16 @@ public:
     explicit ImageHandler(QObject *parent = nullptr, MakiImageProvider *imageProvider = nullptr);
 
 public:
-    //Overrides
+    // Overrides
     bool canHandle(const QMimeType &mime) const override;
     void process(const QUrl &url, const QMimeType &mime) override;
     HandlerUtils::HandlerKey fileTypeKey() const override;
     void clearState() override;
 
-    //QProperties
+    // QProperties
     QUrl imageUrl() const;
     Q_SIGNAL void imageUrlChanged();
-    
+
     QSize imageSize() const;
     Q_SIGNAL void imageSizeChanged();
 
@@ -39,10 +39,10 @@ public:
     Q_SIGNAL void isAnimatedChanged();
 
 protected:
-    QUrl m_imageUrl{ QUrl(QStringLiteral("Placeholder")) };
-    QSize m_imageSize{ 1, 1 };
+    QUrl m_imageUrl{QUrl(QStringLiteral("Placeholder"))};
+    QSize m_imageSize{1, 1};
 
-    bool m_isAnimated{ false };
+    bool m_isAnimated{false};
 
-    MakiImageProvider *m_imageProvider{ nullptr };
+    MakiImageProvider *m_imageProvider{nullptr};
 };
