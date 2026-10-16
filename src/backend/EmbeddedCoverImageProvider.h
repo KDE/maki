@@ -39,8 +39,6 @@ public:
         if (!imageData.isEmpty()) {
             if (imageData.contains(KFileMetaData::EmbeddedImageData::FrontCover)) {
                 QImage coverImage{ QImage::fromData(imageData[KFileMetaData::EmbeddedImageData::FrontCover]) };
-                *size = coverImage.size();
-                coverImage = coverImage.scaled(requestedSize);
                 return QPixmap::fromImage(coverImage);
             }
         }
