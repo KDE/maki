@@ -92,7 +92,7 @@ void ArchiveHandler::process(const QUrl &url, const QMimeType &mime)
 
         m_iconName = mime.iconName();
         Q_EMIT iconNameChanged();
-        
+
         QString innerFileName = fileInfo.completeBaseName();
 
         auto *item = new QStandardItem(innerFileName);

@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
     EmbeddedCoverImageProvider *imageProvider = new EmbeddedCoverImageProvider();
     engine.addImageProvider(QStringLiteral("audioCover"), imageProvider);
-    
+
     KLocalization::setupLocalizedContext(&engine);
     engine.loadFromModule("org.kde.maki", "Main");
 

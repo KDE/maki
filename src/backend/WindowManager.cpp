@@ -139,7 +139,7 @@ void WindowManager::initHandlers()
     m_handlers.push_back(std::make_unique<VideoHandler>(this));
     m_handlers.push_back(std::make_unique<DocumentHandler>(this));
     // ArchiveHandler needs to be after DocumentHandler to ensure proper handling of Office files
-    // Since the inherit from zip archive mimes, the ArchiveHandler would be able to handle it 
+    // Since the inherit from zip archive mimes, the ArchiveHandler would be able to handle it
     m_handlers.push_back(std::make_unique<ArchiveHandler>(this));
     // FallbackHandler always evaluates to canHandle() == true, so it has to be last
     m_handlers.push_back(std::make_unique<FallbackHandler>(this));
