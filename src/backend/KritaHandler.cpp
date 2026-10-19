@@ -37,7 +37,7 @@ void KritaHandler::process(const QUrl &url, const QMimeType &mime)
 
     const KArchiveDirectory *rootDir{kritaArchive.directory()};
 
-    if (const KArchiveEntry *mergedImageEntry{rootDir->entry(QStringLiteral("mergedimage.png"))}) {
+    if (const KArchiveEntry *mergedImageEntry = rootDir->entry(QStringLiteral("mergedimage.png"))) {
         // File is a .kra file, we can extract the mergedimage.png for higher resolution
         const KArchiveFile *imageFile = static_cast<const KArchiveFile *>(mergedImageEntry);
 
