@@ -15,6 +15,18 @@ Item {
 
     property bool videoControlsVisible: false
 
+    // Reset the video playback when closing with space
+    Connections {
+        target: WindowManager
+
+        function onVisibleChanged() {
+            if (!WindowManager.visible) {
+                videoPlayer.pause = true;
+                videoPlayer.position = 0;
+            }
+        }
+    }
+
     MpvItem {
         id: videoPlayer
 
