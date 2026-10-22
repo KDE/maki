@@ -59,6 +59,10 @@ public:
     QString getEndTimecode() const;
     Q_SIGNAL void endTimecodeChanged();
 
+    Q_PROPERTY(bool eofReached READ eofReached NOTIFY eofReachedChanged)
+    bool eofReached() const;
+    Q_SIGNAL void eofReachedChanged();
+
 private:
     void onPropertyChanged(const QString &property, const QVariant &value);
 
@@ -70,6 +74,7 @@ private:
 
     bool m_pause{true};
     bool m_mute{false};
+    bool m_eofReached{false};
 
     int m_volume{100};
 

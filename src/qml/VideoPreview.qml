@@ -30,6 +30,12 @@ Item {
             loadFile(videoHandler ? videoHandler.videoUrl : "");
         }
 
+        onEofReachedChanged: {
+            if (eofReached) {
+                pause = true;
+            }
+        }
+
         onVideoReconfig: {
             //TODO: Into a config
             const maxScale = Qt.size(1280, 720);
@@ -63,9 +69,13 @@ Item {
                 videoControlsHideTimer.restart()
             }
 
-            onPressed: function(mouse) {
+            onClicked: function(mouse) {
                 //Only Left click is assigned for now, but check regardless
                 if (mouse.button === Qt.LeftButton) {
+                    if (videoPlayer.eofReached) {
+                        videoPlayer.position = 0;
+                    }
+
                     videoPlayer.pause = !videoPlayer.pause;
                 }
             }
@@ -132,6 +142,10 @@ Item {
                 icon.name: videoPlayer.pause ? "media-playback-start" : "media-playback-pause"
 
                 onClicked: {
+                    if (videoPlayer.eofReached) {
+                        videoPlayer.position = 0;
+                    }
+
                     videoPlayer.pause = !videoPlayer.pause;
                 }
             }

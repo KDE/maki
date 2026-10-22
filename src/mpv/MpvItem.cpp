@@ -13,6 +13,7 @@ MpvItem::MpvItem(QQuickItem *parent)
     Q_EMIT observeProperty(QStringLiteral("time-pos"), MPV_FORMAT_DOUBLE);
     Q_EMIT observeProperty(QStringLiteral("duration"), MPV_FORMAT_DOUBLE);
     Q_EMIT observeProperty(QStringLiteral("time-start"), MPV_FORMAT_DOUBLE);
+    Q_EMIT observeProperty(QStringLiteral("eof-reached"), MPV_FORMAT_FLAG);
 
     connect(mpvController(), &MpvController::propertyChanged, this, &MpvItem::onPropertyChanged, Qt::QueuedConnection);
 
@@ -20,6 +21,7 @@ MpvItem::MpvItem(QQuickItem *parent)
 
     Q_EMIT setProperty(QStringLiteral("vo"), QStringLiteral("libmpv"));
     Q_EMIT setProperty(QStringLiteral("hwdec"), QStringLiteral("auto-safe"));
+    Q_EMIT setProperty(QStringLiteral("keep-open"), QStringLiteral("always"));
 }
 
 void MpvItem::loadFile(const QUrl &url)
@@ -126,6 +128,11 @@ QString MpvItem::getEndTimecode() const
     return m_endTimecode;
 }
 
+bool MpvItem::eofReached() const
+{
+    return m_eofReached;
+}
+
 void MpvItem::onPropertyChanged(const QString &property, const QVariant &value)
 {
     if (property == QStringLiteral("width")) {
@@ -144,6 +151,9 @@ void MpvItem::onPropertyChanged(const QString &property, const QVariant &value)
         m_endTimecode = secondsToTimecode(m_duration);
         Q_EMIT durationChanged();
         Q_EMIT endTimecodeChanged();
+    } else if (property == QStringLiteral("eof-reached")) {
+        m_eofReached = value.toBool();
+        Q_EMIT eofReachedChanged();
     }
 }
 
