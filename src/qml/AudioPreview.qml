@@ -11,6 +11,17 @@ Item {
     anchors.fill: parent
 
     readonly property AudioHandler audioHandler: WindowManager.activeHandler
+
+    Connections {
+        target: WindowManager
+
+        //Stop playback when user presses space to hide Maki
+        function onVisibleChanged() {
+            if (!WindowManager.visible) {
+                audioPlayer.stop();
+            }
+        }
+    }
     
     MediaPlayer {
         id: audioPlayer
