@@ -67,7 +67,10 @@ endif()
 
 ki18n_install(po)
 
-install(PROGRAMS org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+configure_file(org.kde.maki.desktop.in ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.desktop)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.desktop DESTINATION ${KDE_INSTALL_AUTOSTARTDIR})
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
 
 install(PROGRAMS org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
