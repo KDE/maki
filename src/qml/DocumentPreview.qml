@@ -42,7 +42,9 @@ Item {
             windowWidth = maxPageScale.width;
         }
 
-        root.resizeWindow(Qt.size(windowWidth + 100, windowHeight));
+        const thumbnailViewSize = doc.pageCount > 1 ? 100 : 0;
+
+        root.resizeWindow(Qt.size(windowWidth + thumbnailViewSize, windowHeight));
     }
 
     RowLayout {
@@ -99,6 +101,8 @@ Item {
             id: separator
 
             Layout.fillHeight: true
+
+            visible: doc.pageCount > 1
         }
 
         ListView {
@@ -110,6 +114,8 @@ Item {
             model: doc.status === PdfDocument.Ready ? doc.pageCount : 0
 
             clip: true
+
+            visible: doc.pageCount > 1
 
             delegate: ItemDelegate {
                 id: delegate
