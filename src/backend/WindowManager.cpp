@@ -50,8 +50,6 @@ void WindowManager::setURL(const QUrl &url)
     Q_EMIT urlChanged();
     Q_EMIT fileNameChanged();
 
-    setVisible(true);
-
     QMimeType mime = db.mimeTypeForUrl(url);
 
     KService::Ptr service = KApplicationTrader::preferredService(mime.name());
@@ -78,6 +76,7 @@ void WindowManager::setURL(const QUrl &url)
             // Emit this signal last so you don't get warnings about assigning the wrong handler
             Q_EMIT activeHandlerChanged();
 
+            setVisible(true);
             return;
         }
     }

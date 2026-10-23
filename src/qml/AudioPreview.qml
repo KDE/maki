@@ -19,6 +19,8 @@ Item {
         function onVisibleChanged() {
             if (!WindowManager.visible) {
                 audioPlayer.stop();
+            } else {
+                audioPlayer.play();
             }
         }
     }
