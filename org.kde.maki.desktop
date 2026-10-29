@@ -5,7 +5,7 @@
 Name=Maki
 Comment=Quick file previewer
 Exec=maki
-Icon=document-preview
+Icon=org.kde.maki
 Type=Application
 Terminal=false
 Categories=Qt;KDE;Utility;

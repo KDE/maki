@@ -3,11 +3,11 @@
 
 [Desktop Entry]
 Actions=QuickPreview
-Icon=document-preview
+Icon=org.kde.maki
 Type=Service
 MimeType=all/allfiles
 
 [Desktop Action QuickPreview]
 Exec=qdbus org.kde.maki /maki showFile "%u"
-Icon=document-preview
+Icon=org.kde.maki
 Name=Quick Preview

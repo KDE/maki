@@ -68,6 +68,7 @@ endif()
 ki18n_install(po)
 
 install(PROGRAMS org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+install(FILES ./icons/org.kde.maki.svg DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps)
 
 install(PROGRAMS org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 
