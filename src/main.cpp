@@ -37,10 +37,8 @@ int main(int argc, char *argv[])
                          QStringLiteral(MAKI_VERSION_STRING),
                          i18nc("@info", "Quick File Previewer"),
                          KAboutLicense::GPL_V3,
-                         i18nc("@info:credit", "Maki contributors"),
-                         QString(),
-                         QStringLiteral("https://invent.kde.org/fluxmusic/maki"),
-                         QStringLiteral("https://invent.kde.org/fluxmusic/maki/-/work_items"));
+                         i18nc("@info:credit", "Maki contributors"));
+    aboutData.setHomepage(QStringLiteral("https://invent.kde.org/system/maki"));
 
     aboutData.addAuthor(QStringLiteral("Alex Huber"), i18nc("@label", "Creator"), QStringLiteral("dev.flu7x@gmail.com"));
     aboutData.addAuthor(QStringLiteral("Kristen McWilliam"), i18nc("@label", "Author"), QStringLiteral("kristen@kde.org"));
