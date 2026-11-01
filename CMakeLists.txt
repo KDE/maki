@@ -23,6 +23,7 @@ include(ECMQmlModule)
 include(ECMUninstallTarget)
 include(ECMAddTests)
 include(ECMSetupVersion)
+include(ECMInstallIcons)
 
 ecm_setup_version(${RELEASE_SERVICE_VERSION}
     VARIABLE_PREFIX MAKI
@@ -60,6 +61,7 @@ find_package(MpvQt REQUIRED)
 ecm_find_qmlmodule(org.kde.kirigami REQUIRED)
 
 add_subdirectory(src)
+add_subdirectory(icons)
 
 if(BUILD_TESTING)
     add_subdirectory(autotests)
@@ -68,7 +70,6 @@ endif()
 ki18n_install(po)
 
 install(PROGRAMS org.kde.maki.desktop DESTINATION ${KDE_INSTALL_APPDIR})
-install(FILES ./icons/org.kde.maki.svg DESTINATION ${KDE_INSTALL_FULL_ICONDIR}/hicolor/scalable/apps)
 
 install(PROGRAMS org.kde.maki.servicemenu.desktop DESTINATION ${KDE_INSTALL_DATADIR}/kio/servicemenus)
 

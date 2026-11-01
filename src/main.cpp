@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
 
     KirigamiAppDefaults::apply(&app);
 
+    QApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("maki")));
+
     KAboutData aboutData(QStringLiteral("maki"),
                          i18nc("@title", "Maki"),
                          QStringLiteral(MAKI_VERSION_STRING),
@@ -40,7 +42,6 @@ int main(int argc, char *argv[])
                          QStringLiteral("https://invent.kde.org/fluxmusic/maki"),
                          QStringLiteral("https://invent.kde.org/fluxmusic/maki/-/work_items"));
 
-    aboutData.setProgramLogo(QStringLiteral("org.kde.maki"));
     aboutData.addAuthor(QStringLiteral("Alex Huber"), i18nc("@label", "Creator"), QStringLiteral("dev.flu7x@gmail.com"));
     aboutData.addAuthor(QStringLiteral("Kristen McWilliam"), i18nc("@label", "Author"), QStringLiteral("kristen@kde.org"));
     aboutData.addCredit(QStringLiteral("The Entropyst"), i18nc("@label", "App Icon Design"), QStringLiteral("the.entropyst@proton.me"));
