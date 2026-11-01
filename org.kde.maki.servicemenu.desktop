@@ -3,7 +3,7 @@
 
 [Desktop Entry]
 Actions=QuickPreview
-Icon=org.kde.maki
+Icon=maki
 Type=Service
 MimeType=all/allfiles
 
