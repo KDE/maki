@@ -1,1 +1,1 @@
-test
+(display "test")

@@ -1,1 +1,1 @@
-test
+FROM scratch

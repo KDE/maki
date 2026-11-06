@@ -1,1 +1,1 @@
-test
+message(STATUS "test")

@@ -1,1 +1,1 @@
-test
+Write-Output "test"

@@ -1,1 +1,2 @@
-test
+Module Test
+End Module

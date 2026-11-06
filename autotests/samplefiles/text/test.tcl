@@ -1,1 +1,1 @@
-test
+puts test

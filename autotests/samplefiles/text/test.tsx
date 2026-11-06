@@ -1,1 +1,1 @@
-test
+const el = <div>test</div>;

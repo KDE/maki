@@ -1,1 +1,1 @@
-test
+int test();

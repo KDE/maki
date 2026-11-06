@@ -1,1 +1,1 @@
-test
+IO.puts("test")

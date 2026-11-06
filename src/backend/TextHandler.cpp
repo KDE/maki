@@ -16,6 +16,7 @@ bool TextHandler::canHandle(const QMimeType &mime) const
     // Files that are essentially just text, but whose mimetype for some reason doesn't start with 'text/'
     // clang-format off
     const QSet<QString> extraMimes {
+        QStringLiteral("application/json"),
         QStringLiteral("application/vnd.dart"),
         QStringLiteral("application/x-fishscript"),
         QStringLiteral("application/x-php"),
@@ -26,6 +27,7 @@ bool TextHandler::canHandle(const QMimeType &mime) const
         QStringLiteral("application/toml"),
         QStringLiteral("application/typescript"),
         QStringLiteral("application/x-tiled-tsx"),
+        QStringLiteral("application/xml"),
         QStringLiteral("application/yaml")
     };
     // clang-format on

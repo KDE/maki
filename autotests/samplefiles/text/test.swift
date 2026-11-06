@@ -1,1 +1,1 @@
-test
+let test = "test"

@@ -1,1 +1,1 @@
-test
+main = return ()

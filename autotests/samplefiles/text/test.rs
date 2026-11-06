@@ -1,1 +1,1 @@
-test
+fn main() {}
