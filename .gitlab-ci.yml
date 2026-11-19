@@ -15,3 +15,5 @@ include:
       - /gitlab-templates/freebsd-qt6.yml
       - /gitlab-templates/linux-qt6.yml
       - /gitlab-templates/linux-qt6-next.yml
+      # Package
+      - /gitlab-templates/flatpak.yml
