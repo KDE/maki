@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
+# SPDX-License-Identifier: CC0-1.0
+
+id: org.kde.maki
+branch: master
+runtime: org.kde.Platform
+runtime-version: '6.11'
+sdk: org.kde.Sdk
+base: io.qt.qtwebengine.BaseApp
+base-version: '6.11'
+command: maki
+rename-icon: maki
+desktop-file-name-suffix: ' (Nightly)'
+
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=dri
+  - --filesystem=host:ro
+
+modules:
+  - name: maki
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    sources:
+      - type: dir
+        path: .
+
+    modules:
+      - name: mpvqt
+        buildsystem: cmake-ninja
+        sources:
+          - type: git
+            url: https://invent.kde.org/libraries/mpvqt.git
+
+        modules:
+          - name: libmpv
+            buildsystem: meson
+            sources:
+              - type: git
+                url: https://github.com/mpv-player/mpv.git
+
+            modules:
+              - name: libplacebo
+                buildsystem: meson
+                sources:
+                  - type: git
+                    url: https://github.com/haasn/libplacebo.git
+
+              - name: libass
+                buildsystem: meson
+                sources:
+                  - type: git
+                    url: https://github.com/libass/libass.git
