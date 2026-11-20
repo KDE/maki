@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  SPDX-FileCopyrightText: 2026 Alex Huber <dev.flu7x@gmail.com>
+  SPDX-License-Identifier: CC0-1.0
+ -->
+
+<component type="desktop-application">
+  <id>org.kde.maki</id>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Maki</name>
+
+  <summary>Preview Files and open the default app after confirming it&apos;s the right one</summary>
+  
+  
+  <description>
+    <p>
+      Standing for &quot;Maki is a KDE Inspector&quot;, Maki enables quick previewing of files. Once open, you can open the default app directly from Maki.
+    </p>
+  </description>
+  <project_group>KDE</project_group>
+  <developer id="org.kde">
+    <name translate="no">KDE</name>
+    <url>https://kde.org</url>
+  </developer>
+
+  <url type="homepage">https://apps.kde.org/maki</url>
+  <url type="bugtracker">https://bugs.kde.org/enter_bug.cgi?product=maki</url>
+  <url type="vcs-browser">https://invent.kde.org/system/maki</url>
+  
+  <launchable type="desktop-id">org.kde.maki.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://cdn.kde.org/screenshots/maki/maki.png</image>
+      <caption>Usage of Maki's image preview with Dolphin</caption>
+    </screenshot>
+  </screenshots>
+</component>
