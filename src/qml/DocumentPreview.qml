@@ -18,6 +18,113 @@ Item {
     PdfDocument {
         id: doc
         source: documentUrl
+
+        onPasswordRequired: {
+            if (passwordPrompt.visible) {
+                passwordPrompt.showWrongPassword();
+            } else {
+                passwordPrompt.open();
+            }
+        }
+
+        onStatusChanged: {
+            if (status === PdfDocument.Ready) {
+                if (passwordPrompt.visible) {
+                    passwordPrompt.wrongPassword = false;
+                    passwordPrompt.close();
+                }
+            }
+        }
+    }
+    
+    Kirigami.Dialog {
+        id: passwordPrompt
+
+        title: i18nc("@title", "Password required")
+        standardButtons: Dialog.NoButton
+        modal: true
+        closePolicy: Popup.NoAutoClose
+        showCloseButton: false
+
+        property bool wrongPassword: false
+
+        function showWrongPassword() {
+            passwordPrompt.wrongPassword = true
+            shakeAnimation.restart();
+        }
+
+        function submitPassword() {
+            if (passwordInput.text === doc.password) {
+                shakeAnimation.restart();
+                return;
+            }
+            doc.password = passwordInput.text;
+            passwordInput.selectAll();
+        }
+
+        ColumnLayout {
+            anchors.fill: parent
+            spacing: Kirigami.Units.smallSpacing
+
+            Label {
+                Layout.fillWidth: true
+                Layout.leftMargin: Kirigami.Units.mediumSpacing
+                Layout.rightMargin: Kirigami.Units.mediumSpacing
+                text: i18nc("@info", "This PDF is password protected. Enter the password to view it.")
+                wrapMode: TextInput.Wrap
+                visible: !passwordPrompt.wrongPassword
+            }
+            
+            Label {
+                Layout.fillWidth: true
+                Layout.leftMargin: Kirigami.Units.mediumSpacing
+                Layout.rightMargin: Kirigami.Units.mediumSpacing
+                text: i18nc("@info:status", "Wrong Password, try again.")
+                color: Kirigami.Theme.negativeTextColor
+                wrapMode: TextInput.Wrap
+                visible: passwordPrompt.wrongPassword
+            }
+
+            Kirigami.PasswordField {
+                id: passwordInput
+
+                Layout.fillWidth: true
+                Layout.leftMargin: Kirigami.Units.mediumSpacing
+                Layout.rightMargin: Kirigami.Units.mediumSpacing
+                placeholderText: i18nc("@password", "Password")
+
+                onAccepted: {
+                    passwordPrompt.submitPassword();
+                }
+
+                transform: Translate {
+                    id: shakeOffset
+                }
+            }
+
+            DialogButtonBox {
+                Layout.alignment: Qt.AlignRight
+
+                standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
+                onRejected: {
+                    passwordPrompt.close()
+                    root.close();
+                }
+
+                onAccepted: {
+                    passwordPrompt.submitPassword();
+                }
+            }
+        }
+        
+        SequentialAnimation {
+            id: shakeAnimation
+            NumberAnimation { target: shakeOffset; property: "x"; to: -Kirigami.Units.largeSpacing;     duration: Kirigami.Units.veryShortDuration;     easing.type: Easing.InOutQuad }
+            NumberAnimation { target: shakeOffset; property: "x"; to:  Kirigami.Units.largeSpacing;     duration: Kirigami.Units.veryShortDuration * 2; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: shakeOffset; property: "x"; to: -Kirigami.Units.largeSpacing / 2; duration: Kirigami.Units.veryShortDuration * 2; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: shakeOffset; property: "x"; to: 0;                                duration: Kirigami.Units.veryShortDuration;     easing.type: Easing.InOutQuad }
+        }
     }
 
     readonly property size firstPageSize: doc.status === PdfDocument.Ready ? doc.pagePointSize(0) : Qt.size(1, 1)
