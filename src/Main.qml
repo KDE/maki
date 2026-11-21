@@ -43,6 +43,8 @@ Kirigami.ApplicationWindow {
     Loader {
         anchors.fill: parent 
 
+        active: root.visible
+
         source: {
             switch(WindowManager.fileKey) {
             case HandlerUtils.HandlerKey.Image    : return "ImagePreview.qml"
