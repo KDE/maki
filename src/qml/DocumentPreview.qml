@@ -48,9 +48,17 @@ Item {
 
         property bool wrongPassword: false
 
+        onAboutToShow: {
+            wrongPassword = false;
+            passwordInput.clear();
+            passwordInput.forceActiveFocus();
+        }
+
         function showWrongPassword() {
             passwordPrompt.wrongPassword = true
             shakeAnimation.restart();
+            passwordInput.forceActiveFocus();
+            passwordInput.selectAll();
         }
 
         function submitPassword() {
@@ -59,7 +67,6 @@ Item {
                 return;
             }
             doc.password = passwordInput.text;
-            passwordInput.selectAll();
         }
 
         ColumnLayout {
