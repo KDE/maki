@@ -32,8 +32,6 @@ set(makiLib_SRCS
     backend/PreviewHandler.h
     backend/ImageHandler.h
     backend/ImageHandler.cpp
-    backend/KritaHandler.h
-    backend/KritaHandler.cpp
     backend/TextHandler.h
     backend/TextHandler.cpp
     backend/AudioHandler.h

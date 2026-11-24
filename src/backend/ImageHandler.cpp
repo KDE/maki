@@ -16,7 +16,11 @@ ImageHandler::ImageHandler(QObject *parent)
 
 bool ImageHandler::canHandle(const QMimeType &mime) const
 {
-    return mime.name().startsWith(QStringLiteral("image/"));
+    // QImageReader::supportedMimeTypes contains application/pdf, which should be handled by DocumentHandler
+    if (mime.inherits(QStringLiteral("application/pdf"))) {
+        return false;
+    }
+    return QImageReader::supportedMimeTypes().contains(mime.name().toUtf8());
 }
 
 void ImageHandler::process(const QUrl &url, const QMimeType &mime)
